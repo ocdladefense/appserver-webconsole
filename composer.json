@@ -1,4 +1,12 @@
 {
-    "name":"clickpdx/webconsole",
-    "description":"Front-end GUI for an AppServer."
+    "name": "clickpdx/webconsole",
+    "description": "A JavaScript front-end for the PHP Application Server.",
+    "type": "wordpress-plugin",
+    "authors": [
+        {
+            "name": "Nicholas Glesmann",
+            "email": "nicholasglesmann@gmail.com"
+        }
+    ],
+    "require": {}
 }
