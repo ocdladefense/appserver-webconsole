@@ -1,6 +1,6 @@
 <?php
 
-class WebConsole extends Module {
+class WebConsoleModule extends Module {
     private $deps = array();
 
     public function __construct() {
@@ -9,7 +9,7 @@ class WebConsole extends Module {
         $this->name = "webconsole";
         $this->routes = webconsoleModRoutes();
         $this->dependencies = $this->deps;
-        $this->files = webconsoleModRoutes()["files"];
+        $this->files = webconsoleModRoutes()["webconsole-test"]["files"];
     }
 }
 
