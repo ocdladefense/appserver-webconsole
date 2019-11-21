@@ -1,27 +1,33 @@
 <?php
 
+
 class WebConsoleModule extends Module {
-    private $deps = array();
 
-    public function __construct() {
-        parent::__construct();
 
-        $this->name = "webconsole";
-        $this->routes = webconsoleModRoutes();
-        $this->dependencies = $this->deps;
-        $this->files = webconsoleModRoutes()["webconsole-test"]["files"];
-    }
+	public function __construct(){
+		parent::__construct();
+		$this->routes = modWebconsoleRoutes();
+		$this->name = "webconsole";
+	}
+
 }
 
-function webconsoleModRoutes() {
-    $webconsoleModRoutes = array(
-        "webconsole-test" => array(
-            "callback" => "webconsoleTests",
-            "files" => array()
-        )
-    );
-    return $webconsoleModRoutes;    
+
+function modWebconsoleRoutes() {
+	return array(
+		"webconsole" => array(
+			"callback" => "doAdminPage"
+		)
+	);
 }
-function webconsoleTests() {
-    return "Hello from the webconsole!";
+
+
+function doAdminPage() {
+	//array("style");
+	//array("scripts");
+	$template = new Template("webconsole");
+	//$template -> addStyles();
+	//$template -> addScript("path to js file");
+	return $template->render(array("content"=> "foobar"));
+
 }

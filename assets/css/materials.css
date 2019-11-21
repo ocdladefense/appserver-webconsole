@@ -1,0 +1,94 @@
+.h1{
+    display:inline;
+}
+
+.button{
+    display:inline-block;
+}
+
+
+.select{
+    border-radius:20px;
+}
+
+
+
+
+.container2{
+    display: flex;
+    justify-content: start;
+}
+
+.hr{
+    height:20px;
+}
+
+
+
+.row-container{
+    width: 100%;
+    padding-bottom: 20px;
+}
+
+.Rtable {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 3em 0;
+  padding: 0;
+}
+
+.Rtable-cell {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;  
+  padding: 0.8em 1.2em;
+  overflow: hidden; 
+  list-style: none;
+  border-top: solid 2px orange;
+  border-left: solid 2px orange;
+  border-right: solid 2px orange;
+}
+  
+.Rtable-cell.link{
+  border-bottom: solid 2px orange;
+  font-weight: bold;
+}
+
+.Rtable-cell.name:before {
+  content: "Name: ";
+  font-weight: bold;
+}
+
+.Rtable-cell.filesize:before {
+  content: "File size: ";
+  font-weight: bold;
+}
+
+.Rtable-cell.filetype:before {
+  content: "File Type: ";
+  font-weight: bold;
+}
+
+.Rtable--2cols > .Rtable-cell  { width: 50%; }
+.Rtable--3cols > .Rtable-cell  { width: 33.33%; }
+.Rtable--4cols > .Rtable-cell  { width: 25%; }
+.Rtable--5cols > .Rtable-cell  { width: 20%; }
+.Rtable--6cols > .Rtable-cell  { width: 16.6%; }
+
+/*@breakpoint: 500px; */
+
+/* Responsive
+==================================== */
+/* @media screen and (max-width: 500px) {
+  .Rtable--collapse  {
+    display: block;
+    > .Rtable-cell { width: 100% !important; }
+    > .Rtable-cell--foot { margin-bottom: 1em; }
+  }
+} */
+
+/* .no-flexbox .Rtable {
+  display: block;
+  > .Rtable-cell { width: 100%; }
+  > .Rtable-cell--foot { margin-bottom: 1em; }
+}  */
