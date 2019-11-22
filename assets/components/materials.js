@@ -19,7 +19,7 @@ function uiChapterPicker(chapters){
 
 
  //Creates table cells based off of the material name and link
-    function renderMaterial(materialName,filesize,filetype,link){
+    function getMaterial(materialName,filesize,filetype,link){
         var tableCellName = vNode("div",{className:"Rtable-cell name"}, materialName);
         var tableCellFileSize = vNode("div",{className:"Rtable-cell filesize"},filesize);
         var tableCellFileType = vNode("div",{className:"Rtable-cell filetype"},filetype);
@@ -28,96 +28,67 @@ function uiChapterPicker(chapters){
         
         console.log(rowContainer);
         
-        return createElement(rowContainer);
+        return rowContainer;
         }
 
-        function renderChapter(chapter){
+        function getChapter(chapter){
+            var vNodes = [];
             var materials = chapter.materials;
-            var table = document.createElement("div");
-            table.setAttribute("class", "Rtable Rtable--4cols");
-            var chapterHeader = document.createElement("h1");
+            var table = vNode("div", {className:"Rtable Rtable--4cols"});
+            //var chapterHeader = document.createElement("h1");
             chapterName = chapter.name;
             chapterNameParsed = chapterName.charAt(0).toUpperCase() + chapterName.slice(1);
             
-            chapterHeader.appendChild(document.createTextNode(chapterNameParsed.replace("-", " ")));
-            table.appendChild(chapterHeader);
+            //chapterHeader.appendChild(document.createTextNode(chapterNameParsed.replace("-", " ")));
+            //table.appendChild(chapterHeader);
             
-                for(var i=0; i < materials.length; i++){
+                for(var i=0; i < chapter.materials.length; i++){
                     
-                    table.appendChild(renderMaterial(materials[i].name, materials[i].filesize, materials[i].filetype, materials[i].link));
+                vNodes.push(getMaterial(materials[i].name, materials[i].filesize, materials[i].filetype, materials[i].link));
 
                 }
-                
+
+                table.children = vNodes;
+
                 return table;
 
         }
 
-        function renderOuterTable(chapters){
-            var tableContainer = document.createElement("div");
-            tableContainer.setAttribute("class", "table-container")
-             
+        function getOuterTable(chapters){
+            var vNodes = [];
+            var tableContainer = vNode("div",{className:"table-container"});
             for (var i = 0; i < chapters.length; i++){
               
-                tableContainer.appendChild(renderChapter(chapters[i]));
+                vNodes.push(getChapter(chapters[i]));
             }
+
+            tableContainer.children = vNodes;
 
             return tableContainer;
         }
 
-        function filterChapters(chapterName){
-            return promise.then(function(data){
-
-            var chapters = data.chapters;
+        function filterChapters(chapters,chapterName){
             var filtered = [];
-            if(chapterName == "Show All Chapters"){
+            if(chapterName == null){
                 return chapters;
                 
             }
-            if (chapterName != null){
-                console.log(chapterName);
                 for(i = 0; i < chapters.length; i++){
                     if(chapters[i].name == chapterName){
                         filtered.push(chapters[i]);
                     }
-                }
-            }
-            return filtered;
-        });
-            //return filtered;
-            
+                }       
+            return filtered;  
         }
-
-        function renderData(chapters){
-             var tableContainer2 = document.getElementById("table-container2");
-             var existingTable = null == tableContainer2.firstChild ? false : true;
-              if(existingTable){
-                  tableContainer2.replaceChild(renderOuterTable(chapters), tableContainer2.firstChild);
-              }
-              else{
-
-            tableContainer2.appendChild(renderOuterTable(chapters));   
-              }
-        }
-
+       
         /* User interface actions */
        
-        
-        function showAllChapters(chapters){
-            filterChapters("Show All Chapters").then(renderData);     
-        }
-
-        function showSomeChapters(chapterName){
-            filterChapters(chapterName).then(renderData);
-           
-        }
 
 
-        function show(chapterName){
-            if( null == chapterName){
-                showAllChapters();
-            } else {
-                showSomeChapters(chapterName);
-            }
+        function show(json,chapterName){
+           var filteredList = filterChapters(json.chapters,chapterName);
+           return getOuterTable(filteredList);
+
         }
 
 

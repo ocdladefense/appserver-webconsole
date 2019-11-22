@@ -7,47 +7,54 @@ var promise;
             showSomeChapters(filterName); 
         }
 
-        function renderMaterials(){
-
-            window.promise = fetchJson(url);
-            promise.then(function(json){
-                showAllChapters(json.chapters);
-                uiChapterPicker(json.chapters);
-            });
-        }
-
+        
+               
         function testTheStage(){
 
         }
 
     var app = {
-        routes: [],
+        routes: {},
 
         registerRoute: function(route){
 
         },
 
-        executeRoute: function(routeName){
-            var theRoute = this.registerRoute(routeName);
-            var resp = fetch(theRoute.dataUrl).then(function(json){
-              return theRoute.render(json);
-            }).then(function(el){
-                document.getElementById("stage").appendChild(el);
+        addRoute: function(route){
+            this.routes[route.name] = route;
+
+        },
+
+        getRoute: function(routeName){
+            return this.routes[routeName];
+        },
+
+        executeRoute: function(theRoute){
+            var resp = fetch(theRoute.dataUrl).then(function(resp){
+                console.log(resp);
+                return resp.json();
+            }).then(function(json){
+                console.log(json);
+                return theRoute.vNodes(json);
+            })
+              .then(function(vNodes){
+                console.log(vNodes);
+                document.getElementById("stage").appendChild(createElement(vNodes));
             })
         },
 
         handleEvent: function(e){
             var target = e.target;
             var name = target.dataset.route;
-            // var theRoute = this.routes[action];
-            this.executeRoute(name)
+            var theRoute = this.getRoute(name);
+            this.executeRoute(theRoute);
         }
     };
 
     var materialsRoute = {
         dataUrl: 'http://appserver/get-json-materials?sample-event',
         name: 'materials',
-        render: renderMaterials 
+        vNodes: show 
     };
      /*;
      Step 1: listening for some kind of ui event
@@ -59,7 +66,7 @@ var promise;
 
         jQuery(function(){
             var testStageButton = document.getElementById("testStage");
-            var materialsButton = document.getElementById("materials");
+            //var materialsButton = document.getElementById("materials");
             document.addEventListener("change", handleFilter);
             app.addRoute(materialsRoute);
             document.addEventListener('click',app,true);
