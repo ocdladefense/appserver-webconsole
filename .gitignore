@@ -1,1 +1,4 @@
 /vendor/
+
+#ignore user routes
+/assets/user-routes.js
