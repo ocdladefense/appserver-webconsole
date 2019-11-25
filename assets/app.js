@@ -18,9 +18,7 @@ var promise;
 
         previousRoute: null,
 
-        registerRoute: function(route){
-
-        },
+        bg: null,
 
         addRoute: function(route){
             this.routes[route.name] = route;
@@ -67,7 +65,14 @@ var promise;
             var name = target.dataset.route;
             var theRoute = this.getRoute(name);
             this.executeRoute(theRoute);
-        }
+        },
+        
+        background: function(message) {
+					if(null == this.bg) {
+					  this.bg = new Worker('modules/webconsole/assets/worker/worker.js');
+					}
+					this.bg.postMessage(message);
+				}
     };
 
 
