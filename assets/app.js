@@ -50,6 +50,7 @@ var promise;
             return this.keyboardCommands[shortcut];
 
         },
+        bg: null,
 
         listenForKeyComboEvents: function(e){
            
@@ -114,6 +115,14 @@ var promise;
             this.executeRoute(route);
             }
         }
+        },
+        
+        background: function(message) {
+					if(null == this.bg) {
+					  this.bg = new Worker('modules/webconsole/assets/worker/worker.js');
+					}
+					this.bg.postMessage(message);
+				}
     };
 
 
