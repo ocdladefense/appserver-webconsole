@@ -1,5 +1,6 @@
 
 
+
 var promise;
 
         function handleFilter(e){
@@ -16,14 +17,55 @@ var promise;
     var app = {
         routes: {},
 
+        keyboardCommands:{},
+
+        
+
+        hasCommand: function(letter){
+            if(this.route[shortcut] == letter){
+            return true;
+        }
+            return false;
+        },
+
+        registerCommand: function(letter,cb){
+            this.keyboardCommands['f'] = KeyboardManager;
+        },
+
+        executeCommand: function(letter){
+            if(this.hasCommand(letter)){
+                this.keyboardCommands[letter]();
+            }
+        },
+
         previousRoute: null,
 
-        registerRoute: function(route){
+        setKeyboardManager: function(kbd){
+             this.KeyboardManager = kbd;
+             document.addEventListener('keydown',this.KeyboardManager);
+        },
+
+        getRouteByShortcut: function(shortcut)
+        {
+            return this.keyboardCommands[shortcut];
 
         },
 
+        listenForKeyComboEvents: function(e){
+           
+        },
+
+        init: function(){
+            document.addEventListener(shortCutEvents, this);
+        }
+
+
         addRoute: function(route){
             this.routes[route.name] = route;
+            if(route.shortcut != null)
+            {
+                this.keyboardCommands[route.shortcut] = route.name;
+            }
 
         },
 
@@ -67,6 +109,10 @@ var promise;
             var name = target.dataset.route;
             var theRoute = this.getRoute(name);
             this.executeRoute(theRoute);
+            if(e.type == shortCutEvents){
+            route = this.getRouteByShortcut(e.key);
+            this.executeRoute(route);
+            }
         }
     };
 
@@ -95,8 +141,17 @@ var promise;
     var materialsRoute = {
         dataUrl: 'http://appserver/get-json-materials?sample-event',
         name: 'materials',
-        vNodes: show 
+        vNodes: show,
+        shortcut: 'm'// implied Ctrl-m
     };
+
+    var searchRoute ={
+        dataUrl: 'http://appserver/test-function-one',
+        shortcut: 'f'
+    }
+
+
+
      /*;
      Step 1: listening for some kind of ui event
      Step 2:  prepare to execute a route "get-json-materials"
@@ -135,7 +190,13 @@ var promise;
             document.addEventListener("change", handleFilter);
             app.addRoute(materialsRoute);
             app.addRoute(foobarRoute);
+            //app.addRoute(findModule); // inside ad Route --> does the route has a commandKey associated with it
+            console.log("hello");
             document.addEventListener('click',app,true);
+            app.setKeyboardManager(kbd);
+            app.addRoute(searchRoute);
+            console.log(kbd);
+            
             //materialsButton.addEventListener("click", renderMaterials);
             //testStageButton.addEventListener("click", testTheStage);
             });
