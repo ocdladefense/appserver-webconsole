@@ -57,8 +57,10 @@ var promise;
         },
 
         init: function(){
-            document.addEventListener(shortCutEvents, this);
-        }
+            document.addEventListener("shortCutEvent", function(e) { process(e.detail) });
+            //document.addEventListener(shortCutEvents, this);
+            document.addEventListener('click',this,true);
+        },
 
 
         addRoute: function(route){
@@ -114,7 +116,6 @@ var promise;
             route = this.getRouteByShortcut(e.key);
             this.executeRoute(route);
             }
-        }
         },
         
         background: function(message) {
@@ -144,7 +145,6 @@ var promise;
 
 
     }
-;
 
 
     var materialsRoute = {
@@ -201,7 +201,7 @@ var promise;
             app.addRoute(foobarRoute);
             //app.addRoute(findModule); // inside ad Route --> does the route has a commandKey associated with it
             console.log("hello");
-            document.addEventListener('click',app,true);
+            app.init();
             app.setKeyboardManager(kbd);
             app.addRoute(searchRoute);
             console.log(kbd);
