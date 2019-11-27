@@ -93,8 +93,7 @@ var promise;
        vNodes:  foobarNodes
 
 
-    }
-;
+    };
 
 
     var materialsRoute = {
