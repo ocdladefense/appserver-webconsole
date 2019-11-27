@@ -1,5 +1,6 @@
 
 
+
 var promise;
 
         function handleFilter(e){
@@ -16,22 +17,95 @@ var promise;
     var app = {
         routes: {},
 
+        keyboardCommands:{},
+
         previousRoute: null,
 
+        currentRoute: null,
+
+        
+
+        hasCommand: function(letter){
+            if(this.route[shortcut] == letter){
+            return true;
+        }
+            return false;
+        },
+
+        registerCommand: function(letter,cb){
+            this.keyboardCommands['f'] = KeyboardManager;
+        },
+
+        executeCommand: function(letter){
+            if(this.hasCommand(letter)){
+                this.keyboardCommands[letter]();
+            }
+        },
+
+        
+
+        setKeyboardManager: function(kbd){
+             this.KeyboardManager = kbd;
+             document.addEventListener('keydown',this.KeyboardManager);
+        },
+
+        getRouteNameByShortcut: function(shortcut)
+        {
+
+            return this.keyboardCommands[shortcut];
+
+        },
         bg: null,
+
+        listenForKeyComboEvents: function(e){
+           
+        },
+
+        init: function(){
+            document.addEventListener("ShortcutEvent", this);
+            document.addEventListener('click',this,true);
+        },
+
 
         addRoute: function(route){
             this.routes[route.name] = route;
+            if(route.shortcut != null)
+            {
+                this.keyboardCommands[route.shortcut] = route.name;
+            }
 
         },
+
 
         getRoute: function(routeName){
             return this.routes[routeName];
         },
 
-        executeRoute: function(theRoute){  
+        
+
+        showModal: function(vNodes){
+            //will need to pass form to modal object to display on page
+            //include two buttons by default -- ok and cancel
+            //cancels data route may set current route to null
+            var ok = vNode("button", {"data-route": this.currentRoute.name}, "OK");
+            var cancel = vNode("button", {"data-route": this.currentRoute.name}, "Cancel");
+            vNodes.children.push(ok);
+            vNodes.children.push(cancel);
+            var form = createElement(vNodes);
+            
+        },
+
+        executeRoute: function(theRoute, data){ 
+            const routeData = ''; 
+            if(!data && theRoute.hasParams){
+                this.showModal(theRoute.form());
+                return false;
+            }
+            
             if(typeof theRoute.dataUrl == "string" && theRoute.dataUrl.indexOf('http') === 0){
                 var resp = fetch(theRoute.dataUrl);
+                //will need a version of this fetch call where we can pass in this routeData
+                console.log(theRoute);
             }
             else
             {
@@ -39,7 +113,7 @@ var promise;
                    //console.log(resp.json());
             }
             resp.then(function(resp){
-                console.log(resp);
+                //console.log(resp);
                 return resp.json();
             }).then(function(json){
                 console.log(json);
@@ -57,14 +131,33 @@ var promise;
                 document.getElementById("stage").innerHTML = "";
                 document.getElementById("stage").appendChild(createElement(vNodes));
                 }
-            })
+            });
+            this.previousRoute = theRoute;
         },
 
         handleEvent: function(e){
             var target = e.target;
-            var name = target.dataset.route;
+            var name;
+            var theRoute;
+            var routeData;
+        
+            name =  e.type != "ShortcutEvent" ? target.dataset.route : this.getRouteNameByShortcut(e.detail.keyName);   
+            
+            [theRoute, routeData] = this.processRoute(name);
+            console.log(theRoute);
+            this.executeRoute(theRoute, routeData);
+            },
+
+        processRoute: function(name){
             var theRoute = this.getRoute(name);
-            this.executeRoute(theRoute);
+            
+            if(this.currentRoute != null){
+                    var routeData = this.currentRoute.formCallback();
+            }
+            this.currentRoute = theRoute;
+
+            return [theRoute, routeData];
+
         },
         
         background: function(message) {
@@ -72,9 +165,9 @@ var promise;
 					  this.bg = new Worker('modules/webconsole/assets/worker/worker.js');
 					}
 					this.bg.postMessage(message);
-				}
-    };
-
+                }
+            
+            }
 
    function foobarNodes(json){
 // completely ignore input
@@ -99,8 +192,40 @@ var promise;
     var materialsRoute = {
         dataUrl: 'http://appserver/get-json-materials?sample-event',
         name: 'materials',
-        vNodes: show 
+        vNodes: show,
+        shortcut: 'm'// implied Ctrl-m
     };
+
+    var searchRoute ={
+        dataUrl: 'http://appserver/test-function-one',
+        name:'test',
+        vNodes: function(){
+            return vNode("h1",{}, "Hello World" )
+        },
+        shortcut: 'f',
+        hasParams:true,
+        form: function(){
+            return vNode("input",{}, []);
+        },
+        formCallback: function(){
+            return JSON.stringify({url:"http://appserver/foobar"});
+        }
+    };
+
+    // Unit test for a route that requires "user input"
+function routeHasFormData(){
+    var routeName;
+    var routeData;
+   //  app.hasRoute("searchRoute");  should return true
+   //app.currentRoute = searchRoute; // Pretend that user has already selected this route.
+   [routeName, routeData] = app.processRoute(searchRoute.name);
+   app.executeRoute(routeName, routeData);
+
+}
+
+
+
+
      /*;
      Step 1: listening for some kind of ui event
      Step 2:  prepare to execute a route "get-json-materials"
@@ -139,7 +264,13 @@ var promise;
             document.addEventListener("change", handleFilter);
             app.addRoute(materialsRoute);
             app.addRoute(foobarRoute);
-            document.addEventListener('click',app,true);
+            //app.addRoute(findModule); // inside ad Route --> does the route has a commandKey associated with it
+            console.log("hello");
+            app.init();
+            app.setKeyboardManager(kbd);
+            app.addRoute(searchRoute);
+            console.log(kbd);
+            
             //materialsButton.addEventListener("click", renderMaterials);
             //testStageButton.addEventListener("click", testTheStage);
             });
