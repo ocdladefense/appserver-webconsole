@@ -35,8 +35,8 @@ var app = {
     bg: null,
 
     init: function(){
-        document.addEventListener("ShortcutEvent", this);
-        document.addEventListener('click',this,true);
+        //document.addEventListener("ShortcutEvent", this);
+        //document.addEventListener('click',this,true);
     },
 
     addRoute: function(route){
@@ -55,16 +55,27 @@ var app = {
         //will need to pass form to modal object to display on page
         //include two buttons by default -- ok and cancel
         //cancels data route may set current route to null
-        var ok = vNode("button", {"data-route": this.currentRoute.name}, "OK");
-        var cancel = vNode("button", {"data-route": this.currentRoute.name}, "Cancel");
+        var ok = vNode("button", {"data-route": this.currentRoute.name,"id":"okButton"}, "OK");
+        var cancel = vNode("button", {"data-route": this.currentRoute.name,"id":"cancelButton"}, "Cancel");
+        
         vNodes.children.push(ok);
         vNodes.children.push(cancel);
-        var form = createElement(vNodes);
+        modal.render(vNodes);
+        modal.show();
         
+        document.getElementById("cancelButton").addEventListener("click", modal.hide);
+        document.getElementById("okButton").addEventListener("click", this.captureInput);
     },
 
-    executeRoute: function(theRoute, data){ 
-        const routeData = ''; 
+    captureInput:function(){
+        urlText = document.getElementById("urlInput");
+        data = urlText.value;
+        modal.hide();
+        app.executeRoute(app.currentRoute, data);
+    },
+
+    executeRoute: function(theRoute, data){
+
         if(!data && theRoute.hasParams){
             this.showModal(theRoute.form());
             return false;
@@ -101,6 +112,7 @@ var app = {
             }
         });
         this.previousRoute = theRoute;
+        console.log("HERE IS THE DATA:"+data);
     },
 
     handleEvent: function(e){
@@ -110,10 +122,7 @@ var app = {
         var routeData;
     
         name =  e.type != "ShortcutEvent" ? target.dataset.route : this.getRouteNameByShortcut(e.detail.keyName);   
-        
-        [theRoute, routeData] = this.processRoute(name);
-        console.log(theRoute);
-        this.executeRoute(theRoute, routeData);
+        this.processRoute(name);
         },
 
     processRoute: function(name){
@@ -124,7 +133,7 @@ var app = {
         }
         this.currentRoute = theRoute;
 
-        return [theRoute, routeData];
+        this.executeRoute(theRoute, routeData);
     },
     
     background: function(message) {
@@ -135,49 +144,6 @@ var app = {
     }
 }
 
-   function foobarNodes(json){
-    // completely ignore input
-      return vNode("h1",{className:"title"},"FooBar");
-   }
-
-   //Routes-------------------------------------------------------------------------------------------
-   
-    var foobarRoute = {
-       name: "foobar",
-       dataUrl: function(){
-           var sample={
-               name:"sample"
-           };
-           return JSON.stringify(sample);
-       }, // let's not have to call out to external server, will be nice for tesitng, too.
-       vNodes:  foobarNodes
-
-
-    };
-
-
-    var materialsRoute = {
-        dataUrl: 'http://appserver/get-json-materials?sample-event',
-        name: 'materials',
-        vNodes: show,
-        shortcut: 'm'// implied Ctrl-m
-    };
-
-    var searchRoute ={
-        dataUrl: 'http://appserver/test-function-one',
-        name:'test',
-        vNodes: function(){
-            return vNode("h1",{}, "Hello World" )
-        },
-        shortcut: 'f',
-        hasParams:true,
-        form: function(){
-            return vNode("input",{}, []);
-        },
-        formCallback: function(){
-            return JSON.stringify({url:"http://appserver/foobar"});
-        }
-    };
 
     // Unit test for a route that requires "user input"
 function routeHasFormData(){

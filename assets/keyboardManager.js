@@ -3,7 +3,7 @@ var kbd={
 
  buffer: [],
  handleEvent: function(event){
-    event.preventDefault();
+    //event.preventDefault();  //Prevents any typing what so ever!
     this.execute(event.key, event.ctrlKey || event.metakey);
  },
 
