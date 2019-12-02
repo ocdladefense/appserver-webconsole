@@ -61,23 +61,39 @@ var app = {
         var cancel = vNode("button", {"data-route": this.currentRoute.name,"id":"cancelButton"}, "Cancel");
         vNodes.children.push(ok);
         vNodes.children.push(cancel);
-        var form = createElement(vNodes);
+        //var form = createElement(vNodes);
         modal.render(vNodes);
         modal.show();
     },
     executeRoute: function(theRoute, data){ 
         console.log(theRoute,data);
-        modal.hide();
+        modal.hide();     
+        
 			if(data == null && theRoute.hasParams){
 					this.showModal(theRoute.form());
 					return false;
-			}
-		
+            }
+        //want to be able to make an http request with the content-type of the route were executing
+        //fetch can take a second options paramaters
+        //can set our fetch request to accept different content types
 			if(typeof theRoute.dataUrl == "string" && theRoute.dataUrl.indexOf('http') === 0){
-					var resp = fetch(theRoute.dataUrl);
+                var myHeaders = new Headers();
+                myHeaders.append('Content-Type', 'application/json');
+                myHeaders.append('Accept', 'application/json');
+
+                var myInit = { 
+                    method: 'GET',
+                    headers: myHeaders,
+                    mode: 'cors',
+                    cache: 'default' 
+                  };
+                  
+
+                var req = new Request(theRoute.dataUrl, myInit);
+					var resp = fetch(req);
 					//will need a version of this fetch call where we can pass in this routeData
 			} else {
-                    var resp = Promise.resolve(new Response(theRoute.dataUrl()));
+                    var resp = Promise.resolve(new Response(theRoute.dataUrl(JSON.parse(data))));
 			}
 			resp.then(function(resp){
 					//console.log(resp);
@@ -97,7 +113,7 @@ var app = {
 					document.getElementById("stage").appendChild(createElement(vNodes));
 				}
             });
-            
+            this.currentRoute = null;
 			this.previousRoute = theRoute;
     },
 
@@ -156,7 +172,8 @@ var app = {
 jQuery(function(){
 	app.addRoute(searchRoute);
 	app.addRoute(materialsRoute);
-	app.addRoute(foobarRoute);
+    app.addRoute(foobarRoute);
+    app.addRoute(foobarRouteHtml);
 	//app.addRoute(findModule); // inside ad Route --> does the route has a commandKey associated with it
 	app.init();
 	// app.setKeyboardManager(kbd);

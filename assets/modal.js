@@ -7,7 +7,8 @@ var modal = {
         $('body').removeClass('hasModal');
     },
     render : function(vNode){
+        document.getElementById('content').innerHTML = "";
         document.getElementById('content').appendChild(createElement(vNode));
-        //document.getElementById('content').innerHTML = "somehtml";
-    },
+        
+    }
 }
