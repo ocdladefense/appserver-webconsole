@@ -1,7 +1,7 @@
 var ui = {
 
     displayLoadingIcon : function(){
-
+        
     },
 
     displayStatus : function(){
