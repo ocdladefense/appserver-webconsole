@@ -1,8 +1,27 @@
-var kbd={
+var kbd = {
 
 
  buffer: [],
+ 
  handleEvent: function(event){
+ 	var keyName, modifierKey;
+ 	
+	keyName = event.key, modifierKey = event.ctrlKey || event.metakey;
+    
+	 if(this.isKeyCombo(keyName, modifierKey)){
+			var shortcutEvent = new CustomEvent("ShortcutEvent", {
+					detail: {
+						originalEvent: event,
+						keyName: keyName
+					}
+			});
+		
+			event.preventDefault();			
+			document.dispatchEvent(shortcutEvent);
+			console.log(shortcutEvent.detail);
+	}
+		
+	this.key(keyName);
     //event.preventDefault();  //Prevents any typing what so ever!
     this.execute(event.key, event.ctrlKey || event.metakey);
  },
@@ -13,23 +32,6 @@ var kbd={
 
  isKeyCombo: function(keyName, modifierKey){
      return keyName != "Control" && modifierKey;
- },
-
- execute: function(keyName, modifierKey){
-
-     if(this.isKeyCombo(keyName, modifierKey)){
-        var shortcutEvent = new CustomEvent("ShortcutEvent", {
-            detail: {
-                keyName: keyName
-            }
-        });
-        document.dispatchEvent(shortcutEvent);
-        console.log(shortcutEvent.detail);
-        }
-    this.key(keyName);
-    }
-   
+ }
 
 }
-
-kbd.key("a");

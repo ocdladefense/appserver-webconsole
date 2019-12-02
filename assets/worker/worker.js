@@ -1,9 +1,6 @@
 
 
 var wkr = {
-	handleEvent: function(e){
-	 	console.log(e);
-	},
 
 	init: function(){
 		onmessage = function(e){
