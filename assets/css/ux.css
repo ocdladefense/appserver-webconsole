@@ -25,6 +25,22 @@ body {
 	display:inline-block;
 	vertical-align:top;
 }
+#modal{
+	display: none;
+	height: 50vh;
+	width:50vh;
+	margin-top:-25vh;
+	top: 78vh;
+	background-color:purple;
+	position: absolute;
+    right: 50vw;
+	margin-right: -50%;
+	color:white;
+}
+.hasModal #modal{
+	display: block;
+	
+}
 
 
 #header {
@@ -137,26 +153,6 @@ li a {
 
 .form-item {
 	margin:8px;
-}
-
-#modal {
-	position:fixed;
-	display:none;
-	top:150px;
-	left:150px;
-	z-index:101;
-	background-color:#fff;
-	width:50%;
-	height:50%;
-	border:1px solid #ccc;
-}
-
-.hasModal #modal {
-	display:block;
-}
-
-#modal-content {
-	padding:5%;
 }
 
 #header {

@@ -19,10 +19,12 @@ var kbd = {
 			event.preventDefault();			
 			document.dispatchEvent(shortcutEvent);
 			console.log(shortcutEvent.detail);
-		}
+	}
 		
-		this.key(keyName);
-	},
+	this.key(keyName);
+    //event.preventDefault();  //Prevents any typing what so ever!
+    this.execute(event.key, event.ctrlKey || event.metakey);
+ },
 
  key: function(keyName){
     this.buffer.push(keyName);
