@@ -57,17 +57,18 @@ var app = {
         //will need to pass form to modal object to display on page
         //include two buttons by default -- ok and cancel
         //cancels data route may set current route to null
-        var ok = vNode("button", {"data-route": this.currentRoute.name}, "OK");
-        var cancel = vNode("button", {"data-route": this.currentRoute.name}, "Cancel");
+        var ok = vNode("button", {"data-route": this.currentRoute.name,"id":"okButton"}, "OK");
+        var cancel = vNode("button", {"data-route": this.currentRoute.name,"id":"cancelButton"}, "Cancel");
         vNodes.children.push(ok);
         vNodes.children.push(cancel);
         var form = createElement(vNodes);
-        
+        modal.render(vNodes);
+        modal.show();
     },
-
     executeRoute: function(theRoute, data){ 
-			const routeData = ''; 
-			if(!data && theRoute.hasParams){
+        console.log(theRoute,data);
+        modal.hide();
+			if(data == null && theRoute.hasParams){
 					this.showModal(theRoute.form());
 					return false;
 			}
@@ -75,10 +76,8 @@ var app = {
 			if(typeof theRoute.dataUrl == "string" && theRoute.dataUrl.indexOf('http') === 0){
 					var resp = fetch(theRoute.dataUrl);
 					//will need a version of this fetch call where we can pass in this routeData
-					console.log(theRoute);
 			} else {
-					var resp = Promise.resolve(new Response(theRoute.dataUrl()));
-							//console.log(resp.json());
+                    var resp = Promise.resolve(new Response(theRoute.dataUrl()));
 			}
 			resp.then(function(resp){
 					//console.log(resp);
@@ -97,8 +96,8 @@ var app = {
 					document.getElementById("stage").innerHTML = "";
 					document.getElementById("stage").appendChild(createElement(vNodes));
 				}
-			});
-		
+            });
+            
 			this.previousRoute = theRoute;
     },
 
@@ -108,35 +107,40 @@ var app = {
         var theRoute;
         var routeData;
 
-    		
-    		if(e.type == "click" && this.dom.isRouteElement(target)) {
-    			name = target.dataset.route;
-    		} else if(e.type == "ShortcutEvent") {
-    			name = this.getRouteNameByShortcut(e.detail.keyName);   
-    		} else {
-    			return false;
-    		}
-        
+            
+            if(e.type == "click" && this.dom.isRouteElement(target)) {
+                name = target.dataset.route;
+            } else if(e.type == "ShortcutEvent") {
+                name = this.getRouteNameByShortcut(e.detail.keyName);   
+            } else {
+                return false;
+            }
+            
         [theRoute, routeData] = this.processRoute(name);
-        console.log(theRoute);
         this.executeRoute(theRoute, routeData);
-		},
+    },
 		
-		dom: {
-			isRouteElement: function(elem){
-				return elem.dataset && elem.dataset.route;
-			}
-		},
+    dom: {
+        isRouteElement: function(elem){
+            return elem.dataset && elem.dataset.route;
+        }
+    },
 
     processRoute: function(name){
-        this.currentRoute = this.getRoute(name);
+        var route = this.getRoute(name);
         var routeData;
         
         if(this.currentRoute != null){
 					routeData = this.currentRoute.formCallback();
         }
-
+        this.currentRoute = route;
+        //this.executeRoute(this.currentRoute, routeData);
         return [this.currentRoute, routeData];
+    },
+
+    testRoute: function(name){
+        [theRoute, routeData] = this.processRoute(name);
+        this.executeRoute(theRoute, routeData);
     },
     
     background: function(message) {
