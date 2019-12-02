@@ -96,16 +96,27 @@ var app = {
                     var resp = Promise.resolve(new Response(theRoute.dataUrl(JSON.parse(data))));
 			}
 			resp.then(function(resp){
-					//console.log(resp);
-					return resp.json();
+                    console.log(resp.headers[0]);
+					if(resp.headers["Accept"] == "application/json"){
+                    return resp.json();
+                    }else{
+                        return resp;
+                    }
 			})
 			.then(function(json){
-					console.log(json);
-					return theRoute.vNodes(json);
+                    console.log(json);
+                    if(typeof json != "string"){
+                        return json;
+                    }
+					    return theRoute.vNodes(json);
 			})
 			.then(function(vNodes){
 				console.log(vNodes);
 				if(this.previousRoute == theRoute || null == this.previousRoute) {
+                    if(typeof vNodes != "Node"){
+                        document.getElementById("stage").appendChild(vNodes);
+                    }
+
 					document.getElementById("stage").appendChild(createElement(vNodes));
 				} else {
 					//Need to learn how replaceChild works instead of doing it this way
