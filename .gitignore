@@ -2,3 +2,4 @@
 
 #ignore user routes
 /assets/user-routes.js
+/assets/settings.js

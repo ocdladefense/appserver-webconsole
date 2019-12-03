@@ -1,14 +1,13 @@
 var modal = {
 
-    show : function(){
+    show: function(){
         $('body').toggleClass('hasModal');
     },
-    hide : function(){
+    hide: function(){
         $('body').removeClass('hasModal');
     },
-    render : function(vNode){
+    render: function(vNode){
         document.getElementById('content').innerHTML = "";
         document.getElementById('content').appendChild(createElement(vNode));
-        
     }
-}
+};
