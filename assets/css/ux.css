@@ -24,22 +24,29 @@ body {
 	width:74%;
 	display:inline-block;
 	vertical-align:top;
+	position:relative;
 }
-#modal{
+
+#modal {
 	display: none;
 	height: 50vh;
-	width:50vh;
-	margin-top:-25vh;
-	top: 78vh;
-	background-color:purple;
+	width: 50vh;
+	margin-top: -25vh;
+	/* top: 78vh; */
+	background-color: #fff;
 	position: absolute;
-    right: 50vw;
-	margin-right: -50%;
-	color:white;
+	left: 50%;
+	margin-top: 100px;
+	margin-left: -25%;
+	color: white;
+	/* border: 1px solid rgba(0,0,0,0.3); */
+	padding: 3%;
+	border-radius: 5px;
+	box-shadow: 1px 1px 30px 5px rgba(0,0,0,0.1);
 }
-.hasModal #modal{
-	display: block;
-	
+
+.hasModal #modal {
+	display: block;	
 }
 
 
