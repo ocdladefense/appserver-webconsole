@@ -94,7 +94,7 @@ const HttpRequest = (function(){
 
 	function HttpRequest(url,init,body) {
 		this.url = url || "";
-		this.headers = init.headers || defaultHeaders;
+		this.headers = (init && init.headers) || defaultHeaders;
 		this.body = body || null;
 	}
 	

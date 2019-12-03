@@ -1,7 +1,7 @@
 const App = (function(){
 
 	function isExternalRoute(route) {
-		return typeof route.dataUrl == "string" && route.dataUrl.indexOf('https') === 0;
+		return !(typeof route.url == "function");
 	}
 
 
