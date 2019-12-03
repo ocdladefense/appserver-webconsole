@@ -15,6 +15,14 @@ const App = (function(){
         
         return parts[0];
     }
+    function saveToDatabase(body){
+        var today = new Date();
+        today.getDate();
+        console.log("THE BODY "+body);
+        app.database["date"] = today;
+        app.database["body"] = body;
+        console.log(app.database);
+    }
 
 
 	var app = {
@@ -26,16 +34,53 @@ const App = (function(){
 
             currentRoute: null,
 
-            database: {},
+            database: {
+                "materials": [],
+                "notes":[],
+                "statuses":[]
+            },
+
+            note: {
+                timeStamp:2999,
+                body:"hello from mars"
+            },
+            
+            
+            getTable: function(tableName){
+                var table = this.database[tableName];
+                return table;
+            },
+            addRecord:function(record, name){
+                var table = this.getTable(name);
+                table.push(record);
+            },
+            getRecords: function(tableName){
+                return this.database[tableName];
+            },
+            persistTable: function(tableName){
+                //grab pointer to local mySql database
+            },
+            updateRecord: function(record, tableName){
+                //update the database
+            },
+            dumpTable:function(tableName){
+                console.log(this.database[tableName]);
+            },
 
             //define save method that pushes stuff onto the database array
             
             getDatabase: function(){
-
-                //returns this.database
+                return this.database;
             },
 
-		
+            saveToDatabase: function(record,tableName){
+                var today = new Date();
+                var record = {
+                    body: record,
+                    time: today.getDay()
+                };
+                this.addRecord(record,tableName);
+            },
 
 			hasCommand: function(letter){
 					if(this.route[shortcut] == letter){
@@ -83,7 +128,8 @@ const App = (function(){
 
 
 			getRoute: function(routeName){
-				var r = this.routes[routeName];
+                var r = this.routes[routeName];
+                console.log(this.routes);
 				if(null == r) throw new Error("The route, "+routeName+", does not exist.");
 				return this.routes[routeName];
 			},
@@ -150,9 +196,12 @@ const App = (function(){
 					
 					return ret;
 				})
-				.then(function(body){
-					console.log("Response body is: ",body);
-					return route.render(body);
+				.then((body) => {
+                    console.log("Response body is: ",body);
+                    if(route.dataStore != null){
+                        this.saveToDatabase(body,route.dataStore);
+                    }
+                    return route.render(body);
 				})
 				.then(this.render.bind(this))
 				.then(() => {

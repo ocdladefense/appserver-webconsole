@@ -6,7 +6,9 @@ var test = {
 	headers: {
 		accept: "application/json",
 		contentType: "application/json"
-	},
+    },
+    
+    dataStore: "notes",
 
 	// Let's not have to call out to external server, will be nice for tesitng, too.
 	url: function(params) {
@@ -75,4 +77,16 @@ var test = {
      formCallback: function(){
          return JSON.stringify({url:"http://appserver/foobar"});
      }
+ };
+
+ var database = {
+     name:"database",
+     url: function(){
+         return app.database;
+     },
+     render: function(){
+         return vNode("h1",{},[app.getDatabase()]);
+     },
+     form: function(){},
+     formCallback: function(){}
  };
