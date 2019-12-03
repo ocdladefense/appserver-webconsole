@@ -89,7 +89,7 @@ const App = (function(){
 					status: 200,
 					statusText: "Ok",
 					headers: {
-						Accept: "application/json"
+						"Content-Type": MIME_APPLICATION_JSON
 					}
 				};
 				var resp = new Response(JSON.stringify(body),init);
@@ -119,13 +119,13 @@ const App = (function(){
 				}
 			
 				// Prepare our response to the route.
-				resp = req.isSynthetic() ? this.respondWith(route,req) : req.send()
+				resp = req.isSynthetic() ? this.respondWith(route,req) : req.send();
 				console.log(resp);
 			
 				resp.then(function(resp){
 					// console.log(resp.headers[0]);
 					var ret;
-					if(resp.headers.get("Accept") == MIME_APPLICATION_JSON){
+					if(resp.headers.get("Content-Type") == MIME_APPLICATION_JSON){
 						ret = resp.json();
 					} else { // default is text/html
 						ret = resp.text();
