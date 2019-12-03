@@ -151,13 +151,13 @@ const App = (function(){
 				
 				console.log(obj);
 		
-				//if(this.previousRoute == this.currentRoute || null == this.previousRoute) {
-					
-				//} else {
-					//Need to learn how replaceChild works instead of doing it this way
-					// document.getElementById("stage-content").innerHTML = "";
+				if(null == this.previousRoute || this.previousRoute == this.currentRoute) {
 					document.getElementById("stage-content").appendChild(createElement(obj));
-				//}
+				} else {
+					//Need to learn how replaceChild works instead of doing it this way
+					document.getElementById("stage-content").innerHTML = "";
+					document.getElementById("stage-content").appendChild(createElement(obj));
+				}
 			},
 
 
