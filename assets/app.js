@@ -7,7 +7,14 @@ const App = (function(){
 
 	function isInternalRequest(req) {
 		return req.url.indexOf("https://localhost") === 0;
-	}
+    }
+    
+    function getContentType(resp){
+        var contentType = resp.headers.get("Content-Type");
+        var parts = contentType.split(";");
+        
+        return parts[0];
+    }
 
 
 	var app = {
@@ -17,7 +24,16 @@ const App = (function(){
 
 			previousRoute: null,
 
-			currentRoute: null,
+            currentRoute: null,
+
+            database: {},
+
+            //define save method that pushes stuff onto the database array
+            
+            getDatabase: function(){
+
+                //returns this.database
+            },
 
 		
 
@@ -95,7 +111,8 @@ const App = (function(){
 				var resp = new Response(JSON.stringify(body),init);
 				
 				return Promise.resolve(resp);
-			},
+            },
+        
 		
 			executeRoute: function(route, data){ 
 				var req, reqh, resp, resph;
@@ -125,7 +142,7 @@ const App = (function(){
 				resp.then(function(resp){
 					// console.log(resp.headers[0]);
 					var ret;
-					if(resp.headers.get("Content-Type") == MIME_APPLICATION_JSON){
+					if(getContentType(resp) == MIME_APPLICATION_JSON){
 						ret = resp.json();
 					} else { // default is text/html
 						ret = resp.text();

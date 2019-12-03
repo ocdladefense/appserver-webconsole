@@ -1,11 +1,21 @@
 
-function menuItem(name,routeName){
-	if(routeName == null){
-		routeName ="";
+function menuItem(obj,routeName){
+	if(typeof obj === "string")
+	{
+		obj = {
+			name: obj,
+			route: routeName || null
+		};
 	}
+	var name = obj.name;
+	var routeName = obj.route;
+		if(routeName == null){
+			routeName ="";
+		}
 	var name = v("a",{href:"#",id:name,"data-route":routeName},name);
 	return v("li",{},[name]);
 }
+	
 
 function subMenu(name,submenu){
 
@@ -19,13 +29,12 @@ function subMenu(name,submenu){
 function createMenu() {
 
 	var children = [
-		subMenu("file",["save","save-as","export"]),
+		subMenu("file",[{name:"save"},{name:"save-as"},{name:"export"}]),
 		menuItem("salesforce"),
 		menuItem("about","about"),
 		menuItem("materials", "materials"),
-		menuItem("testStage"),
-		menuItem("foobar","foobar"),
-		subMenu("SiteStatus",["show-all","checksite..."])
+		subMenu("Notes",[{name:"show all"},{name:"New..",route:"foobar"}]),
+		subMenu("SiteStatus",[{name:"show-all"},{name:"checksite..."}])
 	];
 	
 	return v("ul",{className:"main-menu"},children);
