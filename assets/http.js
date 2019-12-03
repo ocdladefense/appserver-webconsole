@@ -55,27 +55,39 @@ const HttpRequest = (function(){
 	  	this._synthetic = true;
 	  },
 	  
+	  isSynthetic: function(){
+	  	return this._synthetic === true;
+	  },
+	  
 	  
 		send: function() {
 			var req, resp;
 			req = this.newRequest();
 			
-			if(!this._synthetic) {
-				resp = fetch(req);
-			} else {
-				// var reqBody = req.json();
-				// var respBody = cb(reqBody);
-				resp = new Response(JSON.stringify({content:"foobar"}));
-			}
 			this.sent = true;
 			
-			// Act according to Fetch spec and wrap synthetic Response in a Promise.
-			return this._synthetic ? Promise.resolve(resp) : resp;
+			return fetch(req);
 		},
 		
 		
 		setBody: function(body){
 			this.body = body;
+		},
+		
+		getBody: function(){
+			return this.body;
+		},
+		
+		json: function(){
+			return JSON.parse(this.body);
+		},
+		
+		html: function(){
+			return this.body;
+		},
+		
+		text:function(){
+			return this.body;
 		}
 	};
 

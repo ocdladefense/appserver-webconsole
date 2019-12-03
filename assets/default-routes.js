@@ -8,12 +8,15 @@ var test = {
 		contentType: "application/json"
 	},
 
-	url: function(body) {
-		return JSON.stringify("world");
-	}, // let's not have to call out to external server, will be nice for tesitng, too.
+	// Let's not have to call out to external server, will be nice for tesitng, too.
+	url: function(params) {
+		return "You chose: "+params.url; // "url" field from form callback, below.
+	},
 	
-	render:  function(data){ 
-		return vNode("h2",{},data);
+	// Gets passed the body of the Response.
+	render:  function(body){ 
+		// body is "You chose..."
+		return vNode("h2",{},body);
 	},
 	
 	form: function() {

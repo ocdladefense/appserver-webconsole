@@ -73,22 +73,29 @@ const App = (function(){
 			},
 
 			showModal: function(vNodes){
-				//will need to pass form to modal object to display on page
-				//include two buttons by default -- ok and cancel
-				//cancels data route may set current route to null
 				var ok = vNode("button", {"data-route": this.currentRoute.name,"id":"okButton"}, "OK");
 				var cancel = vNode("button", {"data-route": this.currentRoute.name,"id":"cancelButton"}, "Cancel");
 				vNodes.children.push(ok);
 				vNodes.children.push(cancel);
-				//var form = createElement(vNodes);
 				modal.render(vNodes);
 				modal.show();
 			},
 
 
-
-
-		
+			respondWith: function(route,req){
+				// Act according to Fetch spec and wrap synthetic Response in a Promise.
+				var body = route.url(req.json());
+				var init = {
+					status: 200,
+					statusText: "Ok",
+					headers: {
+						Accept: "application/json"
+					}
+				};
+				var resp = new Response(JSON.stringify(body),init);
+				
+				return Promise.resolve(resp);
+			},
 		
 			executeRoute: function(route, data){ 
 				var req, reqh, resp, resph;
@@ -107,30 +114,28 @@ const App = (function(){
 				if(isExternalRoute(route)) {
 					req = new HttpRequest(route.url,route.headers);
 				} else {
-					req = new HttpRequest("https://localhost",route.headers);
+					req = new HttpRequest("https://localhost",route.headers,data);
 					req.synthetic(true);
 				}
 			
 				// Prepare our response to the route.
-				resp = req.send();
+				resp = req.isSynthetic() ? this.respondWith(route,req) : req.send()
 				console.log(resp);
 			
 				resp.then(function(resp){
 					// console.log(resp.headers[0]);
 					var ret;
-					if(resp.headers["Accept"] == MIME_APPLICATION_JSON){
+					if(resp.headers.get("Accept") == MIME_APPLICATION_JSON){
 						ret = resp.json();
 					} else { // default is text/html
 						ret = resp.text();
 					}
+					
 					return ret;
 				})
-				.then(function(json){
-					console.log(json);
-					if(typeof json != "string"){
-						return json;
-					}
-					return route.render(json);
+				.then(function(body){
+					console.log("Response body is: ",body);
+					return route.render(body);
 				})
 				.then(this.render.bind(this))
 				.then(() => {
@@ -142,16 +147,16 @@ const App = (function(){
 			},
 
 
-			render: function(objn){
+			render: function(obj){
 				
-				console.log(objn);
+				console.log(obj);
 		
 				//if(this.previousRoute == this.currentRoute || null == this.previousRoute) {
 					
 				//} else {
 					//Need to learn how replaceChild works instead of doing it this way
-					document.getElementById("stage").innerHTML = "";
-					document.getElementById("stage").appendChild(createElement(objn));
+					// document.getElementById("stage-content").innerHTML = "";
+					document.getElementById("stage-content").appendChild(createElement(obj));
 				//}
 			},
 
