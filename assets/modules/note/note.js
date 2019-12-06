@@ -60,10 +60,6 @@ function getTimeStamp(){
 	if(today.getHours() >= 12){
 		ampm = "pm";
 	}
-	var seconds = today.getSeconds();
-	if(seconds<= 9){
-		seconds = "0"+seconds;
-	}
 	var minutes = today.getMinutes();
 	if(minutes <= 9){
 		minutes = "0"+minutes;
