@@ -162,20 +162,24 @@ var test = {
 
  var siteStatus = {
 	name: "site-status",
+
+	dataStore: "sitestatus",
 	
 	hasParams: true,
 	
 	headers: {
 		accept: "application/json",
-		contentType: "text/html"
+		contentType: "application/json"
 	},
 
 	// Let's not have to call out to external server, will be nice for tesitng, too.
 	url: "/site-status",
 	
 	// Gets passed the body of the Response.
-	render:  function(body){ 
+	render:  function(json){ 
 		// body is "You chose..."
+		console.log(json);
+		console.log("here");
 		return vNode("h2",{},body);
 	},
 	

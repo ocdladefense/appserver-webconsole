@@ -222,7 +222,7 @@ const App = (function(){
 			render: function(route, obj){
 				
 				console.log(obj);
-				if(route.headers.accept == "text/html") {
+				if(route.headers.contentType == "text/html") {
 					document.getElementById("stage-content").innerHTML = obj;
 					return;
 				}
