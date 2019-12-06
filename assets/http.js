@@ -16,6 +16,8 @@ const HttpRequest = (function(){
 		body: null,
 	
 		sent: false,
+
+		method: "GET",
 	
 		params: {
 	
@@ -30,6 +32,10 @@ const HttpRequest = (function(){
 	  setContent:function(contentType){
 	  	this.headers["Content-Type"] = contentType;
 	  },
+
+	  setMethod:function(method) {
+		this.method = method;
+	  },
 	  
 		newRequest: function() {
 			headreq = new Headers();
@@ -37,7 +43,7 @@ const HttpRequest = (function(){
 			headreq.append('Accept', this.headers["Accept"] || MIME_APPLICATION_JSON);
 
 			var init = { 
-				method: 'GET',
+				method: this.method,
 				headers: this.headers,
 				mode: 'cors',
 				cache: 'default'
