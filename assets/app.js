@@ -263,8 +263,6 @@ const App = (function(){
 				}
 			},
 
-
-
 			processRoute: function(name){
 				var route = this.getRoute(name);
 				var routeData;
