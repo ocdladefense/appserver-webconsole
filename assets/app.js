@@ -175,7 +175,11 @@ const App = (function(){
 				// fetch can take a second options paramaters
 				// can set our fetch request to accept different content types
 				if(isExternalRoute(route)) {
-					req = new HttpRequest(route.url,route.headers);
+                    req = new HttpRequest(route.url,route.headers);
+                    if(data) {
+                        req.setBody(data);
+                        req.setMethod("POST");
+                    }
 				} else {
 					req = new HttpRequest("https://localhost",route.headers,data);
 					req.synthetic(true);
@@ -184,14 +188,16 @@ const App = (function(){
 				// Prepare our response to the route.
 				resp = req.isSynthetic() ? this.respondWith(route,req) : req.send();
 				console.log(resp);
-			
+				var contentType;
 				resp.then(function(resp){
 					// console.log(resp.headers[0]);
 					var ret;
+					contentType = getContentType(resp);
 					if(getContentType(resp) == MIME_APPLICATION_JSON){
 						ret = resp.json();
 					} else { // default is text/html
 						ret = resp.text();
+
 					}
 					
 					return ret;
@@ -203,7 +209,7 @@ const App = (function(){
                     }
                     return route.render(body);
 				})
-				.then(this.render.bind(this))
+				.then(this.render.bind(this, route))
 				.then(() => {
 					// Reset current Route
 					this.currentRoute = null;
@@ -213,10 +219,13 @@ const App = (function(){
 			},
 
 
-			render: function(obj){
+			render: function(route, obj){
 				
 				console.log(obj);
-		
+				if(route.headers.contentType == "text/html") {
+					document.getElementById("stage-content").innerHTML = obj;
+					return;
+				}
 				if(null == this.previousRoute || this.previousRoute == this.currentRoute) {
 					document.getElementById("stage-content").appendChild(createElement(obj));
 				} else {
@@ -253,8 +262,6 @@ const App = (function(){
 						return elem.dataset && elem.dataset.route;
 				}
 			},
-
-
 
 			processRoute: function(name){
 				var route = this.getRoute(name);

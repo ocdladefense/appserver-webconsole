@@ -34,7 +34,7 @@ function createMenu() {
 		menuItem("about","about"),
 		menuItem("materials", "materials"),
 		subMenu("Notes",[{name:"show all",route:"database"},{name:"New..",route:"foobar"}]),
-		subMenu("SiteStatus",[{name:"show-all"},{name:"checksite..."}])
+		subMenu("SiteStatus",[{name:"show-all", route:"all-site-statuses"},{name:"checksite...",route:"site-status"}])
 	];
 	
 	return v("ul",{className:"main-menu"},children);
