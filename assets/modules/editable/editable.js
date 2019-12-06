@@ -77,6 +77,7 @@ const Editable = (function() {
 
 						}
 						//the editing element should always refer to an input or text area
+						//create a variable for indexing the notes array equal to notes.length+1 or use IndexedDB autoincrement
 						replace = this.edit(target);
 						this.editingElement = createElement(replace);
 						this.replace(this.editingElement,target);
