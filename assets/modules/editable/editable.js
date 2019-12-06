@@ -23,6 +23,8 @@ const Editable = (function() {
 			targetNodeName: null,
 			
 			targetClassName: null,
+
+			editingElement: null,
 			
 			events: {},
 			
@@ -37,6 +39,22 @@ const Editable = (function() {
 				
 				return vNode("input",props,[]);
 			},
+
+			done: function(inputOrTextArea,nodeName){
+				var text,props;
+				
+				//this.targetClassName = getClass(inputOrTextArea);
+		
+				text = inputOrTextArea.value;
+				props = getProps(inputOrTextArea);
+
+				return vNode(nodeName,props,text);
+			},
+
+			replace: function(newElem, oldElem){
+				oldElem.parentNode.replaceChild(newElem,oldElem);
+
+			},
 			
 			handleEvent: function(e){
 					var target = e.target;
@@ -45,19 +63,40 @@ const Editable = (function() {
 
 					if(getClass(target) == null)
 							return false;
-					if(e.type == "click" && getClass(target).indexOf("editable") != -1){
 
-							replace = this.edit(target);
-					
+					if(e.type == "click" && getClass(target).indexOf("editable") != -1){
+						if(target.nodeName == "INPUT" || target.nodeName == "TEXTAREA"){
+							return false;
+						}
+						if(this.editingElement != null && this.editingElement != target){
+							var theVNode = this.done(this.editingElement, this.targetNodeName);
+							console.log("The editing element:" + this.editingElement);
+							console.log("the target:" + target);
+							this.replace(createElement(theVNode),this.editingElement);
+						
+
+						}
+						//the editing element should always refer to an input or text area
+						replace = this.edit(target);
+						this.editingElement = createElement(replace);
+						this.replace(this.editingElement,target);
+						this.editingElement.focus();
+						return false;
 					}
 
 					if(e.type == "keyup" && e.key == "Enter"){
-							replace = vNode(this.targetNodeName,{className:this.targetClassName},target.value);
+
+							replace = this.done(target,this.targetNodeName);
+
+							var replacement = createElement(replace);
+							this.replace(replacement,target);
+							this.editingElement = null;
+	
 						
 							console.log("KEY UP EVENT");
 					}
 					
-					target.parentNode.replaceChild(createElement(replace),target);
+					
 			},
 		};
 		
