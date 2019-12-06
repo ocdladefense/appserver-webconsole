@@ -20,11 +20,23 @@ body {
 }
 
 #stage {
-	min-height:100vh;
-	width:74%;
-	display:inline-block;
-	vertical-align:top;
-	position:relative;
+	min-height: 100vh;
+	width: 74%;
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	font-family: "Helvetica Neuve",Helvetica;
+	padding: 3%;
+	background-color: #fff;
+	max-width: 60%;
+	border: 2px solid rgba(0,0,0,0.1);
+	font-size: 15.5px;
+	line-height: 24px;
+	color: rgba(0,0,0,0.7);
+}
+
+#stage h2 {
+	color: rgba(0,0,0,0.6);
 }
 
 #modal {
