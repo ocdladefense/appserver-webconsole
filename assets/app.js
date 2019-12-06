@@ -226,13 +226,14 @@ const App = (function(){
 					document.getElementById("stage-content").innerHTML = obj;
 					return;
 				}
-				if(null == this.previousRoute || this.previousRoute == this.currentRoute) {
-					document.getElementById("stage-content").appendChild(createElement(obj));
-				} else {
+				if(null == this.previousRoute || this.previousRoute != this.currentRoute) {
 					//Need to learn how replaceChild works instead of doing it this way
 					document.getElementById("stage-content").innerHTML = "";
 					document.getElementById("stage-content").appendChild(createElement(obj));
-				}
+				} else {
+					document.getElementById("stage-content").appendChild(createElement(obj));
+				} 
+
 			},
 
 

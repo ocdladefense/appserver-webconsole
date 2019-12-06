@@ -33,7 +33,7 @@ function createMenu() {
 		menuItem("salesforce"),
 		menuItem("about","about"),
 		menuItem("materials", "materials"),
-		subMenu("Notes",[{name:"show all",route:"database"},{name:"New..",route:"foobar"}]),
+		subMenu("Notes",[{name:"show all",route:"database"},{name:"New..",route:"new-note"}]),
 		subMenu("SiteStatus",[{name:"show-all", route:"all-site-statuses"},{name:"checksite...",route:"site-status"}])
 	];
 	
