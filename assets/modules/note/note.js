@@ -1,7 +1,5 @@
 const notes = (function(){
 
-
-
 	return {
 		name: "new-note",
 	
@@ -24,15 +22,18 @@ const notes = (function(){
 		},
 	
 		// Gets passed the body of the Response.
-		render:  function(note){ 
-					console.log(note);
-					// body is "You chose..."
-					document.addEventListener("click",this.handler);
-					document.addEventListener("keyup",this.handler);
-					var container = vNode("div",{className:"note-container"},[]);
-					container.children.push(vNode("h3",{className:"note-title editable"},note.title));
-					container.children.push(vNode("div",{className:"note-body editable"},note.body));
-					return container;
+		render:  function(note){
+			var date = getTimeStamp();
+			document.addEventListener("click",this.handler);
+			document.addEventListener("keyup",this.handler);
+			var container = vNode("div",{className:"note-container"},[]);
+			container.children.push(vNode("label",{className:"label"},"Title: "));
+			container.children.push(vNode("h3",{className:"note-title editable",id:"title"},note.title));
+			container.children.push(vNode("label",{className:"label"},"Body: "));
+			container.children.push(vNode("div",{className:"note-body editable",id:"body"},note.body));
+			container.children.push(vNode("label",{className:"label"},"Date: "));
+			container.children.push(vNode("div",{className:"note-timestamp",id:"stamp"},date));
+			return container;
 		},
 	
 		form: function() {
@@ -52,3 +53,28 @@ const notes = (function(){
 	
 
 })();
+
+function getTimeStamp(){
+	var today = new Date();
+	var ampm = "am";
+	if(today.getHours() >= 12){
+		ampm = "pm";
+	}
+	var seconds = today.getSeconds();
+	if(seconds<= 9){
+		seconds = "0"+seconds;
+	}
+	var minutes = today.getMinutes();
+	if(minutes <= 9){
+		minutes = "0"+minutes;
+	}
+	var hours = today.getHours();
+	if(hours > 12){
+		hours = hours-12;
+	}
+
+	var time = hours+":"+minutes+ampm;
+
+	var stringDate = today.getMonth()+"/"+today.getDate()+"/"+today.getFullYear()+" @"+time;
+	return stringDate.toString();
+}

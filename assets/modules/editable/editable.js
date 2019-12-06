@@ -81,22 +81,18 @@ const Editable = (function() {
 						this.editingElement = createElement(replace);
 						this.replace(this.editingElement,target);
 						this.editingElement.focus();
+						this.editingElement.setSelectionRange(this.editingElement.value.length,this.editingElement.value.length);
 						return false;
 					}
 
-					if(e.type == "keyup" && e.key == "Enter"){
+					if(e.type == "keyup" && e.key == "Enter" && e.target.nodeName == "INPUT"){
 
 							replace = this.done(target,this.targetNodeName);
 
 							var replacement = createElement(replace);
 							this.replace(replacement,target);
 							this.editingElement = null;
-	
-						
-							console.log("KEY UP EVENT");
 					}
-					
-					
 			},
 		};
 		

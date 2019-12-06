@@ -221,7 +221,7 @@ const App = (function(){
 
 			render: function(route, obj){
 				
-				console.log(obj);
+				console.log("RENDER THIS OBJECT  "+obj);
 				if(route.headers.contentType == "text/html") {
 					document.getElementById("stage-content").innerHTML = obj;
 					return;
