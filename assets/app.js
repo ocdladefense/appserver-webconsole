@@ -6,23 +6,23 @@ const App = (function(){
 
 
 	function isInternalRequest(req) {
-		return req.url.indexOf("https://localhost") === 0;
-    }
-    
-    function getContentType(resp){
-        var contentType = resp.headers.get("Content-Type");
-        var parts = contentType.split(";");
-        
-        return parts[0];
-    }
-    function saveToDatabase(body){
-        var today = new Date();
-        today.getDate();
-        console.log("THE BODY "+body);
-        app.database["date"] = today;
-        app.database["body"] = body;
-        console.log(app.database);
-    }
+		return req.url.indexOf("internal://") === 0;
+	}
+	
+	function getContentType(resp){
+			var contentType = resp.headers.get("Content-Type");
+			var parts = contentType.split(";");
+			
+			return parts[0];
+	}
+	function saveToDatabase(body){
+			var today = new Date();
+			today.getDate();
+			console.log("THE BODY "+body);
+			app.database["date"] = today;
+			app.database["body"] = body;
+			console.log(app.database);
+	}
 
 
 	var app = {
@@ -32,61 +32,61 @@ const App = (function(){
 
 			previousRoute: null,
 
-            currentRoute: null,
+			currentRoute: null,
 
-            database: {
-                "materials": [],
-                "notes":[],
-                "statuses":[]
-            },
+			database: {
+					"materials": [],
+					"notes":[],
+					"statuses":[]
+			},
 
-            note: {
-                timeStamp:2999,
-                body:"hello from mars"
-            },
-            
-            
-            getTable: function(tableName){
-                var table = this.database[tableName];
-                return table;
-            },
-            addRecord:function(record, name){
-                var table = this.getTable(name);
-                table.push(record);
-            },
-            getRecords: function(tableName){
-                return this.database[tableName];
-            },
-            persistTable: function(tableName){
-                //grab pointer to local mySql database
-            },
-            updateRecord: function(record, tableName){
-                //update the database
-            },
-            dumpTable:function(tableName){
-                console.log(this.database[tableName]);
-            },
+			note: {
+					timeStamp:2999,
+					body:"hello from mars"
+			},
+			
+			
+			getTable: function(tableName){
+					var table = this.database[tableName];
+					return table;
+			},
+			addRecord:function(record, name){
+					var table = this.getTable(name);
+					table.push(record);
+			},
+			getRecords: function(tableName){
+					return this.database[tableName];
+			},
+			persistTable: function(tableName){
+					//grab pointer to local mySql database
+			},
+			updateRecord: function(record, tableName){
+					//update the database
+			},
+			dumpTable:function(tableName){
+					console.log(this.database[tableName]);
+			},
 
-            //define save method that pushes stuff onto the database array
-            
-            getDatabase: function(){
-                return this.database;
-            },
+			//define save method that pushes stuff onto the database array
+			
+			getDatabase: function(){
+					return this.database;
+			},
 
-            saveToDatabase: function(record,tableName){
-                var today = new Date();
-                var record = {
-                    body: record,
-                    time: today.getDay()
-                };
-                this.addRecord(record,tableName);
-            },
+			saveToDatabase: function(record,tableName){
+					var today = new Date();
+					var record = {
+							body: record,
+							time: today.getDay()
+					};
+					this.addRecord(record,tableName);
+			},
 
 			hasCommand: function(letter){
-					if(this.route[shortcut] == letter){
+				if(this.route[shortcut] == letter){
 					return true;
-			}
-					return false;
+				}
+				return false;
 			},
 
 			executeCommand: function(letter){
@@ -157,7 +157,7 @@ const App = (function(){
 				var resp = new Response(JSON.stringify(body),init);
 				
 				return Promise.resolve(resp);
-            },
+			},
         
 		
 			executeRoute: function(route, data){ 
@@ -175,13 +175,13 @@ const App = (function(){
 				// fetch can take a second options paramaters
 				// can set our fetch request to accept different content types
 				if(isExternalRoute(route)) {
-                    req = new HttpRequest(route.url,route.headers);
-                    if(data) {
-                        req.setBody(data);
-                        req.setMethod("POST");
-                    }
+					req = new HttpRequest(route.url,route.headers);
+					if(data) {
+							req.setBody(data);
+							req.setMethod("POST");
+					}
 				} else {
-					req = new HttpRequest("https://localhost",route.headers,data);
+					req = new HttpRequest("internal://",route.headers,data);
 					req.synthetic(true);
 				}
 			

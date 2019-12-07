@@ -1,6 +1,6 @@
 const notes = (function(){
 	
-	noteMod = getModule("note");
+	var Note = getModule("note");
 	
 	
 	return {
@@ -26,11 +26,15 @@ const notes = (function(){
 			return {id:"foobar",time:2000, title:params.noteTitle, body:params.noteBody};
 		},
 	
+	
 		// Gets passed the body of the Response.
 		render:  function(note) {
 			document.addEventListener("click",this.handler);
 			document.addEventListener("keyup",this.handler);
-			return noteMod.many(note,15);
+			var node = vNode("div",{},Note.one(note));
+			console.log("Note is: ",node);
+			
+			return node;
 		},
 
 
@@ -38,8 +42,8 @@ const notes = (function(){
 		form: function() {
 			return vNode("div",{"id":"modalContainer"},
 				[
-						vNode("input",{name:"noteTitle",id:"noteTitle"}, []),
-						vNode("input",{name:"noteBody",id:"noteBody"},[])
+					vNode("input",{name:"noteTitle",id:"noteTitle"}, []),
+					vNode("input",{name:"noteBody",id:"noteBody"},[])
 				]
 			);
 		},

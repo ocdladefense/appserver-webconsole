@@ -1,4 +1,4 @@
-function getTimeStamp(){
+function getTimestamp(){
 	var today = new Date();
 	var ampm = "am";
 	if(today.getHours() >= 12){

@@ -1,0 +1,45 @@
+
+.note-container{
+	border: 1px solid rgba(0,0,0,0.1);
+	background-color: yellow;
+	padding: 10px;
+	border-radius: 3px;
+	display: inline-block;
+	min-width: 250px;
+	max-width: 45%;
+}
+
+label.note-created {
+	display:none;
+}	
+
+.note-container .editable{
+	cursor: pointer;
+	padding:3px;
+}
+
+.editable {
+	border:1px solid transparent;
+}
+
+.editable:hover{
+	border:1px solid rgba(0,0,0,0.1);
+}
+
+.note-container .note-title{
+	font-size: 1.17em;
+	margin-block-start: 1em;
+	margin-block-end: 1em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	font-weight: bold;
+}
+
+.note-container label {
+	display:none;
+}
+
+.note-container .note-body{
+	font-size: 15.5px;
+	line-height: 24px;
+}

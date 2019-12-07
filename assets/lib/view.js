@@ -58,9 +58,9 @@ function linkContainer(link){
 
 function vNode(name,attributes,children){
     return {    
-        type: name,
-        props: attributes,
-        children: typeof children == "string" ? [children] : children
+			type: name,
+			props: attributes,
+			children: typeof children == "string" ? [children] : (Array.isArray(children)?children:[children])
     };
 
 }

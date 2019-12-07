@@ -1,12 +1,12 @@
-const note = (function(){
+define("note",function(){
 
-		function formItem(label, nodeName, editable) {
-			var c = vNode("div",{className:"form-item"},[]);
-			var labelc = editable ? "editable-label" : "label";
-			var labelf = editable ? ["editable","note-"+label].join(" ") : "note-"+label;
+		function formItem(label, nodeName, value, editable) {
+			var c = vNode("div",{className:"form-item"});
+			var labelc = "note-"+label;
+			var fieldc = editable ? ["editable","note-"+label].join(" ") : "note-"+label;
 			var children = [
-				vNode("label",{className:"editable-label"},label),
-				vNode(nodeName,{className:labelf.join(" ")},label)
+				vNode("label",{className:labelc},label),
+				vNode(nodeName,{className:fieldc, placeholder:"Enter note "+label+"..."},value)
 			];
 			
 			c.children = children;
@@ -23,12 +23,11 @@ const note = (function(){
 		};
 
 		function one(note) {
-			var created = getTimeStamp();
 			var container = vNode("div",{className:"note-container"},[]);
-			container.children.push(formItem("title","h3",note.title));
-			container.children.push(formItem("body","div",note.body));
-			container.children.push(formItem("created","div",created));
-			
+			container.children.push(formItem("created","div",getTimestamp(),false));
+			container.children.push(formItem("title","h3",note.title,true));
+			container.children.push(formItem("body","div",note.body,true));
+
 			return container;
 		}
 		
@@ -44,5 +43,7 @@ const note = (function(){
 		Note.prototype = note;
 		
 		Note.one = one;
-		Note.many = many
-})();
+		Note.many = many;
+		
+		return Note;
+});

@@ -38,6 +38,7 @@ function doAdminPage() {
 		"menu.js",
 		"event/KeyboardManager.js",
 		"modules/editable/editable.js",
+		"modules/note/component.js",
 		"modules/note/note.js",
 		"routes.js",
 		"ui.js",
