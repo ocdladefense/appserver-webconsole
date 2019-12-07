@@ -53,7 +53,6 @@ const Editable = (function() {
 
 			replace: function(newElem, oldElem){
 				oldElem.parentNode.replaceChild(newElem,oldElem);
-
 			},
 			
 			handleEvent: function(e){
@@ -77,23 +76,26 @@ const Editable = (function() {
 
 						}
 						//the editing element should always refer to an input or text area
-						//create a variable for indexing the notes array equal to notes.length+1 or use IndexedDB autoincrement
 						replace = this.edit(target);
 						this.editingElement = createElement(replace);
 						this.replace(this.editingElement,target);
 						this.editingElement.focus();
-						this.editingElement.setSelectionRange(this.editingElement.value.length,this.editingElement.value.length);
 						return false;
 					}
 
-					if(e.type == "keyup" && e.key == "Enter" && e.target.nodeName == "INPUT"){
+					if(e.type == "keyup" && e.key == "Enter"){
 
 							replace = this.done(target,this.targetNodeName);
 
 							var replacement = createElement(replace);
 							this.replace(replacement,target);
 							this.editingElement = null;
+	
+						
+							console.log("KEY UP EVENT");
 					}
+					
+					
 			},
 		};
 		
