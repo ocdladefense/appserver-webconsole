@@ -26,6 +26,11 @@ label.note-created {
 	border:1px solid rgba(0,0,0,0.1);
 }
 
+input.editable:hover,
+textarea.editable:hover {
+	cursor:text;
+}
+
 .note-container .note-title{
 	font-size: 1.17em;
 	margin-block-start: 1em;
@@ -40,6 +45,15 @@ label.note-created {
 }
 
 .note-container .note-body{
-	font-size: 15.5px;
+	font-size: 13.5px;
 	line-height: 24px;
+}
+
+.note-container .note-created {
+	font-size:11.5px;
+	margin-left:-5px;
+}
+
+.note-container .form-item-created {
+	margin:0px;
 }

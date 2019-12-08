@@ -6,7 +6,7 @@ const notes = (function(){
 	return {
 		name: "new-note",
 	
-		hasParams: true,
+		hasParams: false,
 	
 		headers: {
 			accept: "application/json",
@@ -23,7 +23,9 @@ const notes = (function(){
 
 		// Let's not have to call out to external server, will be nice for tesitng, too.
 		url: function(params) {
-			return {id:"foobar",time:2000, title:params.noteTitle, body:params.noteBody};
+			var title = (params && params.title) || "Title";
+			var body = (params && params.body) || "Enter your note here...";
+			return {id:"foobar",time:2000, title:title, body:body};
 		},
 	
 	
@@ -42,8 +44,8 @@ const notes = (function(){
 		form: function() {
 			return vNode("div",{"id":"modalContainer"},
 				[
-					vNode("input",{name:"noteTitle",id:"noteTitle"}, []),
-					vNode("input",{name:"noteBody",id:"noteBody"},[])
+					vNode("input",{name:"title",id:"noteTitle"}, []),
+					vNode("input",{name:"body",id:"noteBody"},[])
 				]
 			);
 		},
@@ -54,7 +56,7 @@ const notes = (function(){
 			var title = document.getElementById("noteTitle").value;
 			var body = document.getElementById("noteBody").value;
 			
-			return JSON.stringify({"noteTitle":title,"noteBody":body});
+			return JSON.stringify({title:title,body:body});
 		}
 	};
 	

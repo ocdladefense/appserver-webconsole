@@ -1,7 +1,7 @@
 define("note",function(){
 
 		function formItem(label, nodeName, value, editable) {
-			var c = vNode("div",{className:"form-item"});
+			var c = vNode("div",{className:"form-item form-item-"+label});
 			var labelc = "note-"+label;
 			var fieldc = editable ? ["editable","note-"+label].join(" ") : "note-"+label;
 			var children = [
