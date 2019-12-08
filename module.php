@@ -37,6 +37,7 @@ function doAdminPage() {
 		"lib/http.js",
 		"menu.js",
 		"event/KeyboardManager.js",
+		"modules/editable/Dom.js",
 		"modules/editable/DomEditableEvent.js",
 		"modules/editable/DomDataEvent.js",
 		"modules/editable/DomLayoutEvent.js",

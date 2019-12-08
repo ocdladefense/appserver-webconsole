@@ -1,25 +1,9 @@
 const DomEditableEvent = (function() {
 
 
-	function getClass(elem) {
-		return elem.getAttribute("class");
-	}
-	
-	function getProps(elem){
-		var p = {};
-		var props = elem.getAttributeNames();
-		for(var i = 0; i<props.length; i++){
-			var prop = props[i];
-			var value = elem.getAttribute(prop);
-			p["class" == prop ? "className" : prop] = value;
-			// console.log(props.item(i));
-		}
-		
-		return p;
-	}
 	
 	function isEditable(elem){
-		return getClass(elem).indexOf("editable") != -1;
+		return Dom.getClass(elem).indexOf("editable") != -1;
 		// return (op1 ? 1 : 0) ^ (op2 ? 1 : 0);
 		// return (!op1 && op2);
 	}
@@ -28,9 +12,6 @@ const DomEditableEvent = (function() {
 		return ["INPUT","TEXTAREA"].includes(elem.nodeName);
 	}
 	
-	function replace(newElem, oldElem){
-		oldElem.parentNode.replaceChild(newElem,oldElem);
-	}
 
 
 
@@ -39,7 +20,7 @@ const DomEditableEvent = (function() {
 
 
 		value = elem.firstChild.nodeValue;
-		props = getProps(elem);
+		props = Dom.getProps(elem);
 
 		props["data-node-name"] = elem.nodeName;
 		
@@ -63,7 +44,7 @@ const DomEditableEvent = (function() {
 		var text,props;
 
 		text = inputOrTextArea.value;//["TEXTAREA"].includes(inputOrTextArea.nodeName) ? inputOrTextArea.firstChild.nodeValue : inputOrTextArea.value;
-		props = getProps(inputOrTextArea);
+		props = Dom.getProps(inputOrTextArea);
 		nodeName = nodeName || props["data-node-name"];
 		
 		delete props["data-node-name"];
@@ -75,7 +56,8 @@ const DomEditableEvent = (function() {
 	
 
 	var editable = {
-
+		rootSelector: null,
+		
 		targetNodeName: null,
 		
 		targetClassName: null,
@@ -90,20 +72,24 @@ const DomEditableEvent = (function() {
 		
 		handleEvent: function(e){
 			var field = e.target;
-			var nodeName = field.nodeName;
 			var record;
+			var nodeName = field.nodeName;
 			var previousField;
 			var input;
 
+			if(!Dom.composedPath(field).includes(this.rootSelector)) return false;
+			
+			// Container corresponding to this field; think of it as the record for it.
+			record = Dom.composedPath(field).find(this.rootSelector)[0];
 
 			if(!isEditable(field)) return false;
 
-			this.targetNodeName = field.nodeName;
-			this.targetClassName = getClass(field);
+			// this.targetNodeName = field.nodeName;
+			// this.targetClassName = Dom.getClass(field);
 		
 			if(e.type == "click" && !isEditing(field)){
 				if(this.editingElement != null && this.editingElement != field){
-					this.save(previousField,previousNodeName);
+					this.done(this.editingElement);//,previousNodeName);
 				}
 				this.editingElement = this.edit(field,record,this.editingElement);
 				this.editingElement.focus();
@@ -112,7 +98,7 @@ const DomEditableEvent = (function() {
 			if(e.type == "keyup" && isEditing(field) && ["Enter","Tab"].includes(e.key)) {
 				console.log(field.nodeName,"saved.");
 				if("TEXTAREA" == nodeName && !e.shiftKey) return false;
-				this.save(field,record,this.editingElement);
+				this.done(field,record,this.editingElement);
 			}
 			
 				
@@ -125,16 +111,16 @@ const DomEditableEvent = (function() {
 			
 			vnode = getEditNode(field);
 			node = createElement(vnode);
-			replace(node,field);
+			Dom.replace(node,field);
 
 			return node;
 		},
 		
-		save: function(field, record, previousField) {
+		done: function(field, record, previousField) {
 			var value, replacement, saveToNodeName;
 
 			replacement = createElement(getElementNode(field));
-			replace(replacement,field);
+			Dom.replace(replacement,field);
 			this.editingElement = null;
 
 			/*
@@ -151,7 +137,7 @@ const DomEditableEvent = (function() {
 	
 	function DomEditableEvent(init){
 		init = init || {};
-		this.root = init.root || document;
+		this.rootSelector = init || document;
 	}
 	
 	DomEditableEvent.prototype = editable;
