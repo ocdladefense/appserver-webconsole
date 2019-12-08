@@ -1,4 +1,4 @@
-const Editable = (function() {
+const DomEditableEvent = (function() {
 
 
 	function getClass(elem) {
@@ -149,12 +149,12 @@ const Editable = (function() {
 		
 
 	
-	function Editable(init){
+	function DomEditableEvent(init){
 		init = init || {};
 		this.root = init.root || document;
 	}
 	
-	Editable.prototype = editable;
+	DomEditableEvent.prototype = editable;
 
-	return Editable;
+	return DomEditableEvent;
 })();

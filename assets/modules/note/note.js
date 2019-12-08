@@ -19,7 +19,7 @@ const notes = (function(){
 		
 		dataStore: "notes",
 
-		handler: new Editable(),
+		handler: new DomEditableEvent(),
 
 		// Let's not have to call out to external server, will be nice for tesitng, too.
 		url: function(params) {
