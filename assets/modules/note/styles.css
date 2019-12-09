@@ -10,6 +10,9 @@
 	display: inline-block;
 	min-width: 250px;
 	max-width: 45%;
+	position:absolute;
+	top:50px;
+	right: -200px;
 }
 
 label.note-created {

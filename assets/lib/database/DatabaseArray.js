@@ -1,6 +1,15 @@
 const DatabaseArray = (function(){
 
 
+	function saveToDatabase(body){
+			var today = new Date();
+			today.getDate();
+			console.log("THE BODY "+body);
+			app.database["date"] = today;
+			app.database["body"] = body;
+			console.log(app.database);
+	}
+
 
 	var dbArray = {
 		name: null,

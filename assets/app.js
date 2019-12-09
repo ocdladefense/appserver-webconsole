@@ -4,24 +4,15 @@ const App = (function(){
 		return !(typeof route.url == "function");
 	}
 
-
 	function isInternalRequest(req) {
 		return req.url.indexOf("internal://") === 0;
 	}
 	
 	function getContentType(resp){
-			var contentType = resp.headers.get("Content-Type");
-			var parts = contentType.split(";");
-			
-			return parts[0];
-	}
-	function saveToDatabase(body){
-			var today = new Date();
-			today.getDate();
-			console.log("THE BODY "+body);
-			app.database["date"] = today;
-			app.database["body"] = body;
-			console.log(app.database);
+		var contentType = resp.headers.get("Content-Type");
+		var parts = contentType.split(";");
+	
+		return parts[0];
 	}
 
 
@@ -33,54 +24,6 @@ const App = (function(){
 			previousRoute: null,
 
 			currentRoute: null,
-
-			database: {
-					"materials": [],
-					"notes":[],
-					"statuses":[]
-			},
-
-			note: {
-					timeStamp:2999,
-					body:"hello from mars"
-			},
-			
-			
-			getTable: function(tableName){
-					var table = this.database[tableName];
-					return table;
-			},
-			addRecord:function(record, name){
-					var table = this.getTable(name);
-					table.push(record);
-			},
-			getRecords: function(tableName){
-					return this.database[tableName];
-			},
-			persistTable: function(tableName){
-					//grab pointer to local mySql database
-			},
-			updateRecord: function(record, tableName){
-					//update the database
-			},
-			dumpTable:function(tableName){
-					console.log(this.database[tableName]);
-			},
-
-			//define save method that pushes stuff onto the database array
-			
-			getDatabase: function(){
-					return this.database;
-			},
-
-			saveToDatabase: function(record,tableName){
-					var today = new Date();
-					var record = {
-							body: record,
-							time: today.getDay()
-					};
-					this.addRecord(record,tableName);
-			},
 
 			hasCommand: function(letter){
 				if(this.route[shortcut] == letter){
@@ -116,6 +59,7 @@ const App = (function(){
 			addRoute: function(route){
 				this.addRoutes(route);
 			},
+			
 			addRoutes: function(routes){
 				routes = Array.isArray(routes) ? routes : [routes];
 			
@@ -126,7 +70,6 @@ const App = (function(){
 					}
 				});
 			},
-
 
 			getRoute: function(routeName){
                 var r = this.routes[routeName];
@@ -143,7 +86,6 @@ const App = (function(){
 				modal.render(vNodes);
 				modal.show();
 			},
-
 
 			respondWith: function(route,req){
 				// Act according to Fetch spec and wrap synthetic Response in a Promise.
@@ -204,11 +146,8 @@ const App = (function(){
 					return ret;
 				})
 				.then((body) => {
-                    console.log("Response body is: ",body);
-                    if(route.dataStore != null){
-                        this.saveToDatabase(body,route.dataStore);
-                    }
-                    return route.render(body);
+					console.log("Response body is: ",body);
+					return route.render(body);
 				})
 				.then(this.render.bind(this, route))
 				.then(() => {
@@ -227,7 +166,7 @@ const App = (function(){
 					document.getElementById("stage-content").innerHTML = obj;
 					return;
 				}
-				if(null == this.previousRoute || this.previousRoute != this.currentRoute) {
+				if(false && (null == this.previousRoute || this.previousRoute != this.currentRoute)) {
 					//Need to learn how replaceChild works instead of doing it this way
 					document.getElementById("stage-content").innerHTML = "";
 					document.getElementById("stage-content").appendChild(createElement(obj));
