@@ -167,9 +167,13 @@ const App = (function(){
 					document.getElementById("stage-content").innerHTML = "";
 					document.getElementById("stage-content").appendChild(createElement(obj));
 				} else {
-					document.getElementById("stage-content").appendChild(createElement(obj));
+					if(route.elementLocation != null){
+						document.getElementById(route.elementLocation).appendChild(createElement(obj));
+					}
+					else{
+						document.getElementById("stage-content").appendChild(createElement(obj));
+					}
 				} 
-
 			},
 
 

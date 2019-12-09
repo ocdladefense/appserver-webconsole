@@ -45,8 +45,10 @@ const DomHighlightEvent = (function() {
 		
 		handleEvent: function(e) {
 			var target = e.target;
-			console.log(e);
+			console.log(Dom.composedPath(target));
+			if(!Dom.composedPath(target).includes("#stage-content")) return false;
 			if(e.type == "mouseup") {
+				console.log(e);
 				this.execute(e.type,e);
 			}
 		}

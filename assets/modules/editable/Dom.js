@@ -16,6 +16,15 @@ const Dom = (function() {
 		var className = getClass(elem);
 		return null == className ? false : getClass(elem).indexOf(className) != -1;
 	}
+
+	function hasId(elem,id){
+		var elementId = elem.getAttribute("id");
+		return null == elementId ? false : elementId.indexOf(id) != -1;
+	}
+
+	function isElement(elem,nodeName){
+		return elem.nodeName == nodeName.toUpperCase();
+	}
 	
 	function getProps(elem){
 		var p = {};
@@ -42,8 +51,6 @@ const Dom = (function() {
 
 			path = path || [];
 
-
-			
 			if(null == el || el.nodeName === "HTML") return new DomList(path);
 			path.push(el);			
 			return composedPath(el.parentNode,path);
@@ -54,14 +61,21 @@ const Dom = (function() {
 	}
 	DomList.prototype = {
 		// If at least one match then return true.
-		includes: function(sel){
-			sel = sel.split(".")[1];
-			return this.find(sel).length > 0;
-		},
-		
 		find: function(sel){
-			return this.elements.filter((item) => { return hasClass(item,sel); });
+			if(sel.indexOf(".") === 0){
+				sel = sel.split(".")[1];
+				return this.elements.filter((item) => { return hasClass(item,sel); });
+			}
+			else if(sel.indexOf("#") === 0){
+				sel = sel.split("#")[1];
+				return this.elements.filter((item) => { return hasId(item,sel); });
+			}
+			return this.elements.filter((item) => {return isElement(item,sel); });
+		},
+		includes:function(sel){
+			return this.find(sel).length > 0;
 		}
+
 	};
 	function Dom(init){
 		init = init || {};
