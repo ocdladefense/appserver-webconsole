@@ -109,7 +109,8 @@ const App = (function(){
 
 			init: function(){
 					document.addEventListener("ShortcutEvent", this);
-					document.addEventListener('click',this,true);
+					document.addEventListener("click",this,true);
+					document.addEventListener("mouseup",new DomHighlightEvent("#stage"),true);
 			},
 
 			addRoute: function(route){

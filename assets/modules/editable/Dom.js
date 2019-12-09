@@ -1,6 +1,13 @@
 const Dom = (function() {
 
-
+	function getSelection() {
+		return window.getSelection();
+	}
+	
+	function getRangeFromSelection(){
+		return getSelection().getRangeAt(0);
+	}
+	
 	function getClass(elem) {
 		return elem.getAttribute("class");
 	}
@@ -69,6 +76,8 @@ const Dom = (function() {
 	Dom.getProps = getProps;
 	Dom.replace = replace;
 	Dom.composedPath = composedPath;
+	Dom.getSelection = getSelection;
+	Dom.getRangeFromSelection = getRangeFromSelection;
 	
 	return Dom;
 })();

@@ -41,6 +41,7 @@ function doAdminPage() {
 		"modules/editable/DomEditableEvent.js",
 		"modules/editable/DomDataEvent.js",
 		"modules/editable/DomLayoutEvent.js",
+		"modules/editable/DomHighlightEvent.js",
 		"modules/note/component.js",
 		"modules/note/note.js",
 		"routes.js",
