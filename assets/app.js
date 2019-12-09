@@ -27,6 +27,14 @@ const App = (function(){
 
 			databases: {},
 
+
+
+			getDatabase: function(dbName){
+				return this.databases[dbName];
+			},
+
+		
+
 			hasCommand: function(letter){
 				if(this.route[shortcut] == letter){
 					return true;
@@ -243,6 +251,7 @@ const App = (function(){
 				document.addEventListener("ShortcutEvent", this);
 				document.addEventListener("click",this,true);
 				document.addEventListener("mouseup",new DomHighlightEvent("#stage"),true);
+				document.addEventListener("keyup",new DomDataEvent(".note-container"),true);
 			},
 	};
 
