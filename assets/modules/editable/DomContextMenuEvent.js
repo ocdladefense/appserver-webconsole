@@ -1,7 +1,7 @@
-const DomDataEvent = (function() {
+const DomContextMenuEvent = (function() {
 
 
-	var data = {
+	var contextMenu = {
 
 		targetNodeName: null,
 		
@@ -16,26 +16,15 @@ const DomDataEvent = (function() {
 		},
 		
 		handleEvent: function(e){
+            console.log("CONTEXT HANDLE EVENT");
 			var field = e.target;
 			var nodeName = field.nodeName;
 			var record;
 			var previousField;
 			var input;
 
-
-			if(!isEditable(field)) return false;
-
 			this.targetNodeName = field.nodeName;
 			this.targetClassName = getClass(field);
-		
-			// if(e.type == "click" && !isEditing(field)){
-			// 	if(this.editingElement != null && this.editingElement != field){
-			// 		this.save(previousField,previousNodeName);
-			// 	}
-			// 	this.editingElement = this.edit(field,record,this.editingElement);
-			// 	this.editingElement.focus();
-			// }
-
 			if(e.type == "keyup" && ["Enter"].includes(e.key)) {
 				console.log(field.nodeName,"saved.");
 				if("TEXTAREA" == nodeName && !e.shiftKey) return false;
@@ -63,22 +52,15 @@ const DomDataEvent = (function() {
 			replacement = createElement(getElementNode(field));
 			replace(replacement,field);
 			this.editingElement = null;
-
-			/*
-			var theVNode = this.done(this.editingElement, this.targetNodeName);
-			console.log("The editing element:" + this.editingElement);
-			console.log("the target:" + target);
-			this.replace(createElement(theVNode),this.editingElement);
-			*/
 		}
 	};
 		
-	function DomDataEvent(){
+	function DomContextMenuEvent(){
 	
 	}
 	
-	DomDataEvent.prototype = data;
+	DomContextMenuEvent.prototype = contextMenu;
 
-	return DomDataEvent;
+	return DomContextMenuEvent;
 
 })();
