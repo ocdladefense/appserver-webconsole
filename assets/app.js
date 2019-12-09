@@ -50,10 +50,11 @@ const App = (function(){
 
 			bg: null,
 
-			init: function(){
-					document.addEventListener("ShortcutEvent", this);
-					document.addEventListener("click",this,true);
-					document.addEventListener("mouseup",new DomHighlightEvent("#stage"),true);
+			init: function(settings){
+				this.addRoutes(settings["routes-enabled"]);
+				document.addEventListener("ShortcutEvent", this);
+				document.addEventListener("click",this,true);
+				document.addEventListener("mouseup",new DomHighlightEvent("#stage"),true);
 			},
 
 			addRoute: function(route){
