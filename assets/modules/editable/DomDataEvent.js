@@ -1,5 +1,23 @@
 const DomDataEvent = (function() {
 
+function isEditable(elem){
+		return Dom.getClass(elem).indexOf("editable") != -1;
+		// return (op1 ? 1 : 0) ^ (op2 ? 1 : 0);
+		// return (!op1 && op2);
+	}
+
+	function getElementNode(inputOrTextArea,nodeName){
+		var text,props;
+
+		text = inputOrTextArea.value;//["TEXTAREA"].includes(inputOrTextArea.nodeName) ? inputOrTextArea.firstChild.nodeValue : inputOrTextArea.value;
+		props = Dom.getProps(inputOrTextArea);
+		nodeName = nodeName || props["data-node-name"];
+		
+		delete props["data-node-name"];
+		delete props["value"];
+
+		return vNode(nodeName,props,text);
+	}
 
 	var data = {
 
@@ -14,6 +32,8 @@ const DomDataEvent = (function() {
 		editing: function(elem){
 			return 
 		},
+
+		
 		
 		handleEvent: function(e){
 			var field = e.target;
@@ -25,6 +45,7 @@ const DomDataEvent = (function() {
 
 			if(!isEditable(field)) return false;
 
+<<<<<<< HEAD
 			this.targetNodeName = field.nodeName;
 			this.targetClassName = getClass(field);
 		
@@ -37,9 +58,41 @@ const DomDataEvent = (function() {
 			// }
 
 			if(e.type == "keyup" && ["Enter"].includes(e.key)) {
+=======
+			// this.targetNodeName = field.nodeName;
+			// this.targetClassName = getClass(field);
+
+			record = Dom.composedPath(field).find(this.rootSelector)[0];
+			console.log(Dom.composedPath(field));
+
+
+		/*
+			if(e.type == "click" && !isEditing(field)){
+				if(this.editingElement != null && this.editingElement != field){
+					this.save(previousField,previousNodeName);
+				}
+				this.editingElement = this.edit(field,record,this.editingElement);
+				this.editingElement.focus();
+			}*/
+
+			if(e.type == "keyup" &&  ["Enter"].includes(e.key)) {
+>>>>>>> f912c1f120f6707decf7c99d92cf209ffd7ce1a7
 				console.log(field.nodeName,"saved.");
 				if("TEXTAREA" == nodeName && !e.shiftKey) return false;
-				this.save(field,record,this.editingElement);
+				var db = app.getDatabase("mydb");
+				var table = db.getTable("notes");
+				var note = {
+					id:null,
+					title: "",
+					body: "",
+					created: "",
+					position:{},
+					color: ""
+				};
+				var savedRecord = db.addRecord({title:field.value, id:record.dataset.recordId},"notes");
+				console.log(record);
+				record.setAttribute("data-record-id", savedRecord.id);
+				
 			}
 			
 				
@@ -73,8 +126,9 @@ const DomDataEvent = (function() {
 		}
 	};
 		
-	function DomDataEvent(){
-	
+	function DomDataEvent(init){
+		init = init || {};
+		this.rootSelector = init || document;
 	}
 	
 	DomDataEvent.prototype = data;

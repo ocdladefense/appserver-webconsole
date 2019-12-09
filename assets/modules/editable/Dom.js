@@ -13,7 +13,9 @@ const Dom = (function() {
 	}
 	
 	function hasClass(elem,className){
-		var className = getClass(elem);
+		if(null == getClass(elem)){
+			return false;
+		}
 		return null == className ? false : getClass(elem).indexOf(className) != -1;
 	}
 

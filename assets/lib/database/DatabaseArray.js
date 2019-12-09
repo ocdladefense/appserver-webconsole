@@ -1,6 +1,8 @@
 var DatabaseArray = (function(){
 
 
+	var autoIncrement = 0;
+
 	function saveToDatabase(body){
 			var today = new Date();
 			today.getDate();
@@ -14,25 +16,40 @@ var DatabaseArray = (function(){
 	var dbArray = {
 		name: null,
 		
-		database: {
-			materials: [],
-			notes:[],
-			statuses:[]
+
+		tables:{
+			
+
 		},
 
 		note: {
 			timeStamp:2999,
 			body:"hello from mars"
 		},
+
+		addTable: function(name){
+			this.tables[name] = {};
+		},
 	
 	
 		getTable: function(tableName){
-				var table = this.database[tableName];
+				var table = this.tables[tableName];
+				if(table == null){
+					throw new Error("Table is undefined" + "  "+ tableName);
+				}
 				return table;
 		},
+
 		addRecord:function(record, name){
 				var table = this.getTable(name);
-				table.push(record);
+				var id = record.id || autoIncrement++;
+				var created = record.created || Date.now();
+				record.id = id;
+				record.created = created;
+
+				table[record.id] = record;
+
+				return record;
 		},
 		getRecords: function(tableName){
 				return this.database[tableName];
@@ -44,7 +61,7 @@ var DatabaseArray = (function(){
 				//update the database
 		},
 		dumpTable:function(tableName){
-				console.log(this.database[tableName]);
+				console.log(this.tables);
 		},
 
 		//define save method that pushes stuff onto the database array
@@ -69,6 +86,11 @@ var DatabaseArray = (function(){
 	function DatabaseArray(init){
 		// set the schema; set the database name
 		this.name = init.name;
+		console.log(init.tables);
+
+		for(var name in init.tables){
+			this.addTable(name);
+		}
 	}
 	
 	DatabaseArray.prototype = dbArray;
