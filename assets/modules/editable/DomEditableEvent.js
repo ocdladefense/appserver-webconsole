@@ -122,13 +122,6 @@ const DomEditableEvent = (function() {
 			replacement = createElement(getElementNode(field));
 			Dom.replace(replacement,field);
 			this.editingElement = null;
-
-			/*
-			var theVNode = this.done(this.editingElement, this.targetNodeName);
-			console.log("The editing element:" + this.editingElement);
-			console.log("the target:" + target);
-			this.replace(createElement(theVNode),this.editingElement);
-			*/
 		}
 	};
 
