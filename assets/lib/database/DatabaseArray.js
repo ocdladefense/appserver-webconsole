@@ -1,4 +1,4 @@
-const DatabaseArray = (function(){
+var DatabaseArray = (function(){
 
 
 	function saveToDatabase(body){
@@ -68,7 +68,7 @@ const DatabaseArray = (function(){
 	
 	function DatabaseArray(init){
 		// set the schema; set the database name
-		this.name = init;
+		this.name = init.name;
 	}
 	
 	DatabaseArray.prototype = dbArray;

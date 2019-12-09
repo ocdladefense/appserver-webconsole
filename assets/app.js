@@ -25,6 +25,8 @@ const App = (function(){
 
 			currentRoute: null,
 
+			databases: {},
+
 			hasCommand: function(letter){
 				if(this.route[shortcut] == letter){
 					return true;
@@ -49,13 +51,6 @@ const App = (function(){
 			},
 
 			bg: null,
-
-			init: function(settings){
-				this.addRoutes(settings["routes-enabled"]);
-				document.addEventListener("ShortcutEvent", this);
-				document.addEventListener("click",this,true);
-				document.addEventListener("mouseup",new DomHighlightEvent("#stage"),true);
-			},
 
 			addRoute: function(route){
 				this.addRoutes(route);
@@ -231,7 +226,20 @@ const App = (function(){
 						this.bg = new Worker('modules/webconsole/assets/worker/worker.js');
 				}
 				this.bg.postMessage(message);
-			}
+			},
+			
+			init: function(settings){
+				this.addRoutes(settings["routes-enabled"]);
+				
+				if(settings.databases) {
+					for(var i = 0, dbs=settings.databases; i<dbs.length; i++){
+						this.databases[dbs[i].name] = Database.connect(dbs[i]);
+					}
+				}
+				document.addEventListener("ShortcutEvent", this);
+				document.addEventListener("click",this,true);
+				document.addEventListener("mouseup",new DomHighlightEvent("#stage"),true);
+			},
 	};
 
 

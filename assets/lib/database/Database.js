@@ -65,14 +65,10 @@ const Database = (function(){
 	
 	Database.prototype = database;
 	Database.connect = function(init){
-		var type = init.driver;
+		var driver = init.driver;
 		var conn;
-		
-		if(null != connections[name]) {
-			conn = new window[type](init.name);
-		} else {
-			return connections[name];
-		}
+
+		return new window[driver](init);
 	};
 	
 	return Database;
