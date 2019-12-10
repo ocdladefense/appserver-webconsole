@@ -48,17 +48,7 @@
      }
  };
 
- var database = {
-     name:"database",
-     url: function(){
-         return app.database;
-     },
-     render: function(){
-         return vNode("h1",{},[app.getDatabase()]);
-     },
-     form: function(){},
-     formCallback: function(){}
- };
+
 
  var allSiteStatuses = {
 	name: "all-site-statuses",

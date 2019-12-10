@@ -57,10 +57,19 @@ function linkContainer(link){
 }
 
 function vNode(name,attributes,children){
-    return {    
-        type: name,
-        props: attributes,
-        children: typeof children == "string" ? [children] : children
+		if(null == children || typeof children == "undefined") {
+			children = [];
+		} else if(typeof children == "string" ) {
+			children = [children];
+		} else {
+			children = Array.isArray(children) ? children : [children];
+		}
+		
+    var vnode =  {    
+			type: name,
+			props: attributes,
+			children: children
     };
-
+    
+    return vnode;
 }

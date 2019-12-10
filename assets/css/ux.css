@@ -1,5 +1,6 @@
 body {
 	margin:0 !important;
+	background-color: #ECEFF2;
 }
 
 #banner {
@@ -169,30 +170,6 @@ li a {
 .sub-menu li {
 	display:block;
 }
-.note-container{
-	border:1px solid #999;
-	background-color: yellow;
-	padding: 10px;
-	border-radius: 3px;
-}
-.note-container .editable{
-	cursor: pointer;
-	padding:3px;
-}
-.editable:hover{
-	border:1px solid #999;
-}
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -4,25 +4,16 @@ const App = (function(){
 		return !(typeof route.url == "function");
 	}
 
-
 	function isInternalRequest(req) {
-		return req.url.indexOf("https://localhost") === 0;
-    }
-    
-    function getContentType(resp){
-        var contentType = resp.headers.get("Content-Type");
-        var parts = contentType.split(";");
-        
-        return parts[0];
-    }
-    function saveToDatabase(body){
-        var today = new Date();
-        today.getDate();
-        console.log("THE BODY "+body);
-        app.database["date"] = today;
-        app.database["body"] = body;
-        console.log(app.database);
-    }
+		return req.url.indexOf("internal://") === 0;
+	}
+	
+	function getContentType(resp){
+		var contentType = resp.headers.get("Content-Type");
+		var parts = contentType.split(";");
+	
+		return parts[0];
+	}
 
 
 	var app = {
@@ -32,61 +23,23 @@ const App = (function(){
 
 			previousRoute: null,
 
-            currentRoute: null,
+			currentRoute: null,
 
-            database: {
-                "materials": [],
-                "notes":[],
-                "sitestatus":[]
-            },
+			databases: {},
 
-            note: {
-                timeStamp:2999,
-                body:"hello from mars"
-            },
-            
-            
-            getTable: function(tableName){
-                var table = this.database[tableName];
-                return table;
-            },
-            addRecord:function(record, name){
-                var table = this.getTable(name);
-                table.push(record);
-            },
-            getRecords: function(tableName){
-                return this.database[tableName];
-            },
-            persistTable: function(tableName){
-                //grab pointer to local mySql database
-            },
-            updateRecord: function(record, tableName){
-                //update the database
-            },
-            dumpTable:function(tableName){
-                console.log(this.database[tableName]);
-            },
 
-            //define save method that pushes stuff onto the database array
-            
-            getDatabase: function(){
-                return this.database;
-            },
 
-            saveToDatabase: function(record,tableName){
-                var today = new Date();
-                var record = {
-                    body: record,
-                    time: today.getDay()
-                };
-                this.addRecord(record,tableName);
-            },
+			getDatabase: function(dbName){
+				return this.databases[dbName];
+			},
+
+		
 
 			hasCommand: function(letter){
-					if(this.route[shortcut] == letter){
+				if(this.route[shortcut] == letter){
 					return true;
-			}
-					return false;
+				}
+				return false;
 			},
 
 			executeCommand: function(letter){
@@ -107,14 +60,10 @@ const App = (function(){
 
 			bg: null,
 
-			init: function(){
-					document.addEventListener("ShortcutEvent", this);
-					document.addEventListener('click',this,true);
-			},
-
 			addRoute: function(route){
 				this.addRoutes(route);
 			},
+			
 			addRoutes: function(routes){
 				routes = Array.isArray(routes) ? routes : [routes];
 			
@@ -125,7 +74,6 @@ const App = (function(){
 					}
 				});
 			},
-
 
 			getRoute: function(routeName){
                 var r = this.routes[routeName];
@@ -143,7 +91,6 @@ const App = (function(){
 				modal.show();
 			},
 
-
 			respondWith: function(route,req){
 				// Act according to Fetch spec and wrap synthetic Response in a Promise.
 				var body = route.url(req.json());
@@ -157,7 +104,7 @@ const App = (function(){
 				var resp = new Response(JSON.stringify(body),init);
 				
 				return Promise.resolve(resp);
-            },
+			},
         
 		
 			executeRoute: function(route, data){ 
@@ -175,13 +122,13 @@ const App = (function(){
 				// fetch can take a second options paramaters
 				// can set our fetch request to accept different content types
 				if(isExternalRoute(route)) {
-                    req = new HttpRequest(route.url,route.headers);
-                    if(data) {
-                        req.setBody(data);
-                        req.setMethod("POST");
-                    }
+					req = new HttpRequest(route.url,route.headers);
+					if(data) {
+							req.setBody(data);
+							req.setMethod("POST");
+					}
 				} else {
-					req = new HttpRequest("https://localhost",route.headers,data);
+					req = new HttpRequest("internal://",route.headers,data);
 					req.synthetic(true);
 				}
 			
@@ -203,11 +150,8 @@ const App = (function(){
 					return ret;
 				})
 				.then((body) => {
-                    console.log("Response body is: ",body);
-                    if(route.dataStore != null){
-                        this.saveToDatabase(body,route.dataStore);
-                    }
-                    return route.render(body);
+					console.log("Response body is: ",body);
+					return route.render(body);
 				})
 				.then(this.render.bind(this, route))
 				.then(() => {
@@ -221,19 +165,23 @@ const App = (function(){
 
 			render: function(route, obj){
 				
-				console.log(obj);
+				console.log("RENDER THIS OBJECT  "+obj);
 				if(route.headers.contentType == "text/html") {
 					document.getElementById("stage-content").innerHTML = obj;
 					return;
 				}
-				if(null == this.previousRoute || this.previousRoute != this.currentRoute) {
+				if(false && (null == this.previousRoute || this.previousRoute != this.currentRoute)) {
 					//Need to learn how replaceChild works instead of doing it this way
 					document.getElementById("stage-content").innerHTML = "";
 					document.getElementById("stage-content").appendChild(createElement(obj));
 				} else {
-					document.getElementById("stage-content").appendChild(createElement(obj));
+					if(route.elementLocation != null){
+						document.getElementById(route.elementLocation).appendChild(createElement(obj));
+					}
+					else{
+						document.getElementById("stage-content").appendChild(createElement(obj));
+					}
 				} 
-
 			},
 
 
@@ -290,7 +238,22 @@ const App = (function(){
 						this.bg = new Worker('modules/webconsole/assets/worker/worker.js');
 				}
 				this.bg.postMessage(message);
-			}
+			},
+			
+			init: function(settings){
+				this.addRoutes(settings["routes-enabled"]);
+				
+				if(settings.databases) {
+					for(var i = 0, dbs=settings.databases; i<dbs.length; i++){
+						this.databases[dbs[i].name] = Database.connect(dbs[i]);
+					}
+				}
+				document.addEventListener("ShortcutEvent", this);
+				document.addEventListener("click",this,true);
+				document.addEventListener("mouseup",new DomHighlightEvent("#stage"),true);
+				document.addEventListener("keyup",new DomDataEvent(".note-container"),true);
+				document.addEventListener("contextmenu",new DomContextMenuEvent(".has-context"),true);
+			},
 	};
 
 
