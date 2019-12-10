@@ -164,7 +164,10 @@ const App = (function(){
 
 
 			render: function(route, obj){
-				
+				var renderMode = route.renderMode || "append";
+				var targetElement = route.elementLocation || "stage";
+				var stage = document.getElementById("stage");
+				var old = stage.firstChild;
 				console.log("RENDER THIS OBJECT  "+obj);
 				if(route.headers.contentType == "text/html") {
 					document.getElementById("stage-content").innerHTML = obj;
@@ -175,11 +178,10 @@ const App = (function(){
 					document.getElementById("stage-content").innerHTML = "";
 					document.getElementById("stage-content").appendChild(createElement(obj));
 				} else {
-					if(route.elementLocation != null){
-						document.getElementById(route.elementLocation).appendChild(createElement(obj));
-					}
-					else{
-						document.getElementById("stage-content").appendChild(createElement(obj));
+					if(renderMode == "append") {
+						document.getElementById(targetElement).appendChild(createElement(obj));
+					} else {
+						document.getElementById(targetElement).replaceChild(createElement(obj), old);
 					}
 				} 
 			},
