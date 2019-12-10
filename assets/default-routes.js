@@ -106,20 +106,79 @@
 	
 	// Gets passed the body of the Response.
 	render:  function(json){ 
-		// body is "You chose..."
-		console.log(json);
-		console.log("here");
-		return vNode("h2",{},body);
+
+		// create container
+		var container = vNode("div", {class: "container border border-dark rounded p-2 m-2", style: "max-width: 600px"}, []);
+
+		// create row
+		var row = vNode("div", {class: "row"}, []);
+
+		// create columns
+		var leftColumn = vNode("div", {class: "col"}, []);
+		var rightColumn = vNode("div", {class: "col"}, []);
+
+		// create site name
+		leftColumn.children.push(vNode("h4", {class: "text-left font-weight-bold"}, "Site Name: "));
+		rightColumn.children.push(vNode("h4", {class: "text-right"}, json[0].name));
+
+		// create url 
+		leftColumn.children.push(vNode("h4", {class: "text-left font-weight-bold"}, "URL: "));
+		rightColumn.children.push(vNode("h4", {class: "text-right"}, json[0].domain));
+
+		// create response time
+		var totalResponseTime = (json[0].totalResponseTime * 1000).toFixed(2); // convert seconds to ms
+
+		leftColumn.children.push(vNode("h4", {class: "text-left font-weight-bold"}, "Response Time: "));
+		rightColumn.children.push(vNode("h4", {class: "text-right"}, totalResponseTime + " ms"));
+
+		// push columns to row
+		row.children.push(leftColumn);
+		row.children.push(rightColumn);
+
+		// push row to container
+		container.children.push(row);
+		
+
+		// create status
+		var overAllSiteStatusText;
+		var overAllSiteStatusClass;
+		if(json[0].overallSiteStatus  == 1) {
+			overAllSiteStatusText = "Site OK";
+			overAllSiteStatusClass = "bg-success";
+		} else {
+			overAllSiteStatusText = "Site Down";
+			overAllSiteStatusClass = "bg-danger";
+		}
+
+		var statusContainer = vNode("div", {class: "row justify-content-center mt-2"}, []);
+
+		var statusCard = vNode("div", {class: "col-3 align-content-center pt-2 " + overAllSiteStatusClass, style: "max-width: 250px"}, []);
+
+		statusCard.children.push(vNode("h5", {class: "text-center text-light"}, overAllSiteStatusText));
+		
+		statusContainer.children.push(statusCard);
+		container.children.push(statusContainer);
+
+		// create tool tip
+		var toolTipContainer = vNode("span", { class: "tooltiptext" }, []);
+
+
+		return container;
 	},
 	
 	form: function() {
-		return vNode("div",{"id":"modalContainer"},[vNode("input",{name:"url",id:"urlInput"}, [])]);
+		return vNode("div",{"id":"modalContainer"},[vNode("input",{name:"name",id:"nameInput",placeholder:"Enter site name"}, []), vNode("input",{name:"url",id:"urlInput",placeholder:"Enter url"}, [])]);
 	},
 	
 	formCallback:function(){
-        var data = document.getElementById("urlInput").value;
+		var nameData = document.getElementById("nameInput").value;
+		var urlData = document.getElementById("urlInput").value;
 
-		return JSON.stringify({url:data});
+		return JSON.stringify({url:urlData, name: nameData});
+	},
+
+	persist: function() {
+		
 	}
 };
 

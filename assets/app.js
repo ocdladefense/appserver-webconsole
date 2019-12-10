@@ -37,7 +37,7 @@ const App = (function(){
             database: {
                 "materials": [],
                 "notes":[],
-                "statuses":[]
+                "sitestatus":[]
             },
 
             note: {
