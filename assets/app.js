@@ -181,7 +181,7 @@ const App = (function(){
 					else{
 						document.getElementById("stage-content").appendChild(createElement(obj));
 					}
-				} 
+				}
 			},
 
 

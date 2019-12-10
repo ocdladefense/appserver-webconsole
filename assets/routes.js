@@ -79,10 +79,10 @@
 	// }
 };
 
- var siteStatus = {
-	name: "site-status",
+var siteStatusCheckSite = {
+	name: "site-status-check-site",
 
-	dataStore: "sitestatus",
+	//dataStore: "sitestatus",
 	
 	hasParams: true,
 	
@@ -92,7 +92,7 @@
 	},
 
 	// Let's not have to call out to external server, will be nice for tesitng, too.
-	url: "/site-status",
+	url: "/site-status-check-site",
 	
 	// Gets passed the body of the Response.
 	render:  function(json){ 
@@ -127,7 +127,6 @@
 
 		// push row to container
 		container.children.push(row);
-		
 
 		// create status
 		var overAllSiteStatusText;
@@ -152,7 +151,6 @@
 		// create tool tip
 		var toolTipContainer = vNode("span", { class: "tooltiptext" }, []);
 
-
 		return container;
 	},
 	
@@ -172,31 +170,84 @@
 	}
 };
 
-var siteStatusCheckSite = {
-	name: "site-status-check-site",
+var siteStatusLoadSites = {
+	name: "site-status-load-sites",
 	
-	hasParams: false,
+	hasParams: true,
 	
 	headers: {
 		accept: "application/json",
-		contentType: "text/html"
+		contentType: "application/json"
 	},
 
 	// Let's not have to call out to external server, will be nice for tesitng, too.
-	url: "/site-status",
+	url: "/site-status-load-sites",
 	
 	// Gets passed the body of the Response.
-	render:  function(body){ 
-        console.log(body);
-        return vNode("h2",{},body);
+	render:  function(json){ 
+		// create container
+		var container = vNode("div", {class: "table", style: "max-width: 600px"}, []);
+
+		// create heading
+		var row = vNode("div", {class: "table-row"}, []);
+
+		var siteName = vNode("div", {class: "table-cell"}, "Site Name:");
+		var siteUrl = vNode("div", {class: "table-cell"}, "Site URL:");
+		var siteResponseTime = vNode("div", {class: "table-cell"}, "Response Time:");
+		var siteHealth = vNode("div", {class: "table-cell"}, "Site Health:");
+
+		// push heading
+		row.children.push(siteName);
+		row.children.push(siteUrl);
+		row.children.push(siteResponseTime);
+		row.children.push(siteHealth);
+		container.children.push(row);
+
+		var totalResponseTime;
+		
+		// create a row for every site
+		for( i = 0; i < json.length; i++){
+			// create row
+			row = vNode("div", {class: "table-row"}, []);
+
+			siteName = vNode("div", {class: "table-cell"}, json[i].name);
+			siteUrl = vNode("div", {class: "table-cell"}, json[i].domain);
+
+			// create response time
+			totalResponseTime = (json[i].totalResponseTime * 1000).toFixed(2); // convert seconds to ms
+			siteResponseTime = vNode("div", {class: "table-cell"}, totalResponseTime);
+
+			// determine and create site health
+			if(json[i].overallSiteStatus == 1) {
+				siteHealth = vNode("div", {class: "table-cell"}, "Healthy");
+			} else {
+				siteHealth = vNode("div", {class: "table-cell"}, "Critical");
+			}
+
+			// push all elements
+			row.children.push(siteName);
+			row.children.push(siteUrl);
+			row.children.push(siteResponseTime);
+			row.children.push(siteHealth);
+
+			container.children.push(row);
+		}
+
+        return container;
 	},
 	
-	// form: function() {
-	// 	return vNode("div",{"id":"modalContainer"},[vNode("input",{name:"url",id:"urlInput"}, [])]);
-	// },
+	form: function() {
+		return vNode("div",{"id":"modalContainer"},[vNode("input",{name:"name",id:"nameInput",placeholder:"Enter site name"}, []), vNode("input",{name:"url",id:"urlInput",placeholder:"Enter url"}, [])]);
+	},
 	
-	// formCallback:function(){
-	// 	var data = document.getElementById("urlInput").value;
-	// 	return JSON.stringify({url:data});
-	// }
+	formCallback: function(){
+		var nameData = document.getElementById("nameInput").value;
+		var urlData = document.getElementById("urlInput").value;
+
+		return JSON.stringify({url:urlData, name: nameData});
+	},
+
+	persist: function() {
+		
+	}
 };
