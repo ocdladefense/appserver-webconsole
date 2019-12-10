@@ -1,6 +1,6 @@
 const DomDataEvent = (function() {
 
-function isEditable(elem){
+	function isEditable(elem){
 		return Dom.getClass(elem).indexOf("editable") != -1;
 		// return (op1 ? 1 : 0) ^ (op2 ? 1 : 0);
 		// return (!op1 && op2);
@@ -45,38 +45,15 @@ function isEditable(elem){
 
 			if(!isEditable(field)) return false;
 
-<<<<<<< HEAD
 			this.targetNodeName = field.nodeName;
 			this.targetClassName = getClass(field);
-		
-			// if(e.type == "click" && !isEditing(field)){
-			// 	if(this.editingElement != null && this.editingElement != field){
-			// 		this.save(previousField,previousNodeName);
-			// 	}
-			// 	this.editingElement = this.edit(field,record,this.editingElement);
-			// 	this.editingElement.focus();
-			// }
-
-			if(e.type == "keyup" && ["Enter"].includes(e.key)) {
-=======
-			// this.targetNodeName = field.nodeName;
-			// this.targetClassName = getClass(field);
 
 			record = Dom.composedPath(field).find(this.rootSelector)[0];
 			console.log(Dom.composedPath(field));
 
 
-		/*
-			if(e.type == "click" && !isEditing(field)){
-				if(this.editingElement != null && this.editingElement != field){
-					this.save(previousField,previousNodeName);
-				}
-				this.editingElement = this.edit(field,record,this.editingElement);
-				this.editingElement.focus();
-			}*/
 
 			if(e.type == "keyup" &&  ["Enter"].includes(e.key)) {
->>>>>>> f912c1f120f6707decf7c99d92cf209ffd7ce1a7
 				console.log(field.nodeName,"saved.");
 				if("TEXTAREA" == nodeName && !e.shiftKey) return false;
 				var db = app.getDatabase("mydb");
@@ -89,40 +66,12 @@ function isEditable(elem){
 					position:{},
 					color: ""
 				};
+				
 				var savedRecord = db.addRecord({title:field.value, id:record.dataset.recordId},"notes");
 				console.log(record);
 				record.setAttribute("data-record-id", savedRecord.id);
-				
 			}
 			
-				
-		},
-
-		
-		edit: function(field, record, previousField) {
-			//the editing element should always refer to an input or text area
-			var vnode, node;
-			
-			vnode = getEditNode(field);
-			node = createElement(vnode);
-			replace(node,field);
-
-			return node;
-		},
-		
-		save: function(field, record, previousField) {
-			var value, replacement, saveToNodeName;
-
-			replacement = createElement(getElementNode(field));
-			replace(replacement,field);
-			this.editingElement = null;
-
-			/*
-			var theVNode = this.done(this.editingElement, this.targetNodeName);
-			console.log("The editing element:" + this.editingElement);
-			console.log("the target:" + target);
-			this.replace(createElement(theVNode),this.editingElement);
-			*/
 		}
 	};
 		
