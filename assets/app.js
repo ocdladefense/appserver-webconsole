@@ -167,22 +167,17 @@ const App = (function(){
 				var renderMode = route.renderMode || "append";
 				var targetElement = route.elementLocation || "stage";
 				var stage = document.getElementById("stage");
-				var old = stage.firstChild;
+				var oldNode = stage.firstElementChild;
+				var stageContent = oldNode.cloneNode(false);
 				console.log("RENDER THIS OBJECT  "+obj);
 				if(route.headers.contentType == "text/html") {
 					document.getElementById("stage-content").innerHTML = obj;
 					return;
-				}
-				if(false && (null == this.previousRoute || this.previousRoute != this.currentRoute)) {
-					//Need to learn how replaceChild works instead of doing it this way
-					document.getElementById("stage-content").innerHTML = "";
-					document.getElementById("stage-content").appendChild(createElement(obj));
+				} else if(renderMode == "append") {
+					document.getElementById(targetElement).appendChild(createElement(obj));
 				} else {
-					if(renderMode == "append") {
-						document.getElementById(targetElement).appendChild(createElement(obj));
-					} else {
-						document.getElementById(targetElement).replaceChild(createElement(obj), old);
-					}
+					stageContent.appendChild(createElement(obj));
+					document.getElementById(targetElement).replaceChild(stageContent, oldNode);
 				}
 			},
 

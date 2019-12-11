@@ -174,6 +174,8 @@ var siteStatusLoadSites = {
 	name: "site-status-load-sites",
 	
 	hasParams: true,
+
+	renderMode: "replace",
 	
 	headers: {
 		accept: "application/json",
