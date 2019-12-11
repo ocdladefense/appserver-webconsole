@@ -41,6 +41,8 @@ const DomDataEvent = (function() {
 			var record;
 			var previousField;
 			var input;
+			var id;
+			var fieldName;
 
 
 			if(!isEditable(field)) return false;
@@ -55,21 +57,29 @@ const DomDataEvent = (function() {
 
 			if(e.type == "keyup" &&  ["Enter"].includes(e.key)) {
 				console.log(field.nodeName,"saved.");
+				
 				if("TEXTAREA" == nodeName && !e.shiftKey) return false;
 				var db = app.getDatabase("mydb");
 				var table = db.getTable("notes");
-				var note = {
-					id:null,
-					title: "",
-					body: "",
-					created: "",
-					position:{},
-					color: ""
-				};
 				
-				var savedRecord = db.addRecord({title:field.value, id:record.dataset.recordId},"notes");
+				
+				id = (record.dataset && record.dataset.recordId) || null;
+				fieldName = (field.dataset && field.dataset.field) || null;
+
+				if(fieldName == null){
+					throw new Error("field name is null");
+				}
+
+				var note = {
+					id:id	
+				};
+				note[fieldName] = field.value; 
+				
+				var savedRecord = db.save(note,"notes");
 				console.log(record);
 				record.setAttribute("data-record-id", savedRecord.id);
+				
+				
 			}
 			
 		}
