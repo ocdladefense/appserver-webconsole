@@ -45,10 +45,10 @@ const DomDataEvent = (function() {
 			var fieldName;
 
 
-			if(!isEditable(field)) return false;
+			//if(!isEditable(field)) return false;
 
-			this.targetNodeName = field.nodeName;
-			this.targetClassName = getClass(field);
+			//this.targetNodeName = field.nodeName;
+			//this.targetClassName = getClass(field);
 
 			record = Dom.composedPath(field).find(this.rootSelector)[0];
 			console.log(Dom.composedPath(field));
@@ -78,6 +78,7 @@ const DomDataEvent = (function() {
 				var savedRecord = db.save(note,"notes");
 				console.log(record);
 				record.setAttribute("data-record-id", savedRecord.id);
+				
 				
 				
 			}

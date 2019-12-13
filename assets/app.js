@@ -251,7 +251,7 @@ const App = (function(){
 				document.addEventListener("ShortcutEvent", this);
 				document.addEventListener("click",this,true);
 				document.addEventListener("mouseup",new DomHighlightEvent("#stage"),true);
-				document.addEventListener("keyup",new DomDataEvent(".note-container"),true);
+				document.addEventListener("keyup",new DomDataEvent(".record-container"),true);
 				document.addEventListener("contextmenu",new DomContextMenuEvent(".has-context"),true);
 			},
 	};

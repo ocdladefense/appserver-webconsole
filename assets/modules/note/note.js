@@ -21,7 +21,7 @@ const notes = (function(){
 
 		elementLocation: "stage",
 
-		handler: new DomEditableEvent(".note-container"), // Selector to match against editable-intent events.
+		handler: new DomEditableEvent(".record-container"), // Selector to match against editable-intent events.
 
 		// Let's not have to call out to external server, will be nice for tesitng, too.
 		url: function(params) {
@@ -38,7 +38,7 @@ const notes = (function(){
 			
 			var topPosition = this.getNotePosition();
 			console.log(topPosition);
-			topPosition += 90;
+			topPosition += 180;
 			console.log(topPosition);
 			var node = vNode("div",{},Note.one(note,topPosition));
 			

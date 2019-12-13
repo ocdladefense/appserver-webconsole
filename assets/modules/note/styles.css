@@ -13,6 +13,11 @@
 	position:absolute;
 	top:50px;
 	right: -200px;
+	z-index: 1;
+}
+
+.note-container .active{
+	z-index: 2;
 }
 
 label.note-created {
@@ -22,6 +27,7 @@ label.note-created {
 .note-container .editable{
 	cursor: pointer;
 	padding:3px;
+	z-index: 1;
 }
 
 .editable {
