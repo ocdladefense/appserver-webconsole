@@ -79,12 +79,14 @@
 	// }
 };
 
- var siteStatus = {
-	name: "site-status",
+var siteStatusCheckSingleSite = {
+	name: "site-status-check-site",
 
-	dataStore: "sitestatus",
+	//dataStore: "sitestatus",
 	
 	hasParams: true,
+
+	renderMode: "append",
 	
 	headers: {
 		accept: "application/json",
@@ -92,7 +94,7 @@
 	},
 
 	// Let's not have to call out to external server, will be nice for tesitng, too.
-	url: "/site-status",
+	url: "/site-status-check-site",
 	
 	// Gets passed the body of the Response.
 	render:  function(json){ 
@@ -127,7 +129,6 @@
 
 		// push row to container
 		container.children.push(row);
-		
 
 		// create status
 		var overAllSiteStatusText;
@@ -152,7 +153,6 @@
 		// create tool tip
 		var toolTipContainer = vNode("span", { class: "tooltiptext" }, []);
 
-
 		return container;
 	},
 	
@@ -172,31 +172,104 @@
 	}
 };
 
-var siteStatusCheckSite = {
-	name: "site-status-check-site",
+var siteStatusLoadSites = {
+	name: "site-status-load-sites",
 	
 	hasParams: false,
+
+	renderMode: "replace",
 	
 	headers: {
 		accept: "application/json",
-		contentType: "text/html"
+		contentType: "application/json"
 	},
 
 	// Let's not have to call out to external server, will be nice for tesitng, too.
-	url: "/site-status",
-	
-	// Gets passed the body of the Response.
-	render:  function(body){ 
-        console.log(body);
-        return vNode("h2",{},body);
+	url: function() {
+		// TODO: get sites to load from database
+
+		// FORNOW: create sites to probe here
+		// data should be an array of objects that each have a url and a name
+		var jsn;
+		var object = {};
+		for(var i = 1; i <= 100; i++) {
+			object = {};
+			object.url = "https://search.yahoo.com/search?p=" + i;
+			object.name = "yahoo search " + i;
+			jsn = JSON.stringify(object);
+			siteStatusCheckSingleSite.render = this.render;
+			siteStatusCheckSingleSite.elementLocation = "site-statuses";
+			app.executeRoute(siteStatusCheckSingleSite, jsn);
+		}
+		return {};
 	},
 	
-	// form: function() {
-	// 	return vNode("div",{"id":"modalContainer"},[vNode("input",{name:"url",id:"urlInput"}, [])]);
-	// },
+	// Gets passed the body of the Response.
+	render:  function(json){ 
+
+		if(Object.keys(json).length === 0) {
+			// create container
+			var container = vNode("div", {id: "site-statuses", class: "table", style: "max-width: 600px"}, []);
+
+			// create heading
+			var row = vNode("div", {class: "table-row"}, []);
+
+			var siteName = vNode("div", {class: "table-cell"}, "Site Name:");
+			var siteUrl = vNode("div", {class: "table-cell"}, "Site URL:");
+			var siteResponseTime = vNode("div", {class: "table-cell"}, "Response Time:");
+			var siteHealth = vNode("div", {class: "table-cell"}, "Site Health:");
+
+			// push heading
+			row.children.push(siteName);
+			row.children.push(siteUrl);
+			row.children.push(siteResponseTime);
+			row.children.push(siteHealth);
+			container.children.push(row);
+
+			return container;
+		}
+
+		var status = json[0];
+		var totalResponseTime;
+		
+		// create row
+		row = vNode("div", {class: "table-row"}, []);
+
+		siteName = vNode("div", {class: "table-cell"}, status.name);
+		siteUrl = vNode("div", {class: "table-cell"}, status.domain);
+
+		// create response time
+		totalResponseTime = (status.totalResponseTime * 1000).toFixed(2); // convert seconds to ms
+		siteResponseTime = vNode("div", {class: "table-cell"}, totalResponseTime);
+
+		// determine and create site health
+		if(status.overallSiteStatus == 1) {
+			siteHealth = vNode("div", {class: "table-cell"}, "Healthy");
+		} else {
+			siteHealth = vNode("div", {class: "table-cell"}, "Critical");
+		}
+
+		// push all elements
+		row.children.push(siteName);
+		row.children.push(siteUrl);
+		row.children.push(siteResponseTime);
+		row.children.push(siteHealth);
+
+		// container.children.push(row);
+
+        return row;
+	},
 	
-	// formCallback:function(){
-	// 	var data = document.getElementById("urlInput").value;
-	// 	return JSON.stringify({url:data});
-	// }
+	form: function() {
+		return vNode("div",{"id":"modalContainer"},[vNode("h3",{}, "Load sites from database?")]);
+	},
+	
+	formCallback: function(){
+
+
+	},
+
+	persist: function() {
+		
+	}
 };
