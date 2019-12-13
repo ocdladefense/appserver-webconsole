@@ -192,15 +192,50 @@ var siteStatusLoadSites = {
 		// data should be an array of objects that each have a url and a name
 		var jsn;
 		var object = {};
+		var promise;
+		var promises = [];
 		for(var i = 1; i <= 100; i++) {
 			object = {};
-			object.url = "https://search.yahoo.com/search?p=" + i;
-			object.name = "yahoo search " + i;
+			//object.url = "https://search.yahoo.com/search?p=" + i;
+			//object.name = "yahoo search " + i;
+			
+			if(i > 0) {
+				object.url = "https://www.google.com/search?source=hp&ei=Uz3zXav_L4H_-gST36fgDQ&q=" + i;
+				object.name = "google search " + i;
+			}
+			
 			jsn = JSON.stringify(object);
 			siteStatusCheckSingleSite.render = this.render;
 			siteStatusCheckSingleSite.elementLocation = "site-statuses";
-			app.executeRoute(siteStatusCheckSingleSite, jsn);
+			// Original Way
+			//app.executeRoute(siteStatusCheckSingleSite, jsn);
+
+			promise = new Promise((resolve, reject) => {
+				//app.executeRoute(siteStatusCheckSingleSite, jsn);
+
+				req = new HttpRequest(siteStatusCheckSingleSite.url,siteStatusCheckSingleSite.headers);
+				if(jsn) {
+						req.setBody(jsn);
+						req.setMethod("POST");
+				}
+
+				// Prepare our response to the route.
+				resp = req.send();
+				resp.then(function(resp){
+					var ret;
+
+					ret = resp.json();
+					
+					return ret;
+				})
+				.then((body) => {
+					return siteStatusCheckSingleSite.render(body);
+				}).then(app.render.bind(app, siteStatusCheckSingleSite))
+				//resolve();
+			});
+			promises.push(promise);
 		}
+		Promise.all(promises);
 		return {};
 	},
 	
