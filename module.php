@@ -41,6 +41,7 @@ function doAdminPage() {
 		"lib/database/Database.js",
 		"lib/database/DatabaseArray.js",
 		"lib/database/DatabaseIndexedDb.js",
+		"modules/documents/TableOfContents.js",
 		"modules/editable/DomEditableEvent.js",
 		"modules/editable/DomDataEvent.js",
 		"modules/editable/DomLayoutEvent.js",
