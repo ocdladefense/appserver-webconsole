@@ -1,6 +1,7 @@
 body {
 	margin:0 !important;
 	background-color: #ECEFF2;
+	position:relative;
 }
 
 #banner {
@@ -8,13 +9,21 @@ body {
 	height:60%;
 }
 
-
+#container-left {
+	position:fixed;
+	top:100px;
+	width:20%;
+	max-height: 75%;
+	overflow-y: scroll;
+}
 #menu-left {
 	display:inline-block;
-	width:15%;
 	min-height:100vh;
-	border-right:1px solid #666;
 	vertical-align:top;
+	padding-left: 11%;
+	padding-right: 11%;
+	padding-top: 6%;
+	font-size:0.8rem;
 }
 #container{
 	margin-top: 100px;
@@ -34,6 +43,7 @@ body {
 	font-size: 15.5px;
 	line-height: 24px;
 	color: rgba(0,0,0,0.7);
+	left: 275px;
 }
 
 #stage h2 {
@@ -79,22 +89,19 @@ body {
 
 #header {
 	font-family:"Helvetica Neuve",Helvetica;
-}
-
-#footer {
-	padding:8px;
-	background-color:#232f3e;
+	padding-left:3%;
+	padding-right:3%;
+	padding-bottom:0px;
 	position:fixed;
-	bottom:0px;
-	max-height:25px;
+	border-bottom:1px solid #ccc;
+	overflow-y:visible;
+	top:0px;
+	z-index:10;
+	background-color:#232f3e;
 	width:100%;
-	font-family:"Helvetica Neuve",Helvetica;
 }
 
-#footer .content {
-	width:100%;
-	color:#ddd;
-}
+
 	
 #logo {
 	display:inline-block;
@@ -179,17 +186,57 @@ li a {
 	margin:8px;
 }
 
-#header {
-	padding-left:3%;
-	padding-right:3%;
-	padding-bottom:0px;
-	position:fixed;
-	border-bottom:1px solid #ccc;
-	overflow-y:visible;
-	top:0px;
+
+
+#footer {
 	z-index:10;
+	padding:8px;
 	background-color:#232f3e;
+	position:fixed;
+	bottom:0px;
+	max-height:25px;
 	width:100%;
+	font-family:"Helvetica Neuve",Helvetica;
+}
+
+#footer .content {
+	width:100%;
+	color:#ddd;
 }
 
 
+#positioned-context-container {
+	position:absolute;
+	display:none;
+	background-color:rgba(255,255,255,0.9);
+	border:1px solid #efefef;
+	padding:6px;
+	min-width:400px;
+	min-height:250px;
+	z-index:2;
+	margin-top:-125px;
+}
+
+#positioned-context-container.visible {
+	display:block;
+}
+
+#menu-left * {
+	display:block;
+	font-size: 0.8rem;
+	font-weight: normal;
+}
+
+.toc-entry {
+	cursor: pointer;
+	margin-top:1.0rem;
+	line-height:1.1rem;
+}
+
+.level-1 {
+	padding-left: 1.0rem;
+}
+
+.toc-entry:hover {
+	text-decoration: underline;
+}
