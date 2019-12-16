@@ -44,10 +44,7 @@ function createElement(vnode)
 
 }
 
-function div(attributes, text)
-{
-    return elem("div", attributes, text);
-}
+
 
 function linkContainer(link){
     var tableCellLink = vNode("a", {href:link},"View/download material");
