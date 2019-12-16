@@ -1,6 +1,15 @@
 const TableOfContents = (function(){
 
+	var tocComponent = function(items) {
+		return tree(
+			ul("className=menu"),
+				nodeList("li",items, (item) => {
+					return ["className=toc-entry","data-section-id="+item.getAttribute("id")];
+				})
+		);
+	};
 
+	
 	function toc(){
 		var elems = document.querySelectorAll(".mw-headline");
 		var menu = document.getElementById("menu-left");
@@ -10,11 +19,10 @@ const TableOfContents = (function(){
 			var sectionId = target.dataset && target.dataset.sectionId;
 			gotoSection(sectionId);
 		});
-		for(var i = 0; i< elems.length; i++){
-			var elem = elems.item(i);
-			var entry = vNode("li",{className:"toc-entry","data-section-id":elem.getAttribute("id")},elem.textContent);
-			menu.appendChild(createElement(entry));
-		}
+
+		var component = tocComponent(elems);
+		console.log(component);
+		menu.appendChild(createElement(component));
 	}
 
 	function gotoSection(id) {

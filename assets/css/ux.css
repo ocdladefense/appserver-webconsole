@@ -227,6 +227,10 @@ li a {
 	font-weight: normal;
 }
 
+#menu-left ul {
+	padding-left: 0;
+}
+
 .toc-entry {
 	cursor: pointer;
 	margin-top:1.0rem;
