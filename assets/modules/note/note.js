@@ -21,7 +21,7 @@ const notes = (function(){
 
 		elementLocation: "stage",
 
-		handler: new DomEditableEvent(".note-container"), // Selector to match against editable-intent events.
+		handler: new DomEditableEvent(".record-container"), // Selector to match against editable-intent events.
 
 		// Let's not have to call out to external server, will be nice for tesitng, too.
 		url: function(params) {
@@ -35,10 +35,29 @@ const notes = (function(){
 		render:  function(note) {
 			document.addEventListener("click",this.handler);
 			document.addEventListener("keyup",this.handler);
-			var node = vNode("div",{},Note.one(note));
+			
+			var topPosition = this.getNotePosition();
+			console.log(topPosition);
+			topPosition += 180;
+			console.log(topPosition);
+			var node = vNode("div",{},Note.one(note,topPosition));
+			
 			console.log("Note is: ",node);
 			
 			return node;
+		},
+
+		getNotePosition: function(){
+			var noteContainers = document.getElementsByClassName("note-container");
+			if(noteContainers.length == 0){
+				return -90;
+			}
+			var noteContainer = noteContainers[noteContainers.length -1];
+			console.log(noteContainer);
+			var topPosition = noteContainer.offsetTop;
+			var leftPosition = noteContainer.offsetLeft;
+
+			return topPosition;
 		},
 
 
@@ -47,7 +66,7 @@ const notes = (function(){
 			return vNode("div",{"id":"modalContainer"},
 				[
 					vNode("input",{name:"title",id:"noteTitle"}, []),
-					vNode("input",{name:"body",id:"noteBody"},[])
+					vNode("input",{name:"body",id:"noteBody",},[])
 				]
 			);
 		},

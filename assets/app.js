@@ -1,3 +1,6 @@
+
+
+
 const App = (function(){
 
 	function isExternalRoute(route) {
@@ -18,6 +21,8 @@ const App = (function(){
 
 	var app = {
 			routes: {},
+
+			tools: [],
 
 			keyboardCommands:{},
 
@@ -76,8 +81,8 @@ const App = (function(){
 			},
 
 			getRoute: function(routeName){
-                var r = this.routes[routeName];
-                console.log(this.routes);
+				var r = this.routes[routeName];
+				console.log(this.routes);
 				if(null == r) throw new Error("The route, "+routeName+", does not exist.");
 				return this.routes[routeName];
 			},
@@ -164,24 +169,21 @@ const App = (function(){
 
 
 			render: function(route, obj){
-				
+				var renderMode = route.renderMode || "append";
+				var targetElement = route.elementLocation || "stage";
+				var stage = document.getElementById("stage");
+				var oldNode = stage.firstElementChild;
+				var stageContent = oldNode.cloneNode(false);
 				console.log("RENDER THIS OBJECT  "+obj);
 				if(route.headers.contentType == "text/html") {
 					document.getElementById("stage-content").innerHTML = obj;
 					return;
-				}
-				if(false && (null == this.previousRoute || this.previousRoute != this.currentRoute)) {
-					//Need to learn how replaceChild works instead of doing it this way
-					document.getElementById("stage-content").innerHTML = "";
-					document.getElementById("stage-content").appendChild(createElement(obj));
+				} else if(renderMode == "append") {
+					document.getElementById(targetElement).appendChild(createElement(obj));
 				} else {
-					if(route.elementLocation != null){
-						document.getElementById(route.elementLocation).appendChild(createElement(obj));
-					}
-					else{
-						document.getElementById("stage-content").appendChild(createElement(obj));
-					}
-				} 
+					stageContent.appendChild(createElement(obj));
+					document.getElementById(targetElement).replaceChild(stageContent, oldNode);
+				}
 			},
 
 
@@ -250,10 +252,31 @@ const App = (function(){
 				}
 				document.addEventListener("ShortcutEvent", this);
 				document.addEventListener("click",this,true);
-				document.addEventListener("mouseup",new DomHighlightEvent("#stage"),true);
-				document.addEventListener("keyup",new DomDataEvent(".note-container"),true);
+				this.tools.push({
+					name: "highlight",
+					active: true,
+					init: function(app){ return new DomHighlightEvent("#stage-content"); }
+				});
+				
+				this.tools.push({
+					name: "toc",
+					active: true,
+					init: function(app){ return new TableOfContents(); }
+				});
+				
+				document.addEventListener("keyup",new DomDataEvent(".record-container"),true);
 				document.addEventListener("contextmenu",new DomContextMenuEvent(".has-context"),true);
+
+				domReady(this.toolManager());
 			},
+			
+			toolManager: function(){
+				var fn = function(){
+					this.tools.filter((tool)=>{ return tool.active; }).forEach((tool) => { tool.init(this); });
+				};
+				
+				return fn.bind(this);
+			}
 	};
 
 

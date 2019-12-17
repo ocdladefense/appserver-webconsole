@@ -1,55 +1,106 @@
 const DomHighlightEvent = (function() {
 
 
-	/*
-	function DomList(init){
-		this.elements = init;
-	}
-	DomList.prototype = {
-		// If at least one match then return true.
-		includes: function(sel){
-			sel = sel.split(".")[1];
-			return this.find(sel).length > 0;
-		},
-		
-		find: function(sel){
-			return this.elements.filter((item) => { return hasClass(item,sel); });
-		}
-	};
-	*/
 	function DomHighlightEvent(init){
-		this.rootSelector = init || document;
-		this.respondTo("mouseup","highlight");
+		this.rootSelector = typeof init == "string" ? init : init.rootSelector;
+		this.rootElem = typeof init == "string" ? document : (init.rootSelector || document);
+		this.respondTo("mousedown","anchor");
+		this.respondTo("mouseup","highlight"); /* .when(function(e){
+			if(!this.previousMouseXPos || Math.abs(this.previousMouseXPos-e.screenX) < 15) {
+				return false;
+			}
+		});*/
+		this.attach();
 	}
 	
 	var highlight = {
-		mouseup: [],
+		rootSelector: null,
 		
-		respondTo: function(evt,fn){
-			if(!this[evt]) this[evt] = [];
-			fn = typeof fn == "string" ? this[fn] : fn;
-			this[evt].push(fn);
+		rootElem: document,
+		
+		events: {
+			mousedown: [],
+			mouseup: []
 		},
 		
-		execute: function(evt,e){
-			for(var i = 0; i<this[evt].length; i++){
-				this[evt][i](e);
+		when: function(e,){
+			
+		},
+		
+		respondTo: function(evt,fn){
+			if(!this.events[evt]) this.events[evt] = [];
+			fn = typeof fn == "string" ? this[fn].bind(this) : fn;
+			this.events[evt].push(fn);
+		},
+		
+		attach: function() {
+			for(var name in this.events){
+				this.rootElem.addEventListener(name,this,true);
 			}
 		},
 		
-		highlight: function() {
+		remove: function(){
+			for(var name in this.events){
+				this.rootElem.removeEventListener(name,this,true);
+			}
+		},
+		
+		execute: function(evt,e){
+			for(var i = 0; i<this.events[evt].length; i++){
+				this.events[evt][i](e);
+			}
+		},
+		
+		clearSelection: function() {
+		 if (window.getSelection) {window.getSelection().removeAllRanges();}
+		 else if (document.selection) {document.selection.empty();}
+		},
+		
+		highlight: function(e) {
 			console.log("Highlighting...");
 			var range = Dom.getRangeFromSelection();
 			range.surroundContents(createElement(vNode("span",{style:"background-color:yellow;"})));
+			this.clearSelection();
 		},
+		
+		more: function(e){
+			var context = document.getElementById("positioned-context-container");
+			context.setAttribute("class",context.getAttribute("class")+" visible");
+			context.style.top = e.pageY-85+"px";
+			context.style.left = e.pageX+200+"px";
+		},
+		
+		anchor: function(e){
+			this.previousMouseXPos = e.screenX;
+			return false;
+		},
+		
+		previousMouseXPos: null,
 		
 		handleEvent: function(e) {
 			var target = e.target;
-			console.log(Dom.composedPath(target));
-			if(!Dom.composedPath(target).includes("#stage-content")) return false;
+
+			if(!Dom.composedPath(target).includes(this.rootSelector)) return false;
+			
+
+			
+			if(e.type == "mousedown") {
+				console.log("executing mouse down");
+				this.execute(e.type,e);
+			}
+
 			if(e.type == "mouseup") {
+
+				if(!this.previousMouseXPos || Math.abs(this.previousMouseXPos-e.screenX) < 15) {
+					return false;
+				}
+				
+				console.log(window.getSelection());
+				console.log(Dom.composedPath(target));
+			
 				console.log(e);
 				this.execute(e.type,e);
+				this.previousMouseXPos = null;
 			}
 		}
 	};

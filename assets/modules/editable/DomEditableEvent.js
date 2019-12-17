@@ -74,13 +74,15 @@ const DomEditableEvent = (function() {
 			var field = e.target;
 			var record;
 			var nodeName = field.nodeName;
-			var previousField;
-			var input;
+			var initialClass;
+			
 
 			if(!Dom.composedPath(field).includes(this.rootSelector)) return false;
 			
 			// Container corresponding to this field; think of it as the record for it.
 			record = Dom.composedPath(field).find(this.rootSelector)[0];
+			initialClass  = record.getAttribute("class");
+			
 
 			if(!isEditable(field)) return false;
 
@@ -88,11 +90,16 @@ const DomEditableEvent = (function() {
 			// this.targetClassName = Dom.getClass(field);
 		
 			if(e.type == "click" && !isEditing(field)){
+				if(initialClass.indexOf("active") == -1){
+					record.setAttribute("class","active "+initialClass);
+				}
 				if(this.editingElement != null && this.editingElement != field){
-					this.done(this.editingElement);//,previousNodeName);
+					this.done(this.editingElement,this.editingRecord,record);//,previousNodeName);
 				}
 				this.editingElement = this.edit(field,record,this.editingElement);
 				this.editingElement.focus();
+				this.editingRecord = Dom.composedPath(this.editingElement).find(this.rootSelector)[0];
+
 			}
 
 			if(e.type == "keyup" && isEditing(field) && ["Enter","Tab"].includes(e.key)) {
@@ -103,9 +110,8 @@ const DomEditableEvent = (function() {
 			
 				
 		},
-
 		
-		edit: function(field, record, previousField) {
+		edit: function(field, record) {
 			//the editing element should always refer to an input or text area
 			var vnode, node;
 			
@@ -116,8 +122,17 @@ const DomEditableEvent = (function() {
 			return node;
 		},
 		
-		done: function(field, record, previousField) {
-			var value, replacement, saveToNodeName;
+		done: function(field, previousRecord, currentRecord) {
+			var replacement,initialClass,splitClass,position,newClass;
+
+			if(previousRecord != null && currentRecord != previousRecord){
+				initialClass  = previousRecord.getAttribute("class");
+				splitClass = initialClass.split(" ");
+				position = splitClass.indexOf("active");
+				splitClass[position] = "";
+				newClass =splitClass.join(" ");
+				previousRecord.setAttribute("class", newClass);
+			}
 
 			replacement = createElement(getElementNode(field));
 			Dom.replace(replacement,field);

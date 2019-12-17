@@ -3,9 +3,10 @@ var DatabaseArray = (function(){
 
 	var autoIncrement = 0;
 
-	function saveToDatabase(body){
+	function saveToDatabase(note){
 			var today = new Date();
 			today.getDate();
+			app.databases["mydb"]["tables"]["notes"]
 			console.log("THE BODY "+body);
 			app.database["date"] = today;
 			app.database["body"] = body;
@@ -40,16 +41,22 @@ var DatabaseArray = (function(){
 				return table;
 		},
 
-		addRecord:function(record, name){
-				var table = this.getTable(name);
+		save: function(record, name){
 				var id = record.id || autoIncrement++;
 				var created = record.created || Date.now();
 				record.id = id;
 				record.created = created;
 
-				table[record.id] = record;
+				return record.id ? this.updateRecord(record,name) : this.addRecord(record,name);
+		},
 
-				return record;
+
+		addRecord:function(record, name){
+			var table = this.getTable(name);
+			table[record.id] = record;
+			console.log("record added");			
+			this.saveToDatabase(record,name);
+			return record;
 		},
 		getRecords: function(tableName){
 				return this.database[tableName];
@@ -57,8 +64,12 @@ var DatabaseArray = (function(){
 		persistTable: function(tableName){
 				//grab pointer to local mySql database
 		},
-		updateRecord: function(record, tableName){
-				//update the database
+		updateRecord: function(record, name){
+			var table = this.getTable(name);
+			table[record.id] = record;
+			console.log("record updated");
+			this.saveToDatabase(record,name);
+			return record;
 		},
 		dumpTable:function(tableName){
 				console.log(this.tables);
@@ -70,13 +81,8 @@ var DatabaseArray = (function(){
 				return this.database;
 		},
 
-		saveToDatabase: function(record,tableName){
-			var today = new Date();
-			var record = {
-				body: record,
-				time: today.getDay()
-			};
-			this.addRecord(record,tableName);
+		saveToDatabase: function(record,name){
+			app.databases["mydb"]["tables"][name.length +1] = record;
 		}
 	};
 	

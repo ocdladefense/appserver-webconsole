@@ -1,6 +1,6 @@
 const DomDataEvent = (function() {
 
-function isEditable(elem){
+	function isEditable(elem){
 		return Dom.getClass(elem).indexOf("editable") != -1;
 		// return (op1 ? 1 : 0) ^ (op2 ? 1 : 0);
 		// return (!op1 && op2);
@@ -41,68 +41,48 @@ function isEditable(elem){
 			var record;
 			var previousField;
 			var input;
+			var id;
+			var fieldName;
 
 
-			if(!isEditable(field)) return false;
+			//if(!isEditable(field)) return false;
 
-			this.targetNodeName = field.nodeName;
-			this.targetClassName = getClass(field);
-		
-			// if(e.type == "click" && !isEditing(field)){
-			// 	if(this.editingElement != null && this.editingElement != field){
-			// 		this.save(previousField,previousNodeName);
-			// 	}
-			// 	this.editingElement = this.edit(field,record,this.editingElement);
-			// 	this.editingElement.focus();
-			// }
+			//this.targetNodeName = field.nodeName;
+			//this.targetClassName = getClass(field);
 
-			if(e.type == "keyup" && ["Enter"].includes(e.key)) {
+			record = Dom.composedPath(field).find(this.rootSelector)[0];
+			console.log(Dom.composedPath(field));
+
+
+
+			if(e.type == "keyup" &&  ["Enter"].includes(e.key)) {
 				console.log(field.nodeName,"saved.");
+				
 				if("TEXTAREA" == nodeName && !e.shiftKey) return false;
 				var db = app.getDatabase("mydb");
 				var table = db.getTable("notes");
+				
+				
+				id = (record.dataset && record.dataset.recordId) || null;
+				fieldName = (field.dataset && field.dataset.field) || null;
+
+				if(fieldName == null){
+					throw new Error("field name is null");
+				}
+
 				var note = {
-					id:null,
-					title: "",
-					body: "",
-					created: "",
-					position:{},
-					color: ""
+					id:id	
 				};
-				var savedRecord = db.addRecord({title:field.value, id:record.dataset.recordId},"notes");
+				note[fieldName] = field.value; 
+				
+				var savedRecord = db.save(note,"notes");
 				console.log(record);
 				record.setAttribute("data-record-id", savedRecord.id);
 				
+				
+				
 			}
 			
-				
-		},
-
-		
-		edit: function(field, record, previousField) {
-			//the editing element should always refer to an input or text area
-			var vnode, node;
-			
-			vnode = getEditNode(field);
-			node = createElement(vnode);
-			replace(node,field);
-
-			return node;
-		},
-		
-		save: function(field, record, previousField) {
-			var value, replacement, saveToNodeName;
-
-			replacement = createElement(getElementNode(field));
-			replace(replacement,field);
-			this.editingElement = null;
-
-			/*
-			var theVNode = this.done(this.editingElement, this.targetNodeName);
-			console.log("The editing element:" + this.editingElement);
-			console.log("the target:" + target);
-			this.replace(createElement(theVNode),this.editingElement);
-			*/
 		}
 	};
 		
