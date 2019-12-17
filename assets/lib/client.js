@@ -19,6 +19,16 @@ function clientFetchJson(url){
        this.IpAddress = "847q090952";
        this.features = array();
    }
+   var networkStatus = true;
+   window.addEventListener('offline', function(){networkStatus = false});
+   window.addEventListener('online', function(){networkStatus = true});
+
+// function goOffline(){
+//     Object.defineProperty(navigator, "onLine", {value:false});
+// }
+// function goOnline(){
+//  Object.defineProperty(navigator, "online", {value:true});
+// }
    //$cient = new Client();
 //$cient->machineName;
 //#client->deviceName;

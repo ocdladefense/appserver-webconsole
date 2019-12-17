@@ -3,7 +3,12 @@ Service worker
  */ 
 
 const SCRIPT_PATH = "modules/webconsole/assets";
+var networkStatus = true;
 
+self.onmessage = function(e){
+    console.log("VALUE OF E ",e);
+    networkStatus = e.data;
+}
 
 self.importScripts(SCRIPT_PATH + "/lib/Server.js");
 
@@ -15,6 +20,7 @@ var urlsToCache = [
     '/webconsole',
     SCRIPT_PATH+'/lib/view.js',
     SCRIPT_PATH+'/lib/event.js',
+    SCRIPT_PATH+'/lib/client.js',
     SCRIPT_PATH+'/css/keyboardManager.css',
     SCRIPT_PATH+'/css/materials.css',
     SCRIPT_PATH+'/css/siteStatus.css',
