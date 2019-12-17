@@ -31,6 +31,7 @@ function doAdminPage() {
 		
 	$scripts = array_map(function($script){ return "<script type='text/javascript' src='/modules/webconsole/assets/{$script}'>\n</script>";},array(
 		"components/materials.js",
+		"modules/audio/audio.js",
 		"lib/datetime.js",
 		"lib/modal.js",
 		"lib/view.js",
