@@ -2,7 +2,7 @@ const TableOfContents = (function(){
 
 	var tocComponent = function(items) {
 		return tree(
-			ul("className=menu"),
+			div("className=menu"),
 				nodeList("li",items, (item) => {
 					return ["className=toc-entry","data-section-id="+item.getAttribute("id")];
 				})

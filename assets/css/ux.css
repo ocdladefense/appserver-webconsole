@@ -31,7 +31,6 @@ body {
 
 #stage {
 	min-height: 100vh;
-	width: 74%;
 	display: inline-block;
 	vertical-align: top;
 	position: relative;
@@ -44,6 +43,10 @@ body {
 	line-height: 24px;
 	color: rgba(0,0,0,0.7);
 	left: 275px;
+}
+
+#stage.home {
+	max-width:78%;
 }
 
 #stage h2 {
@@ -204,6 +207,16 @@ li a {
 	color:#ddd;
 }
 
+#context-menu-container{
+	z-index: 1;
+}
+#context-menu{
+	height:160px;
+	background-color:teal;
+	max-width:215px;
+	min-width:200px;
+	z-index:1;
+}
 
 #positioned-context-container {
 	position:absolute;
