@@ -12,16 +12,16 @@ function menuItem(obj,routeName){
 		if(routeName == null){
 			routeName ="";
 		}
-	var name = v("a",{href:"#",id:name,"data-route":routeName},name);
-	return v("li",{},[name]);
+	var name = vnode("a",{href:"#",id:name,"data-route":routeName},name);
+	return vnode("li",{},[name]);
 }
 	
 
 function subMenu(name,submenu){
 
 	var children = submenu.map(menuItem);
-	var sub = v("ul",{className:"sub-menu"},children);
-	var top = v("li",{},[v("a",{href:"#"},name)]);
+	var sub = vnode("ul",{className:"sub-menu"},children);
+	var top = vnode("li",{},[vnode("a",{href:"#"},name)]);
 	top.children.push(sub);
 	return top;
 }
@@ -38,5 +38,5 @@ function createMenu() {
 							{name:"Load Sites", route:"site-status-load-sites"}])
 	];
 	
-	return v("ul",{className:"main-menu"},children);
+	return vnode("ul",{className:"main-menu"},children);
 }
