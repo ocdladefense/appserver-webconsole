@@ -192,4 +192,14 @@ li a {
 	width:100%;
 }
 
+#context-menu-container{
+	z-index: 1;
+}
+#context-menu{
+	height:160px;
+	background-color:teal;
+	max-width:215px;
+	min-width:200px;
+	z-index:1;
+}
 

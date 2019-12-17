@@ -2,56 +2,39 @@ const DomContextMenuEvent = (function() {
 
 
 	var contextMenu = {
-
-		targetNodeName: null,
-		
-		targetClassName: null,
-
-		editingElement: null,
 		
 		events: {},
 		
-		editing: function(elem){
-			return 
-		},
-		
 		handleEvent: function(e){
-            console.log("CONTEXT HANDLE EVENT");
-			var field = e.target;
-			var nodeName = field.nodeName;
-			var record;
-			var previousField;
-			var input;
+			var elem = e.target;
+			var x = e.clientX;
+			var y = e.clientY;
 
-			this.targetNodeName = field.nodeName;
-			this.targetClassName = getClass(field);
-			if(e.type == "keyup" && ["Enter"].includes(e.key)) {
-				console.log(field.nodeName,"saved.");
-				if("TEXTAREA" == nodeName && !e.shiftKey) return false;
-				this.save(field,record,this.editingElement);
-			}
+			console.log("x = "+x+" y = "+y);
 			
+
+			if(elem.classList.contains("has-context")){
+				e.preventDefault();
+				var containerElement = this.render();
+				elem.parentElement.appendChild(createElement(containerElement));
+				var menuContainer = document.getElementById("context-menu-container");
 				
+				menuContainer.style.position = "absolute";
+				menuContainer.style.top = y+'px';
+				menuContainer.style.left = x+'px';
+				this.events[e] = e.type;
+			}
+			else{
+				return false;
+			}
 		},
 
-		
-		edit: function(field, record, previousField) {
-			//the editing element should always refer to an input or text area
-			var vnode, node;
-			
-			vnode = getEditNode(field);
-			node = createElement(vnode);
-			replace(node,field);
-
-			return node;
-		},
-		
-		save: function(field, record, previousField) {
-			var value, replacement, saveToNodeName;
-
-			replacement = createElement(getElementNode(field));
-			replace(replacement,field);
-			this.editingElement = null;
+		render: function(){
+			console.log("RENDER");
+			var container = vNode("div",{id:"context-menu-container"},[]);
+			//var contextMenu = vNode("div",{id:"context-menu"},[]);
+			//container.children.push(contextMenu);
+			return container;
 		}
 	};
 		

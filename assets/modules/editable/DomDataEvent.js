@@ -45,7 +45,6 @@ function isEditable(elem){
 
 			if(!isEditable(field)) return false;
 
-<<<<<<< HEAD
 			this.targetNodeName = field.nodeName;
 			this.targetClassName = getClass(field);
 		
@@ -58,25 +57,6 @@ function isEditable(elem){
 			// }
 
 			if(e.type == "keyup" && ["Enter"].includes(e.key)) {
-=======
-			// this.targetNodeName = field.nodeName;
-			// this.targetClassName = getClass(field);
-
-			record = Dom.composedPath(field).find(this.rootSelector)[0];
-			console.log(Dom.composedPath(field));
-
-
-		/*
-			if(e.type == "click" && !isEditing(field)){
-				if(this.editingElement != null && this.editingElement != field){
-					this.save(previousField,previousNodeName);
-				}
-				this.editingElement = this.edit(field,record,this.editingElement);
-				this.editingElement.focus();
-			}*/
-
-			if(e.type == "keyup" &&  ["Enter"].includes(e.key)) {
->>>>>>> f912c1f120f6707decf7c99d92cf209ffd7ce1a7
 				console.log(field.nodeName,"saved.");
 				if("TEXTAREA" == nodeName && !e.shiftKey) return false;
 				var db = app.getDatabase("mydb");
