@@ -207,7 +207,6 @@ const App = (function(){
 			},
 
 
-		
 			dom: {
 				isRouteElement: function(elem){
 						return elem.dataset && elem.dataset.route;
