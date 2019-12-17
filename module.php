@@ -36,6 +36,7 @@ function doAdminPage() {
 		"lib/modal.js",
 		"lib/view.js",
 		"lib/http.js",
+		"lib/event.js",
 		"menu.js",
 		"event/KeyboardManager.js",
 		"modules/editable/Dom.js",

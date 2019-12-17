@@ -8,7 +8,7 @@ const SCRIPT_PATH = "modules/webconsole/assets";
 self.importScripts(SCRIPT_PATH + "/lib/Server.js");
 
 
-const myServer = new Server({ version: 0.01 });
+const myServer = new Server({version:0.01});
 
 var CACHE_NAME = 'my-site-cache-v1';
 var urlsToCache = [
@@ -18,7 +18,7 @@ var urlsToCache = [
     SCRIPT_PATH+'/css/keyboardManager.css',
     SCRIPT_PATH+'/css/materials.css',
     SCRIPT_PATH+'/css/siteStatus.css',
-    SCRIPT_PATH+'/css/us.css',
+    SCRIPT_PATH+'/css/ux.css',
     SCRIPT_PATH+'/menu.js',
     SCRIPT_PATH+'/settings.js'
 ];
