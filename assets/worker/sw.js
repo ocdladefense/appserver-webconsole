@@ -19,6 +19,7 @@ var urlsToCache = [
     SCRIPT_PATH+'/css/materials.css',
     SCRIPT_PATH+'/css/siteStatus.css',
     SCRIPT_PATH+'/css/ux.css',
+    SCRIPT_PATH+'/app.js',
     SCRIPT_PATH+'/menu.js',
     SCRIPT_PATH+'/settings.js'
 ];
