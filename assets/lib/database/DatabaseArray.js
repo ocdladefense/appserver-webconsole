@@ -42,20 +42,28 @@ var DatabaseArray = (function(){
 		},
 
 		save: function(record, name){
-				var id = record.id || autoIncrement++;
-				var created = record.created || Date.now();
-				record.id = id;
-				record.created = created;
-
-				return record.id ? this.updateRecord(record,name) : this.addRecord(record,name);
+				var newRecord;
+				
+				
+				if(null == record.id){
+					newRecord = this.addRecord(record,name);
+					
+				}
+				else{
+					newRecord = this.updateRecord(record,name)
+				}
+				return newRecord;
+				
+				
 		},
 
 
 		addRecord:function(record, name){
+			record.id = autoIncrement++;
+			record.created = Date.now();
 			var table = this.getTable(name);
 			table[record.id] = record;
 			console.log("record added");			
-			this.saveToDatabase(record,name);
 			return record;
 		},
 		getRecords: function(tableName){
@@ -64,11 +72,15 @@ var DatabaseArray = (function(){
 		persistTable: function(tableName){
 				//grab pointer to local mySql database
 		},
+		//needs to update instead of replace
 		updateRecord: function(record, name){
 			var table = this.getTable(name);
-			table[record.id] = record;
+
+			for(var fieldName in record){
+				table[record.id][fieldName] = record[fieldName];
+			}
+			//table[record.id] = record;
 			console.log("record updated");
-			this.saveToDatabase(record,name);
 			return record;
 		},
 		dumpTable:function(tableName){

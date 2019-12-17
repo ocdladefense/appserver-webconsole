@@ -64,6 +64,7 @@ const DomDataEvent = (function() {
 				
 				
 				id = (record.dataset && record.dataset.recordId) || null;
+				console.log("the id is:" + id);
 				fieldName = (field.dataset && field.dataset.field) || null;
 
 				if(fieldName == null){
@@ -71,10 +72,13 @@ const DomDataEvent = (function() {
 				}
 
 				var note = {
-					id:id	
+					id:id,	
+					//fieldName:field.value
 				};
 				note[fieldName] = field.value; 
-				
+				fieldValue = field.value;
+				console.log(note);
+				console.log(note[fieldName]);
 				var savedRecord = db.save(note,"notes");
 				console.log(record);
 				record.setAttribute("data-record-id", savedRecord.id);
