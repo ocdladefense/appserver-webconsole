@@ -19,9 +19,24 @@ function clientFetchJson(url){
        this.IpAddress = "847q090952";
        this.features = array();
    }
-   var networkStatus = true;
-   window.addEventListener('offline', function(){networkStatus = false});
-   window.addEventListener('online', function(){networkStatus = true});
+   
+
+   window.addEventListener('offline', function(){tellWorker("connected",false);});
+   window.addEventListener('online', function(){tellWorker("connected",true);});
+
+
+
+function tellWorker(command,value) {
+	if (navigator.serviceWorker.controller) {
+		console.log("Sending message to service worker");
+		navigator.serviceWorker.controller.postMessage({
+				"command": command,
+				"message": value
+		});
+	} else {
+		console.log("No Service Worker");
+	}
+}
 
 // function goOffline(){
 //     Object.defineProperty(navigator, "onLine", {value:false});
