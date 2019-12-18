@@ -16,8 +16,8 @@ const DatabaseIndexedDb = (function(){
 	
 		init: function() {
 			const customerData = [
-				{ id: "444-44-4444", name: "Bill", age: 35, email: "bill@company.com" },
-				{ id: "555-55-5555", name: "Donna", age: 32, email: "donna@home.org" }
+				{ ssn: "444-44-4444", name: "Bill", age: 35, email: "bill@company.com" },
+				{ ssn: "555-55-5555", name: "Donna", age: 32, email: "donna@home.org" }
 			];
 
 			var request = indexedDB.open("mydb", 1);
@@ -36,7 +36,7 @@ const DatabaseIndexedDb = (function(){
 
 				var db = event.target.result;
 
-				var objectStore = db.createObjectStore("customers", { autoIncrement: true });
+				var objectStore = db.createObjectStore("customers", { keyPath: "ssn" });
 
 				objectStore.createIndex("name", "name", { unique: false });
 
@@ -46,7 +46,7 @@ const DatabaseIndexedDb = (function(){
 					// Store values in the newly created objectStore.
 					var customerObjectStore = db.transaction("customers", "readwrite").objectStore("customers");
 					customerData.forEach(function(customer) {
-					  customerObjectStore.add(customer.name);
+					  customerObjectStore.add(customer);
 					});
 
 					console.log(customerObjectStore);
@@ -55,6 +55,28 @@ const DatabaseIndexedDb = (function(){
 
 			return request;
 		},
+
+		getData: function(){
+			var request = indexedDB.open("mydb", 1);	
+			request.onerror = function(event) {
+				// Handle errors!
+			};
+			request.onsuccess = function(event) {
+				var db = event.target.result;
+				var transaction = db.transaction(["customers"]);
+				var objectStore = transaction.objectStore("customers");
+				var request = objectStore.get("444-44-4444");
+				request.onerror = function(event) {
+					// Handle errors!
+				  };
+				request.onsuccess = function(event) {
+					// Do something with the request.result!
+					console.log("Name for SSN 444-44-4444 is " + request.result.name);
+				  };
+			};
+		},
+
+
 
 		getTable: function(tableName){},
 		

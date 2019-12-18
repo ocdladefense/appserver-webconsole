@@ -58,6 +58,9 @@ const Server = (function(){
 
         setDatabase: function(database) {
             this.database = database;
+        },
+        getDatabase: function(){
+            return this.database;
         }
         
 
