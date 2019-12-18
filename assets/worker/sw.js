@@ -3,7 +3,16 @@ Service worker
  */ 
 
 const SCRIPT_PATH = "modules/webconsole/assets";
+var networkStatus = true;
 
+self.onmessage = function(e){
+	var data = e.data;
+	console.log("Service Worker message is: ",e);
+	if(data.command == "connected") {
+		networkStatus = data.message;
+		console.log("Updated network status to: "+data.message);
+	}
+}
 
 self.importScripts(SCRIPT_PATH + "/lib/Server.js");
 
@@ -15,6 +24,7 @@ var urlsToCache = [
     '/webconsole',
     SCRIPT_PATH+'/lib/view.js',
     SCRIPT_PATH+'/lib/event.js',
+    SCRIPT_PATH+'/lib/client.js',
     SCRIPT_PATH+'/css/keyboardManager.css',
     SCRIPT_PATH+'/css/materials.css',
     SCRIPT_PATH+'/css/siteStatus.css',
@@ -33,6 +43,10 @@ self.addEventListener('install', function(event) {
         return cache.addAll(urlsToCache);
       })
   );
+});
+
+self.addEventListener("activate",function(event) {
+	event.waitUntil(clients.claim());
 });
 
 self.addEventListener('fetch', function(event) {
