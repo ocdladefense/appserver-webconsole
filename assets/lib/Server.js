@@ -18,6 +18,9 @@ const Server = (function(){
     var server = {
         name: null,
 
+        cache: null,
+
+        database: null,
 
         services: {},
 
@@ -29,15 +32,33 @@ const Server = (function(){
 
         
         register: function(registration) {
-
+            console.log(this.version);
         },
 
 
-        install: function(worker) {
-
-
+        getInstaller: function() {
+            console.log(this);
+            // Perform install steps
+            return (function(event) {
+                event.waitUntil(
+                    caches.open(this.cache.name)
+                    .then((cache) => {
+                        console.log('Opened cache');
+                        return cache.addAll(this.cache.urlsToCache);
+                    })
+                );
+                // Perform database init
+                var request = this.database.init();
+            }).bind(this);
         },
 
+        setCache: function(cache) {
+            this.cache = cache;
+        },
+
+        setDatabase: function(database) {
+            this.database = database;
+        }
         
 
     };
@@ -45,11 +66,11 @@ const Server = (function(){
 
     // Constructor
     function Server(init){
-        this.version = init.version || 0.00;
+        this.version = init.version || 0;
 
     }
 
-
+    Server.prototype = server;
 
     // Public/static 
     Server.time = function(){

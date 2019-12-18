@@ -14,7 +14,48 @@ const DatabaseIndexedDb = (function(){
 			body:"hello from mars"
 		},
 	
-	
+		init: function() {
+			const customerData = [
+				{ id: "444-44-4444", name: "Bill", age: 35, email: "bill@company.com" },
+				{ id: "555-55-5555", name: "Donna", age: 32, email: "donna@home.org" }
+			];
+
+			var request = indexedDB.open("mydb", 1);
+			console.log(request);
+
+			request.onerror = function(event) {
+				// Do something with request.errorCode!
+			};
+
+			request.onsuccess = function(event) {
+				console.log(request.onsuccess);
+			};
+
+			request.onupgradeneeded = function(event) {
+				console.log("Upgrading database");
+
+				var db = event.target.result;
+
+				var objectStore = db.createObjectStore("customers", { autoIncrement: true });
+
+				objectStore.createIndex("name", "name", { unique: false });
+
+				objectStore.createIndex("email", "email", { unique: true });
+
+				objectStore.transaction.oncomplete = function(event) {
+					// Store values in the newly created objectStore.
+					var customerObjectStore = db.transaction("customers", "readwrite").objectStore("customers");
+					customerData.forEach(function(customer) {
+					  customerObjectStore.add(customer.name);
+					});
+
+					console.log(customerObjectStore);
+				};
+			};
+
+			return request;
+		},
+
 		getTable: function(tableName){},
 		
 		addRecord:function(record, name){},
