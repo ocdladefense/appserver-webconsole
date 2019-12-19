@@ -1,18 +1,11 @@
 const DatabaseIndexedDb = (function(){
 
+
+
 	var database = {
 		name: null,
-		
-		schema: {
-			materials: [],
-			notes:[],
-			statuses:[]
-		},
 
-		note: {
-			timeStamp:2999,
-			body:"hello from mars"
-		},
+		stores:[],
 	
 		init: function() {
 			const customerData = [
@@ -107,7 +100,10 @@ const DatabaseIndexedDb = (function(){
 	
 	function DatabaseIndexedDb(init){
 		// set the schema; set the database name
-		this.name = init;
+		this.name = init.name;
+
+
+		this.stores = init.stores;
 	}
 	
 	DatabaseIndexedDb.prototype = database;
