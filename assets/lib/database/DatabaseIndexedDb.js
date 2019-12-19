@@ -5,15 +5,14 @@ const DatabaseIndexedDb = (function(){
 	var database = {
 		name: null,
 
+		version: null,
+
 		stores:[],
 	
 		init: function() {
-			const customerData = [
-				{ ssn: "444-44-4444", name: "Bill", age: 35, email: "bill@company.com" },
-				{ ssn: "555-55-5555", name: "Donna", age: 32, email: "donna@home.org" }
-			];
 
-			var request = indexedDB.open("mydb", 1);
+
+			var request = indexedDB.open(this.name, this.version);
 			console.log(request);
 
 			request.onerror = function(event) {
@@ -29,11 +28,20 @@ const DatabaseIndexedDb = (function(){
 
 				var db = event.target.result;
 
-				var objectStore = db.createObjectStore("customers", { keyPath: "ssn" });
+				this.stores.forEach(function(store){
+					var objectStore;
+					if(!store.autoIncrement){
+						objectStore = store.createObjectStore(store.name, {keyPath:store.keyPath});
+					}
+					else{
+						objectStore = store.createObjectStore(store.name,{autoIncrement:true});
+					}
+					store.indexes.forEach(function(index){
+						objectStore.createIndex(index.name,index.path,index.options);
+					});
+				});
 
-				objectStore.createIndex("name", "name", { unique: false });
-
-				objectStore.createIndex("email", "email", { unique: true });
+				
 
 				objectStore.transaction.oncomplete = function(event) {
 					// Store values in the newly created objectStore.
@@ -102,6 +110,7 @@ const DatabaseIndexedDb = (function(){
 		// set the schema; set the database name
 		this.name = init.name;
 
+		this.version = init.version;
 
 		this.stores = init.stores;
 	}
