@@ -10,7 +10,8 @@ const mydb = {
     name: "mydb",
     driver: "DatabaseIndexedDb",
     schema: {
-        autoIncrement:"true",
+        autoIncrement:true,
+        keyPath:"id",
         indexes:[{name:"name",path:"name", options:{ unique:false }},
                  {name:"age",path:"age", options:{ unique: false }},
                  {name:"hairColor",path:"hairColor", options:{ unique: false }}]
@@ -22,7 +23,7 @@ const customers = {
     driver:"DatabaseIndexDb",
     schema: {
         keyPath:"ssn",
-        autoIncrement:"false",
+        autoIncrement:false,
         indexes:[{name:"name",path:"name", options:{ unique:false }},
                  {name:"email",path:"email", options:{ unique: true }}]
     }

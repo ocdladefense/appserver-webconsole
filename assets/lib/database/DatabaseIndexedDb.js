@@ -1,7 +1,5 @@
 const DatabaseIndexedDb = (function(){
 
-
-
 	var database = {
 		name: null,
 
@@ -23,42 +21,47 @@ const DatabaseIndexedDb = (function(){
 				console.log(request.onsuccess);
 			};
 
-			request.onupgradeneeded = function(event) {
+			request.onupgradeneeded = (event) => {
 				console.log("Upgrading database");
 
 				var db = event.target.result;
 
-				this.stores.forEach(function(store){
+				this.stores.forEach((store) => {
 					var objectStore;
-					if(!store.autoIncrement){
-						objectStore = store.createObjectStore(store.name, {keyPath:store.keyPath});
+					if(!store.schema.autoIncrement){
+						objectStore = db.createObjectStore(store.name, {keyPath:store.schema.keyPath});
 					}
 					else{
-						objectStore = store.createObjectStore(store.name,{autoIncrement:true});
+						objectStore = db.createObjectStore(store.name,{autoIncrement:true});
 					}
-					store.indexes.forEach(function(index){
-						objectStore.createIndex(index.name,index.path,index.options);
-					});
+					// store.schema.indexes.forEach(function(index){
+					// 	objectStore.createIndex(index.name,index.path,index.options);
+					// });
 				});
-
-				
-
-				objectStore.transaction.oncomplete = function(event) {
-					// Store values in the newly created objectStore.
-					var customerObjectStore = db.transaction("customers", "readwrite").objectStore("customers");
-					customerData.forEach(function(customer) {
-					  customerObjectStore.add(customer);
-					});
-
-					console.log(customerObjectStore);
-				};
 			};
 
 			return request;
 		},
 
+		addData: function(store, objs){
+
+			console.log("ADD DATA", store, objs);
+
+			var request = indexedDB.open(this.name, this.version);
+
+			console.log("REQUEST",request);
+			
+			request.onsuccess = (event) => {
+				var db = event.target.result;
+				var objectStore = db.transaction([store], "readwrite").objectStore([store]);
+				objs.forEach((obj) => {
+					objectStore.add(obj);
+				});
+			};
+		},
+
 		getData: function(){
-			var request = indexedDB.open("mydb", 1);	
+			var request = indexedDB.open(this.name, this.version);	
 			request.onerror = function(event) {
 				// Handle errors!
 			};
