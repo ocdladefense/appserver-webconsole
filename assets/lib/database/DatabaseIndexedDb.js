@@ -45,7 +45,7 @@ const DatabaseIndexedDb = (function(){
 			return request;
 		},
 
-		addData: function(store, objs){
+		addRecord: function(store, objs){
 
 			console.log("ADD DATA", store, objs);
 
@@ -62,7 +62,7 @@ const DatabaseIndexedDb = (function(){
 			};
 		},
 
-		getData: function(store, fieldValue){
+		getRecord: function(store,key,index){
 			var request = indexedDB.open(this.name, this.version);	
 			request.onerror = function(event) {
 				// Handle errors!
@@ -71,44 +71,90 @@ const DatabaseIndexedDb = (function(){
 				var db = event.target.result;
 				var transaction = db.transaction([store]);
 				var objectStore = transaction.objectStore(store);
-				var request = objectStore.get(fieldValue);
-				request.onerror = function(event) {
-					// Handle errors!
-				  };
-				request.onsuccess = function(event) {
-					// Do something with the request.result!
-					console.log("Name for "+fieldValue + "is ");
-				  };
+				var request;
+				var data = [];
+				if(!index)
+				{	
+					request = objectStore.get(key);
+					
+
+					request.onerror = function(event) {
+						// Handle errors!
+					  };
+					request.onsuccess = function(event) {
+						// Do something with the request.result!
+						data.push(request.result);
+						console.log(request.result);
+					  };
+
+				}
+				else{
+					var theIndex = objectStore.index(index);
+					//request = theIndex.get(key);
+					var singleKeyRange = IDBKeyRange.only(key);
+					
+
+					theIndex.openCursor(singleKeyRange).onsuccess = function(event) {
+						var cursor = event.target.result;
+						if (cursor) {
+						  // cursor.key is a name, like "Bill", and cursor.value is the whole object.
+						  console.log("Name: " + cursor.key + ", Hair Color: " + cursor.value.hairColor + ", Age:" + cursor.value.age);
+						  data.push(cursor.value);
+						  cursor.continue();
+						}
+
+					};
+					
+				}
+				console.log(data);
+				return data;
 			};
 		},
 
+		deleteRecord: function(store,key){
+			var request = indexedDB.open(this.name, this.version);
+			request.onsuccess = function(event) {
+			var db = event.target.result;
+				request = db.transaction([store], "readwrite")
+					.objectStore(store)
+					.delete(key);
+			request.onsuccess = function(event) {
+					console.log("object deleted");
+			
+				};
+			}
+		},
 
+		updateRecord:function(store,key,property,value){
+			var request = indexedDB.open(this.name, this.version);
+			request.onsuccess = function(event) {
+				var db = event.target.result;
+				var objectStore = db.transaction([store], "readwrite").objectStore(store);
+				request = objectStore.get(key);
 
-		getTable: function(tableName){},
-		
-		addRecord:function(record, name){},
-		
-		getRecords: function(tableName){},
-		
-		persistTable: function(tableName){},
-		
-		updateRecord: function(record, tableName){},
-		
-		dumpTable:function(tableName){},
+				request.onerror = function(event) {
+				// Handle errors!
+				};
+				request.onsuccess = function(event) {
+				// Get the old value that we want to update
+				var data = event.target.result;
+				
+				// update the value(s) in the object that you want to change
+				data[property] = value;
 
-		//define save method that pushes stuff onto the database array
-	
-		getDatabase: function(){},
-
-		saveToDatabase: function(record,tableName){
-			var today = new Date();
-			var record = {
-				body: record,
-				time: today.getDay()
+				// Put this updated object back into the database.
+				var requestUpdate = objectStore.put(data);
+				requestUpdate.onerror = function(event) {
+					// Do something with the error
+				};
+				requestUpdate.onsuccess = function(event) {
+					console.log("the record was updated");
+				};
 			};
-			this.addRecord(record,tableName);
+		
 		}
-	};
+	},
+};
 	
 	
 	function DatabaseIndexedDb(init){
