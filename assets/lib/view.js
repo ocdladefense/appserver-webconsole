@@ -145,13 +145,9 @@ vnode = vNode;
 		var parser = new DOMParser();
 		var doc = parser.parseFromString(container,"text/html");
 		// body.innerHTML = container;
-		console.log(doc);
 		var body = doc.body;
-		console.log(body);
 		var first = body.firstChild;
-		console.log(first);
 		
-		console.log(convert(first));
 		return first;
 	}
 	
@@ -164,8 +160,6 @@ vnode = vNode;
 		for(var i = 1; i < arguments.length; i++){
 			var currentBranch = i === 1 ? root : arguments[i-1];
 			var arg = arguments[i];
-			console.log("Arg is: ",arg);
-			console.log("Arg is instance of Array? ",arg instanceof Array);
 			if("function" == typeof arg) {
 				calc.push(arg[i](args[args.length-1]));
 			} else if(arg instanceof Array) {
@@ -209,10 +203,8 @@ vnode = vNode;
 	
 	function componentProps(){
 		var props = {};
-		console.log(arguments);
 		for(var i = 0; i< arguments.length; i++){
 			var arg = arguments[i];
-			console.log(arg);
 			var prop = String.prototype.split.call(arg,"="); // key value pairs
 			if(prop.length > 1) {
 				props[prop[0]] = prop[1];
@@ -229,13 +221,11 @@ vnode = vNode;
 	function tag(){
 		var nodeName, props, content;
 		nodeName = Array.prototype.splice.call(arguments,0,1)[0];
-		console.log(arguments);
 		if(arguments.length > 1) {
 			content = Array.prototype.splice.call(arguments,arguments.length-1)[0];
 		}
 
 		props = componentProps.apply(null,arguments);
-		console.log(props);
 		return vNode(nodeName,props,content);
 	}
 	
