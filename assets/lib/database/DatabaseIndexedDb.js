@@ -62,22 +62,22 @@ const DatabaseIndexedDb = (function(){
 			};
 		},
 
-		getData: function(){
+		getData: function(store, fieldValue){
 			var request = indexedDB.open(this.name, this.version);	
 			request.onerror = function(event) {
 				// Handle errors!
 			};
 			request.onsuccess = function(event) {
 				var db = event.target.result;
-				var transaction = db.transaction(["customers"]);
-				var objectStore = transaction.objectStore("customers");
-				var request = objectStore.get("444-44-4444");
+				var transaction = db.transaction([store]);
+				var objectStore = transaction.objectStore(store);
+				var request = objectStore.get(fieldValue);
 				request.onerror = function(event) {
 					// Handle errors!
 				  };
 				request.onsuccess = function(event) {
 					// Do something with the request.result!
-					console.log("Name for SSN 444-44-4444 is " + request.result.name);
+					console.log("Name for "+fieldValue + "is ");
 				  };
 			};
 		},
@@ -118,15 +118,12 @@ const DatabaseIndexedDb = (function(){
 			this.name = init;
 		} else {
 			this.name = init.name;
+			this.version = init.version;
+			this.stores = init.stores;
+			this.schemas = init.schemas; // Used specifically to create/upgrade IndexedDb database.
 		}
 		
 		if(!this.name) throw new Error("DATABASE_INITIALIZATION_ERROR: No database name provided.");
-
-		this.version = init.version;
-
-		this.stores = init.stores;
-		
-		this.schemas = init.schemas; // Used specifically to create/upgrade IndexedDb database.
 	}
 	
 	DatabaseIndexedDb.prototype = database;
