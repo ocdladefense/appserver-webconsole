@@ -13,7 +13,6 @@ const DatabaseIndexedDb = (function(){
 
 
 			var request = indexedDB.open(this.name, this.version);
-			console.log(request);
 
 			request.onerror = function(event) {
 				// Do something with request.errorCode!
@@ -45,32 +44,33 @@ const DatabaseIndexedDb = (function(){
 			return request;
 		},
 
-		addRecord: function(store, records){
+		addRecord: function(store, record){
 			var request = indexedDB.open(this.name, this.version);
 			var result = new Promise(function(resolve,reject){
 				request.onsuccess = (event) => {
 					var db = event.target.result;
 					var objectStore = db.transaction([store], "readwrite").objectStore([store]);
-					records.forEach((record) => {
-						var addRequest = objectStore.add(record);
-						addRequest.onsuccess = function(event){
-							resolve(event.target.result);
-						}	
-					});
+					console.log(record);
+					var addRequest = objectStore.add(record);
+					addRequest.onsuccess = function(event){
+						resolve(event.target.result);
+					}	
 				};
 			});
 			
-			console.log(result);
 			return result;
 		},
 
 		save: function(store,record){
 			var result;
 			if(null == record.id){
+				delete record.id;
 				result = this.addRecord(store,record);
-				
 			}
 			else{
+				if(typeof record.id === "string") {
+					record.id = parseInt(record.id);
+				}
 				result = this.updateRecord(store,record);
 			}
 			//result is a promise
@@ -140,13 +140,13 @@ const DatabaseIndexedDb = (function(){
 			}
 		},
 
-		updateRecord:function(store,key,property,value){
+		updateRecord:function(store,record){
 			var request = indexedDB.open(this.name, this.version);
 			var result = new Promise(function(resolve,reject){
 				request.onsuccess = function(event) {
 					var db = event.target.result;
 					var objectStore = db.transaction([store], "readwrite").objectStore(store);
-					request = objectStore.get(key);
+					request = objectStore.get(record.id);
 
 					request.onerror = function(event) {
 						// Handle errors!
@@ -156,7 +156,7 @@ const DatabaseIndexedDb = (function(){
 						var data = event.target.result;
 						
 						// update the value(s) in the object that you want to change
-						data[property] = value;
+						data = record;
 
 						// Put this updated object back into the database.
 						var requestUpdate = objectStore.put(data);

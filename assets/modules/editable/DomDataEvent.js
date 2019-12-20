@@ -59,8 +59,7 @@ const DomDataEvent = (function() {
 				console.log(field.nodeName,"saved.");
 				
 				if("TEXTAREA" == nodeName && !e.shiftKey) return false;
-				var db = app.getDatabase("mydb");
-				var table = db.getTable("notes");
+				var db = new DatabaseIndexedDb({name:"my-db-v1"});
 				
 				
 				id = (record.dataset && record.dataset.recordId) || null;
@@ -81,6 +80,7 @@ const DomDataEvent = (function() {
 				console.log(note[fieldName]);
 				db.save("notes",note).then(function(result){
 					console.log(record);
+					console.log(result);
 					record.setAttribute("data-record-id", result);
 				});
 					
