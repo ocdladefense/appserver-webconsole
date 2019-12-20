@@ -79,12 +79,11 @@ const DomDataEvent = (function() {
 				fieldValue = field.value;
 				console.log(note);
 				console.log(note[fieldName]);
-				var savedRecord = db.save(note,"notes");
-				console.log(record);
-				record.setAttribute("data-record-id", savedRecord.id);
-				
-				
-				
+				db.save("notes",note).then(function(result){
+					console.log(record);
+					record.setAttribute("data-record-id", result);
+				});
+					
 			}
 			
 		}

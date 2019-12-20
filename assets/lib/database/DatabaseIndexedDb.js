@@ -45,21 +45,38 @@ const DatabaseIndexedDb = (function(){
 			return request;
 		},
 
-		addRecord: function(store, objs){
-
-			console.log("ADD DATA", store, objs);
-
+		addRecord: function(store, records){
 			var request = indexedDB.open(this.name, this.version);
-
-			console.log("REQUEST",request);
+			var result = new Promise(function(resolve,reject){
+				request.onsuccess = (event) => {
+					var db = event.target.result;
+					var objectStore = db.transaction([store], "readwrite").objectStore([store]);
+					records.forEach((record) => {
+						var addRequest = objectStore.add(record);
+						addRequest.onsuccess = function(event){
+							resolve(event.target.result);
+						}	
+					});
+				};
+			});
 			
-			request.onsuccess = (event) => {
-				var db = event.target.result;
-				var objectStore = db.transaction([store], "readwrite").objectStore([store]);
-				objs.forEach((obj) => {
-					objectStore.add(obj);
-				});
-			};
+			console.log(result);
+			return result;
+		},
+
+		save: function(store,record){
+			var result;
+			if(null == record.id){
+				result = this.addRecord(store,record);
+				
+			}
+			else{
+				result = this.updateRecord(store,record);
+			}
+			//result is a promise
+			return result;
+			
+			
 		},
 
 		getRecord: function(store,key,index){
@@ -102,9 +119,7 @@ const DatabaseIndexedDb = (function(){
 						  data.push(cursor.value);
 						  cursor.continue();
 						}
-
-					};
-					
+					};	
 				}
 				console.log(data);
 				return data;
@@ -127,34 +142,39 @@ const DatabaseIndexedDb = (function(){
 
 		updateRecord:function(store,key,property,value){
 			var request = indexedDB.open(this.name, this.version);
-			request.onsuccess = function(event) {
-				var db = event.target.result;
-				var objectStore = db.transaction([store], "readwrite").objectStore(store);
-				request = objectStore.get(key);
-
-				request.onerror = function(event) {
-				// Handle errors!
-				};
+			var result = new Promise(function(resolve,reject){
 				request.onsuccess = function(event) {
-				// Get the old value that we want to update
-				var data = event.target.result;
-				
-				// update the value(s) in the object that you want to change
-				data[property] = value;
+					var db = event.target.result;
+					var objectStore = db.transaction([store], "readwrite").objectStore(store);
+					request = objectStore.get(key);
 
-				// Put this updated object back into the database.
-				var requestUpdate = objectStore.put(data);
-				requestUpdate.onerror = function(event) {
-					// Do something with the error
-				};
-				requestUpdate.onsuccess = function(event) {
-					console.log("the record was updated");
-				};
-			};
-		
+					request.onerror = function(event) {
+						// Handle errors!
+					};
+					request.onsuccess = function(event) {
+						// Get the old value that we want to update
+						var data = event.target.result;
+						
+						// update the value(s) in the object that you want to change
+						data[property] = value;
+
+						// Put this updated object back into the database.
+						var requestUpdate = objectStore.put(data);
+						requestUpdate.onerror = function(event) {
+							// Do something with the error
+						};
+						requestUpdate.onsuccess = function(event) {
+							resolve(event.target.result);
+							console.log("the record was updated");
+						};
+					};
+				}
+			});
+			return result;
 		}
-	},
-};
+	};
+
+
 	
 	
 	function DatabaseIndexedDb(init){

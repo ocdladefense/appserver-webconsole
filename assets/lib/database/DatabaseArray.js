@@ -43,8 +43,6 @@ var DatabaseArray = (function(){
 
 		save: function(record, name){
 				var newRecord;
-				
-				
 				if(null == record.id){
 					newRecord = this.addRecord(record,name);
 					
