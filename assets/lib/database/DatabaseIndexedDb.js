@@ -6,6 +6,8 @@ const DatabaseIndexedDb = (function(){
 		version: null,
 
 		stores:[],
+		
+		schemas: [],
 	
 		init: function() {
 
@@ -26,17 +28,17 @@ const DatabaseIndexedDb = (function(){
 
 				var db = event.target.result;
 
-				this.stores.forEach((store) => {
+				this.schemas.forEach((store) => {
 					var objectStore;
-					if(!store.schema.autoIncrement){
-						objectStore = db.createObjectStore(store.name, {keyPath:store.schema.keyPath});
+					if(!store.autoIncrement){
+						objectStore = db.createObjectStore(store.name, {keyPath:store.keyPath});
 					}
 					else{
-						objectStore = db.createObjectStore(store.name,{autoIncrement:true});
+						objectStore = db.createObjectStore(store.name,{keyPath:store.keyPath, autoIncrement:true});
 					}
-					// store.schema.indexes.forEach(function(index){
-					// 	objectStore.createIndex(index.name,index.path,index.options);
-					// });
+					store.indexes.forEach(function(index){
+						objectStore.createIndex(index.name,index.path,index.options);
+					});
 				});
 			};
 
@@ -111,11 +113,20 @@ const DatabaseIndexedDb = (function(){
 	
 	function DatabaseIndexedDb(init){
 		// set the schema; set the database name
-		this.name = init.name;
+		// Database name is the minimum so throw an error if it's not defined.
+		if(typeof init === "string") {
+			this.name = init;
+		} else {
+			this.name = init.name;
+		}
+		
+		if(!this.name) throw new Error("DATABASE_INITIALIZATION_ERROR: No database name provided.");
 
 		this.version = init.version;
 
 		this.stores = init.stores;
+		
+		this.schemas = init.schemas; // Used specifically to create/upgrade IndexedDb database.
 	}
 	
 	DatabaseIndexedDb.prototype = database;
