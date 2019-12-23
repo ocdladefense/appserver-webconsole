@@ -32,13 +32,16 @@ const App = (function(){
 
 			databases: {},
 
-
+			defaultDatabase: null,
+			
 
 			getDatabase: function(dbName){
 				return this.databases[dbName];
 			},
 
-		
+			getDefaultDatabase: function(){
+				return this.defaultDatabase;
+			},
 
 			hasCommand: function(letter){
 				if(this.route[shortcut] == letter){
@@ -82,7 +85,7 @@ const App = (function(){
 
 			getRoute: function(routeName){
 				var r = this.routes[routeName];
-				console.log(this.routes);
+
 				if(null == r) throw new Error("The route, "+routeName+", does not exist.");
 				return this.routes[routeName];
 			},
@@ -115,7 +118,7 @@ const App = (function(){
 			executeRoute: function(route, data){ 
 				var req, reqh, resp, resph;
 			
-				console.log(route,data); // Give us the basics.
+
 				modal.hide();     
 				
 				if(data == null && route.hasParams) { // Get user input when needed.
@@ -139,10 +142,10 @@ const App = (function(){
 			
 				// Prepare our response to the route.
 				resp = req.isSynthetic() ? this.respondWith(route,req) : req.send();
-				console.log(resp);
+
 				var contentType;
 				resp.then(function(resp){
-					// console.log(resp.headers[0]);
+
 					var ret;
 					contentType = getContentType(resp);
 					if(getContentType(resp) == MIME_APPLICATION_JSON){
@@ -155,7 +158,7 @@ const App = (function(){
 					return ret;
 				})
 				.then((body) => {
-					console.log("Response body is: ",body);
+
 					return route.render(body);
 				})
 				.then(this.render.bind(this, route))
@@ -174,7 +177,7 @@ const App = (function(){
 				var stage = document.getElementById("stage");
 				var oldNode = stage.firstElementChild;
 				var stageContent = oldNode.cloneNode(false);
-				console.log("RENDER THIS OBJECT  "+obj);
+
 				if(route.headers.contentType == "text/html") {
 					document.getElementById("stage-content").innerHTML = obj;
 					return;
@@ -246,11 +249,13 @@ const App = (function(){
 				
 				if(settings.databases) {
 					for(var i = 0, dbs=settings.databases; i<dbs.length; i++){
-						this.databases[dbs[i].name] = Database.connect(dbs[i]);
+						this.defaultDatabase = this.databases[dbs[i].name] = Database.connect(dbs[i]);
 					}
 				}
+				
 				document.addEventListener("ShortcutEvent", this);
 				document.addEventListener("click",this,true);
+				
 				this.tools.push({
 					name: "highlight",
 					active: true,

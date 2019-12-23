@@ -24,7 +24,7 @@ define("note",function(){
 
 		function one(note,topPosition) {
 
-			var container = vNode("div",{className:"record-container note-container", style:("top:" + topPosition + "px")},[]);
+			var container = vNode("div",{className:"record-container note-container", style:("top:" + topPosition + "px"),"data-record-type":"note"},[]);
 			container.children.push(formItem("created","div",getTimestamp(),false));
 			container.children.push(formItem("title","h3",note.title,"title",true));
 			container.children.push(formItem("body","div",note.body,"body",true));

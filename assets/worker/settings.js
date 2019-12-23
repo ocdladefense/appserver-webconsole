@@ -2,15 +2,15 @@ const serverSettings = {
 
 };
 
-const cacheSettings ={
-
+const cacheSettings = {
+	name: 'mycache'
 };
 
 
 
 const storeDefinitions = [
 	{
-		name:"customers",
+		name:"customer",
 		autoIncrement:false,
 		keyPath:"ssn",
 		indexes:[
@@ -19,22 +19,38 @@ const storeDefinitions = [
 		]
 	},
 	{
-		name:"notes",
+		name:"note",
 		autoIncrement:true,
 		keyPath:"id",
 		indexes:[
-			{name:"name",path:"name", options:{ unique:false }},
-			{name:"age",path:"age", options:{ unique: false }},
-			{name:"hairColor",path:"hairColor", options:{ unique: false }}
+			{name:"title",path:"title", options:{ unique:false }},
+			{name:"body",path:"body", options:{ unique: false }}
+		]
+	},
+	{
+		name:"document",
+		autoIncrement:true,
+		keyPath:"id",
+		indexes:[
+			{name:"title",path:"title", options:{ unique:false }},
+			{name:"body",path:"body", options:{ unique: false }}
 		]
 	}
 ];
 
 
+
 const databaseSettings={
-	name: "my-db-v1",
+	name: "mydb",
 	version:1,
 	driver:"DatabaseIndexedDb",
-	stores: ["customers","notes"], // for this database object only give access to these names object stores.
+	stores: ["customer","note","document"], // for this database object only give access to these names object stores.
 	schemas: storeDefinitions // used specifically to create/upgrade the database
+};
+
+
+const config = {
+	database: databaseSettings,
+	cache: cacheSettings,
+	server: serverSettings
 };

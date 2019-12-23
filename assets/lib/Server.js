@@ -37,16 +37,12 @@ const Server = (function(){
 
 
         getInstaller: function() {
-            console.log(this);
             // Perform install steps
             return (function(event) {
-                event.waitUntil(
-                    caches.open(this.cache.name)
-                    .then((cache) => {
-                        console.log('Opened cache');
-                        return cache.addAll(this.cache.urlsToCache);
-                    })
+                /* event.waitUntil(
+									this.cache.init()
                 );
+                */
                 // Perform database init
                 var request = this.database.init();
             }).bind(this);

@@ -35,9 +35,10 @@ function doAdminPage() {
 		"lib/datetime.js",
 		"lib/modal.js",
 		"lib/view.js",
-		"lib/http.js",
+		"lib/http/http.js",
+		"lib/http/HttpCache.js",
 		"lib/event.js",
-		"lib/client.js",
+		"lib/Client.js",
 		"menu.js",
 		"event/KeyboardManager.js",
 		"modules/editable/Dom.js",
@@ -59,6 +60,10 @@ function doAdminPage() {
 	));
 	
 	$content = file_get_contents(BASE_PATH ."/content/static/sample.html");
-	return $template->render(array("content"=> $content,"scripts"=>implode($scripts,"\n")));
+	return $template->render(array(
+		"defaultStageClass" => "not-home", //home
+		"content"=> $content,
+		"scripts"=>implode($scripts,"\n")
+	));
 
 }

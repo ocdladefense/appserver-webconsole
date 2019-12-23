@@ -1,14 +1,174 @@
-const DatabaseIndexedDb = (function(){
+var DatabaseIndexedDb = (function(){
+
+
+	var isQueryOp = function(op) {
+		return false;
+	};
+	
+	// Default transaction success handler; no need to repeat this handler.
+	var txSuccess = function(resolve,results,event) {
+		resolve(results);
+		// resolve(event.target);
+	};
+	
+	// Default transaction error handler; no need to repeat this handler.
+	var txError = function(reject,reason) {
+		reject(reason);
+	};
+
+
 
 	var database = {
 		name: null,
 
 		version: null,
+		
+		conn: null,
 
 		stores:[],
 		
 		schemas: [],
 	
+		/**
+		 * Cache open connections; if the connection has not been opened 
+		 *  then return a Promise that can be consumed without having
+		 * to repeat the connection code in each function.
+		 */
+		open: function(){
+			if(!!this.conn) return this.conn;
+			this.conn = new Promise( (resolve,reject) => {
+				var request = indexedDB.open(this.name, this.version);
+				request.onsuccess = (event) => {
+					resolve(event.target.result);
+				};
+				request.onerror = (reason) => {
+					reject(reason);
+				};
+			});
+			
+			return this.conn;
+		},
+		
+
+		startTransaction: function(stores, records, method){
+			var mode = ["put","add","delete"].includes(method) ? "readwrite" : "read";
+			stores = Array.isArray(stores) ? stores : [stores];
+			records = Array.isArray(records) ? records : [records];
+
+			return this.open().then( (db) => {
+				var tx = db.transaction(stores, mode);
+				var s = tx.objectStore(stores);
+				var results = [];
+				
+				records.forEach( (record) => {
+					var r = s[method](record);
+					r.onsuccess = (event) => { console.log(event); results.push(event.target.result); };
+				});
+				
+				return new Promise( (resolve,reject) => {
+					tx.commit();
+					tx.oncomplete = txSuccess.bind(tx,resolve,results);
+					tx.onerror = txError.bind(tx,reject);
+				});
+			});
+			
+		},
+
+
+		add: function(store,records){
+			records = Array.isArray(records) ? records : [records];
+			
+			return this.startTransaction(store,records,"add");
+		},
+		
+		/**
+		 * To update objects incrementally, we have to open a read transaction 
+		 *  and get the object first then pass an updated version 
+		 *   of the object using the IndexedDb put method.
+		 */
+		update: function(store,records) {
+			var records = this.getObject(store,records);
+			
+			return this.startTransaction(store,records,"put");
+		},
+		
+		delete: function(store,records) {
+			return this.startTransaction(store,records,"delete");
+		},
+
+
+		/**
+		 * Helper function to either add a new object in a store
+		 *  or to update it.  Depends on whether a key is provided.
+		 */
+		save: function(store,record){
+			var result;
+			if(null == record.id){
+				delete record.id;
+				result = this.add(store,record);
+			}
+			else{
+				if(typeof record.id === "string") {
+					record.id = parseInt(record.id);
+				}
+				result = this.update(store,record);
+			}
+			//result is a promise
+			return result;
+		},
+
+
+
+		get: function(store,key,index) {
+			
+			if(!index) {	
+				return this.getOne(store,key);
+			} else {
+				return this.getAnother(store,key,index);
+			}
+		},
+		
+		
+		/**
+		 * Find an object in the store by its primary key.
+		 *  Resolves to the object stored at that key.
+		 */
+		getOne: function(){
+		
+			return this.open().then( (db) => {
+				var request = objectStore.get(key);
+		
+				return new Promise( (resolve,reject) => {
+					request.onerror = function(event) {
+						// Handle errors!
+					};
+					request.onsuccess = function(event) {
+						resolve(event.target.result);
+					};
+				});
+			
+			});
+
+		},
+		
+		getAnother: function(){
+			var theIndex = objectStore.index(index);
+			//request = theIndex.get(key);
+			var singleKeyRange = IDBKeyRange.only(key);
+		
+
+			theIndex.openCursor(singleKeyRange).onsuccess = function(event) {
+				var cursor = event.target.result;
+				if (cursor) {
+					// cursor.key is a name, like "Bill", and cursor.value is the whole object.
+					console.log("Name: " + cursor.key + ", Hair Color: " + cursor.value.hairColor + ", Age:" + cursor.value.age);
+					data.push(cursor.value);
+					cursor.continue();
+				}
+			};	
+		},
+
+		
 		init: function() {
 
 
@@ -43,135 +203,6 @@ const DatabaseIndexedDb = (function(){
 
 			return request;
 		},
-
-		addRecord: function(store, record){
-			var request = indexedDB.open(this.name, this.version);
-			var result = new Promise(function(resolve,reject){
-				request.onsuccess = (event) => {
-					var db = event.target.result;
-					var objectStore = db.transaction([store], "readwrite").objectStore([store]);
-					console.log(record);
-					var addRequest = objectStore.add(record);
-					addRequest.onsuccess = function(event){
-						resolve(event.target.result);
-					}	
-				};
-			});
-			
-			return result;
-		},
-
-		save: function(store,record){
-			var result;
-			if(null == record.id){
-				delete record.id;
-				result = this.addRecord(store,record);
-			}
-			else{
-				if(typeof record.id === "string") {
-					record.id = parseInt(record.id);
-				}
-				result = this.updateRecord(store,record);
-			}
-			//result is a promise
-			return result;
-			
-			
-		},
-
-		getRecord: function(store,key,index){
-			var request = indexedDB.open(this.name, this.version);	
-			request.onerror = function(event) {
-				// Handle errors!
-			};
-			request.onsuccess = function(event) {
-				var db = event.target.result;
-				var transaction = db.transaction([store]);
-				var objectStore = transaction.objectStore(store);
-				var request;
-				var data = [];
-				if(!index)
-				{	
-					request = objectStore.get(key);
-					
-
-					request.onerror = function(event) {
-						// Handle errors!
-					  };
-					request.onsuccess = function(event) {
-						// Do something with the request.result!
-						data.push(request.result);
-						console.log(request.result);
-					  };
-
-				}
-				else{
-					var theIndex = objectStore.index(index);
-					//request = theIndex.get(key);
-					var singleKeyRange = IDBKeyRange.only(key);
-					
-
-					theIndex.openCursor(singleKeyRange).onsuccess = function(event) {
-						var cursor = event.target.result;
-						if (cursor) {
-						  // cursor.key is a name, like "Bill", and cursor.value is the whole object.
-						  console.log("Name: " + cursor.key + ", Hair Color: " + cursor.value.hairColor + ", Age:" + cursor.value.age);
-						  data.push(cursor.value);
-						  cursor.continue();
-						}
-					};	
-				}
-				console.log(data);
-				return data;
-			};
-		},
-
-		deleteRecord: function(store,key){
-			var request = indexedDB.open(this.name, this.version);
-			request.onsuccess = function(event) {
-			var db = event.target.result;
-				request = db.transaction([store], "readwrite")
-					.objectStore(store)
-					.delete(key);
-			request.onsuccess = function(event) {
-					console.log("object deleted");
-			
-				};
-			}
-		},
-
-		updateRecord:function(store,record){
-			var request = indexedDB.open(this.name, this.version);
-			var result = new Promise(function(resolve,reject){
-				request.onsuccess = function(event) {
-					var db = event.target.result;
-					var objectStore = db.transaction([store], "readwrite").objectStore(store);
-					request = objectStore.get(record.id);
-
-					request.onerror = function(event) {
-						// Handle errors!
-					};
-					request.onsuccess = function(event) {
-						// Get the old value that we want to update
-						var data = event.target.result;
-						
-						// update the value(s) in the object that you want to change
-						data = record;
-
-						// Put this updated object back into the database.
-						var requestUpdate = objectStore.put(data);
-						requestUpdate.onerror = function(event) {
-							// Do something with the error
-						};
-						requestUpdate.onsuccess = function(event) {
-							resolve(event.target.result);
-							console.log("the record was updated");
-						};
-					};
-				}
-			});
-			return result;
-		}
 	};
 
 

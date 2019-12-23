@@ -37,9 +37,9 @@ const notes = (function(){
 			document.addEventListener("keyup",this.handler);
 			
 			var topPosition = this.getNotePosition();
-			console.log(topPosition);
+
 			topPosition += 180;
-			console.log(topPosition);
+
 			var node = vNode("div",{},Note.one(note,topPosition));
 			
 			console.log("Note is: ",node);
@@ -53,7 +53,7 @@ const notes = (function(){
 				return -90;
 			}
 			var noteContainer = noteContainers[noteContainers.length -1];
-			console.log(noteContainer);
+
 			var topPosition = noteContainer.offsetTop;
 			var leftPosition = noteContainer.offsetLeft;
 

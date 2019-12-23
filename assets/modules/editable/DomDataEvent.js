@@ -6,6 +6,7 @@ const DomDataEvent = (function() {
 		// return (!op1 && op2);
 	}
 
+	/*
 	function getElementNode(inputOrTextArea,nodeName){
 		var text,props;
 
@@ -18,6 +19,7 @@ const DomDataEvent = (function() {
 
 		return vNode(nodeName,props,text);
 	}
+	*/
 
 	var data = {
 
@@ -38,60 +40,50 @@ const DomDataEvent = (function() {
 		handleEvent: function(e){
 			var field = e.target;
 			var nodeName = field.nodeName;
-			var record;
+			var store;
+			var record, domRecord;
 			var previousField;
 			var input;
 			var id;
 			var fieldName;
 
 
-			//if(!isEditable(field)) return false;
-
-			//this.targetNodeName = field.nodeName;
-			//this.targetClassName = getClass(field);
-
-			record = Dom.composedPath(field).find(this.rootSelector)[0];
-			console.log(Dom.composedPath(field));
-
-
-
 			if(e.type == "keyup" &&  ["Enter"].includes(e.key)) {
+				domRecord = Dom.composedPath(field).find(this.rootSelector)[0];
 				console.log(field.nodeName,"saved.");
 				
 				if("TEXTAREA" == nodeName && !e.shiftKey) return false;
-				var db = new DatabaseIndexedDb({name:"my-db-v1"});
+				var db = app.getDefaultDatabase();
 				
 				
-				id = (record.dataset && record.dataset.recordId) || null;
-				console.log("the id is:" + id);
+				id = (domRecord.dataset && domRecord.dataset.recordId) || null;
+				store = (domRecord.dataset && domRecord.dataset.recordType) || null;
+				
 				fieldName = (field.dataset && field.dataset.field) || null;
 
+				
 				if(fieldName == null){
 					throw new Error("field name is null");
 				}
 
-				var note = {
-					id:id,	
-					//fieldName:field.value
-				};
-				note[fieldName] = field.value; 
-				fieldValue = field.value;
-				console.log(note);
-				console.log(note[fieldName]);
-				db.save("notes",note).then(function(result){
-					console.log(record);
-					console.log(result);
-					record.setAttribute("data-record-id", result);
+				var record = {id:id};
+				record[fieldName] = field.value; 
+
+				db.save(store,record).then(function(result){
+					console.log("Record is: ",record);
+					console.log("IndexedDb Result is: ",result);
+					domRecord.setAttribute("data-record-id", result[0]);
 				});
 					
 			}
 			
+			return false;
 		}
 	};
 		
 	function DomDataEvent(init){
-		init = init || {};
 		this.rootSelector = init || document;
+		init = init || {};
 	}
 	
 	DomDataEvent.prototype = data;
