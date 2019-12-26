@@ -18,17 +18,40 @@ const Note = (function(){
 	
 			//document.addNoteAt(note,0);
 
+		},
+
+		setDocument: function(docId) {
+			this.docId = docId;
+		},
+
+		setAttachedNode: function(nodeId) {
+			this.nodeId = nodeId;
+		},
+
+		show: function() {
+			var stageContent = document.getElementById("stage-content");
+			var elements = stageContent.querySelectorAll('p,blockquote');
+
+			var node = elements[this.nodeId];
+			this.location = $(node).position();
+
+			var vNode = noteRoute.render(this);
+			app.render(noteRoute, vNode);
+
+
+			// [theRoute, routeData] = app.processRoute("noteRoute");
+			// app.executeRoute(theRoute, this);
 		}
 	};
 	
 	function Note(obj) {
-		this.docId = null;
+		this.docId = obj.docId ? obj.docId : null;
 		
-		this.nodeId = null;
+		this.nodeId = obj.nodeId ? obj.nodeId : null;
 		
-		this.title = null;
+		this.title = obj.title;
 		
-		this.body = null;
+		this.body = obj.body;
 	}
 	
 	Note.prototype = proto;

@@ -36,9 +36,13 @@ const noteRoute = (function(){
 			document.addEventListener("click",this.handler);
 			document.addEventListener("keyup",this.handler);
 			
-			var topPosition = this.getNotePosition();
-
-			topPosition += 180;
+			var topPosition;
+			if(!note.location) {
+				topPosition = this.getNotePosition();
+				topPosition += 180;
+			} else {
+				topPosition = note.location.top;
+			}
 
 			var node = vNode("div",{},Note.one(note,topPosition));
 			
@@ -63,7 +67,7 @@ const noteRoute = (function(){
 
 
 		form: function() {
-			return vNode("div",{"id":"modalContainer"},
+			return vNode("div",{"id":"modalContainer", "style":"top: 50%;"},
 				[
 					vNode("input",{name:"title",id:"noteTitle"}, []),
 					vNode("input",{name:"body",id:"noteBody",},[])
