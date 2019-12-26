@@ -12,11 +12,11 @@ const Note = (function(){
 				// do something with the IndexedDb id
 				this.id = result.id;
 			});
-		}
+		},
 	
 		load: function(){
 	
-			document.addNoteAt(note,0);
+			//document.addNoteAt(note,0);
 
 		}
 	};
@@ -37,7 +37,7 @@ const Note = (function(){
 
 	// var note = new Note({title:"foobar",body:"baz"})
 	// note.setDocument(1);
-	// note.setPosition(node#)
+	// note.setAttachedNode(node#)
 	// note.show();
 })();
 
