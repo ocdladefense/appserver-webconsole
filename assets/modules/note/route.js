@@ -1,4 +1,4 @@
-const notes = (function(){
+const noteRoute = (function(){
 	
 	var Note = getModule("note");
 	

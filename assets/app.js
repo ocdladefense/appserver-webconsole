@@ -34,6 +34,15 @@ const App = (function(){
 
 			defaultDatabase: null,
 			
+			currentDocument: null, 
+			
+			loadDocument:  function(docId) {
+				this.currentDocument = docId;
+				// Perform a read op on our datastore
+				// Instantiate a Document object
+				// Display the document in the workspace
+				// Execute the route corresponds to loading and displaying Notes for that specific document.
+			},
 
 			getDatabase: function(dbName){
 				return this.databases[dbName];
@@ -245,6 +254,7 @@ const App = (function(){
 			},
 			
 			init: function(settings){
+				this.loadDocument(1);
 				this.addRoutes(settings["routes-enabled"]);
 				
 				if(settings.databases) {

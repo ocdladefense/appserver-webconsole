@@ -24,7 +24,9 @@ const storeDefinitions = [
 		keyPath:"id",
 		indexes:[
 			{name:"title",path:"title", options:{ unique:false }},
-			{name:"body",path:"body", options:{ unique: false }}
+			{name:"body",path:"body", options:{ unique: false }},
+			{name:"docId",path:"docId", options:{ unique: false }},
+			{name:"nodeId",path:"nodeId", options:{ unique: false }},  // Integer reflecting position of paragraph in document.
 		]
 	},
 	{
@@ -33,7 +35,8 @@ const storeDefinitions = [
 		keyPath:"id",
 		indexes:[
 			{name:"title",path:"title", options:{ unique:false }},
-			{name:"body",path:"body", options:{ unique: false }}
+			{name:"body",path:"body", options:{ unique: false }},
+			{name:"url",path:"url", options:{ unique: true }} // location on server
 		]
 	}
 ];
