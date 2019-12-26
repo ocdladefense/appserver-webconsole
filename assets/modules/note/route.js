@@ -27,7 +27,7 @@ const noteRoute = (function(){
 		url: function(params) {
 			var title = (params && params.title) || "Title";
 			var body = (params && params.body) || "Enter your note here...";
-			return {id:"foobar",time:2000, title:title, body:body};
+			return {time:2000, title:title, body:body};
 		},
 	
 	
@@ -44,7 +44,7 @@ const noteRoute = (function(){
 				topPosition = note.location.top;
 			}
 
-			var node = vNode("div",{},Note.one(note,topPosition));
+			var node = vNode("div",{},NoteComponent.one(note,topPosition));
 			
 			console.log("Note is: ",node);
 			

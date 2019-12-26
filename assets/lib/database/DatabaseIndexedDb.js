@@ -128,7 +128,7 @@ var DatabaseIndexedDb = (function(){
 			if(!index) {	
 				return this.getOne(store,key);
 			} else {
-				return this.getAnother(store,key,index);
+				return this.query(store,key,index);
 			}
 		},
 		
@@ -157,21 +157,35 @@ var DatabaseIndexedDb = (function(){
 
 		},
 		
-		getAnother: function(store,key,index){
-			var theIndex = objectStore.index(index);
-			//request = theIndex.get(key);
-			var singleKeyRange = IDBKeyRange.only(key);
-		
+		query: function(obj){
+			var store = obj.store;
+			var index = obj.index;
+			var value = obj.value;
 
-			theIndex.openCursor(singleKeyRange).onsuccess = function(event) {
-				var cursor = event.target.result;
-				if (cursor) {
-					// cursor.key is a name, like "Bill", and cursor.value is the whole object.
-					console.log("Name: " + cursor.key + ", Hair Color: " + cursor.value.hairColor + ", Age:" + cursor.value.age);
-					data.push(cursor.value);
-					cursor.continue();
-				}
-			};	
+			return this.open().then( (db) => {
+				var tx = db.transaction([store],"readonly");
+				var objectStore = tx.objectStore(store);
+
+				var theIndex = objectStore.index(index);
+				//request = theIndex.get(key);
+				var singleKeyRange = IDBKeyRange.only(value);
+			
+				return new Promise( (resolve,reject) => {
+					var data = [];
+					var request = theIndex.openCursor(singleKeyRange);
+					request.onsuccess = function(event) {
+						var cursor = event.target.result;
+						if (cursor) {
+							data.push(cursor.value);
+							cursor.continue();
+						} else {
+							resolve(data);
+						}
+					};
+				});
+
+
+			});	
 		},
 
 		

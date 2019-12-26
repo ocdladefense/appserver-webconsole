@@ -3,6 +3,7 @@ const Note = (function(){
 
 	var proto = {
 	
+		id: null,
 		
 		save: function(){
 		
@@ -52,6 +53,10 @@ const Note = (function(){
 		this.title = obj.title;
 		
 		this.body = obj.body;
+
+		this.location = obj.location;
+
+		this.id = obj.id;
 	}
 	
 	Note.prototype = proto;

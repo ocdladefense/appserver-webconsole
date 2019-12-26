@@ -44,6 +44,21 @@ const App = (function(){
 				// Execute the route corresponds to loading and displaying Notes for that specific document.
 			},
 
+			save: function(objectStore, record) {
+				var registeredHandlers = { note: null };
+				var saveNote = (objectStore, record) => {
+					record.docId = this.currentDocument;
+
+					return this.getDefaultDatabase().save(objectStore, record);
+				};
+
+				registeredHandlers.note = saveNote;
+
+				if(registeredHandlers[objectStore]) {
+					return registeredHandlers[objectStore](objectStore, record);
+				}
+			},
+
 			getDatabase: function(dbName){
 				return this.databases[dbName];
 			},

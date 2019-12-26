@@ -1,4 +1,4 @@
-define("note",function(){
+var NoteComponent = (function(){
 
 		function formItem(label, nodeName, value, datafield, editable) {
 			var c = vNode("div",{className:"form-item form-item-"+label});
@@ -15,7 +15,7 @@ define("note",function(){
 		
 		
 		var note = {
-			constructor: Note,
+			constructor: NoteComponent,
 			
 			toVnode: function(){
 				console.log("foobar");
@@ -23,8 +23,8 @@ define("note",function(){
 		};
 
 		function one(note,topPosition) {
-
-			var container = vNode("div",{className:"record-container note-container", style:("top:" + topPosition + "px"),"data-record-type":"note"},[]);
+			var id = note.id || "";
+			var container = vNode("div",{className:"record-container note-container", style:("top:" + topPosition + "px"),"data-record-type":"note","data-record-id": id},[]);
 			container.children.push(formItem("created","div",getTimestamp(),false));
 			container.children.push(formItem("title","h3",note.title,"title",true));
 			container.children.push(formItem("body","div",note.body,"body",true));
@@ -36,15 +36,15 @@ define("note",function(){
 			return (new Array(num)).map(one);
 		}
 		
-		function Note(init){
+		function NoteComponent(init){
 			this.title = init.title;
 			this.body = init.body;
 		}
 		
-		Note.prototype = note;
+		NoteComponent.prototype = note;
 		
-		Note.one = one;
-		Note.many = many;
+		NoteComponent.one = one;
+		NoteComponent.many = many;
 		
-		return Note;
-});
+		return NoteComponent;
+})();

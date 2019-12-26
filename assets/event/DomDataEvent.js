@@ -53,7 +53,6 @@ const DomDataEvent = (function() {
 				console.log(field.nodeName,"saved.");
 				
 				if("TEXTAREA" == nodeName && !e.shiftKey) return false;
-				var db = app.getDefaultDatabase();
 				
 				
 				id = (domRecord.dataset && domRecord.dataset.recordId) || null;
@@ -69,7 +68,7 @@ const DomDataEvent = (function() {
 				var record = {id:id};
 				record[fieldName] = field.value; 
 
-				db.save(store,record).then(function(result){
+				app.save(store,record).then(function(result){
 					console.log("Record is: ",record);
 					console.log("IndexedDb Result is: ",result);
 					domRecord.setAttribute("data-record-id", result[0]);
