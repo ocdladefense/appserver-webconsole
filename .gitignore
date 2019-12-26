@@ -2,5 +2,5 @@
 
 #ignore user routes
 /assets/user-routes.js
-/assets/settings.js
+# /assets/settings.js
 #/assets/worker/settings.js
