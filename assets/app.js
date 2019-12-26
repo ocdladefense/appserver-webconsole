@@ -255,7 +255,8 @@ const App = (function(){
 				
 				document.addEventListener("ShortcutEvent", this);
 				document.addEventListener("click",this,true);
-				
+				document.addEventListener("touchstart",new DomMobileContextMenuEvent(),true);
+				// document.addEventListener("click",doubletap,true);
 				this.tools.push({
 					name: "highlight",
 					active: true,

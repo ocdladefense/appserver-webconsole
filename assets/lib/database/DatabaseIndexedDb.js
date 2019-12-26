@@ -77,7 +77,6 @@ var DatabaseIndexedDb = (function(){
 
 		add: function(store,records){
 			records = Array.isArray(records) ? records : [records];
-			
 			return this.startTransaction(store,records,"add");
 		},
 		
@@ -87,8 +86,6 @@ var DatabaseIndexedDb = (function(){
 		 *   of the object using the IndexedDb put method.
 		 */
 		update: function(store,records) {
-			var records = this.getObject(store,records);
-			
 			return this.startTransaction(store,records,"put");
 		},
 		
@@ -100,6 +97,8 @@ var DatabaseIndexedDb = (function(){
 		/**
 		 * Helper function to either add a new object in a store
 		 *  or to update it.  Depends on whether a key is provided.
+		 *  If we're doing an update then query for the previous object in
+		 *   order to do an incremental update.
 		 */
 		save: function(store,record){
 			var result;
@@ -107,11 +106,16 @@ var DatabaseIndexedDb = (function(){
 				delete record.id;
 				result = this.add(store,record);
 			}
-			else{
+			else {
 				if(typeof record.id === "string") {
 					record.id = parseInt(record.id);
 				}
-				result = this.update(store,record);
+				result = this.getOne(store,record.id).then( (rnew) => {
+					for(var prop in record) {
+						rnew[prop] = record[prop];
+					}
+					return this.update(store,rnew);
+				});
 			}
 			//result is a promise
 			return result;
@@ -133,9 +137,11 @@ var DatabaseIndexedDb = (function(){
 		 * Find an object in the store by its primary key.
 		 *  Resolves to the object stored at that key.
 		 */
-		getOne: function(){
+		getOne: function(store,key){
 		
 			return this.open().then( (db) => {
+				var tx = db.transaction([store],"readonly");
+				var objectStore = tx.objectStore(store);
 				var request = objectStore.get(key);
 		
 				return new Promise( (resolve,reject) => {
@@ -151,7 +157,7 @@ var DatabaseIndexedDb = (function(){
 
 		},
 		
-		getAnother: function(){
+		getAnother: function(store,key,index){
 			var theIndex = objectStore.index(index);
 			//request = theIndex.get(key);
 			var singleKeyRange = IDBKeyRange.only(key);
@@ -170,7 +176,6 @@ var DatabaseIndexedDb = (function(){
 
 		
 		init: function() {
-
 
 			var request = indexedDB.open(this.name, this.version);
 
