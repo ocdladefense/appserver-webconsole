@@ -75,8 +75,8 @@ const DomEditableEvent = (function() {
 			var record;
 			var nodeName = field.nodeName;
 			var initialClass;
-			
 
+			
 			if(!Dom.composedPath(field).includes(this.rootSelector)) return false;
 			
 			// Container corresponding to this field; think of it as the record for it.
@@ -90,6 +90,7 @@ const DomEditableEvent = (function() {
 			// this.targetClassName = Dom.getClass(field);
 		
 			if(e.type == "click" && !isEditing(field)){
+				console.log("EDITABLE","BUT NOT EDITING");
 				if(initialClass.indexOf("active") == -1){
 					record.setAttribute("class","active "+initialClass);
 				}
@@ -103,6 +104,7 @@ const DomEditableEvent = (function() {
 			}
 
 			if(e.type == "keyup" && isEditing(field) && ["Enter","Tab"].includes(e.key)) {
+				console.log("EDITABLE","IS EDITING");
 				console.log(field.nodeName,"saved.");
 				if("TEXTAREA" == nodeName && !e.shiftKey) return false;
 				this.done(field,record,this.editingElement);

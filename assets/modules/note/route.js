@@ -46,8 +46,6 @@ const noteRoute = (function(){
 
 			var node = vNode("div",{},NoteComponent.one(note,topPosition));
 			
-			console.log("Note is: ",node);
-			
 			return node;
 		},
 

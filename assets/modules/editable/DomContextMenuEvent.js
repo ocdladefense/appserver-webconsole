@@ -14,7 +14,10 @@ const DomContextMenuEvent = (function() {
 			var nodeId = this.getNodeId(y);
 
 			var note = new Note({title:"noteT",body:"noteB",docId:1,nodeId:nodeId});
-			note.show();
+			var request = note.save();
+			request.then (id => {
+				note.show();
+			})
 
 			
 			console.log("x = "+x+" y = "+y);

@@ -38,6 +38,7 @@ const DomDataEvent = (function() {
 		
 		
 		handleEvent: function(e){
+			
 			var field = e.target;
 			var nodeName = field.nodeName;
 			var store;
@@ -49,6 +50,7 @@ const DomDataEvent = (function() {
 
 
 			if(e.type == "keyup" &&  ["Enter"].includes(e.key)) {
+				console.log("DATA");
 				domRecord = Dom.composedPath(field).find(this.rootSelector)[0];
 				console.log(domRecord);
 				console.log(field.nodeName,"saved.");

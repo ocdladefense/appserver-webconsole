@@ -6,13 +6,13 @@ const Note = (function(){
 		id: null,
 		
 		save: function(){
-		
 			var db = app.getDefaultDatabase();
 			var request = db.save("note",this); // *Might be able to use this?
-			request.then( (result) => {
+			return request.then( (result) => {
 				// do something with the IndexedDb id
-				this.id = result.id;
+				this.id = result[0];
 			});
+			
 		},
 	
 		load: function(){
@@ -32,8 +32,6 @@ const Note = (function(){
 		show: function() {
 			var stageContent = document.getElementById("stage-content");
 			var elements = stageContent.querySelectorAll('p,blockquote');
-
-
 
 			var node = elements[this.nodeId];
 			this.location = $(node).position();
