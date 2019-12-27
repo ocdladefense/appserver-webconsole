@@ -50,6 +50,7 @@ const DomDataEvent = (function() {
 
 			if(e.type == "keyup" &&  ["Enter"].includes(e.key)) {
 				domRecord = Dom.composedPath(field).find(this.rootSelector)[0];
+				console.log(domRecord);
 				console.log(field.nodeName,"saved.");
 				
 				if("TEXTAREA" == nodeName && !e.shiftKey) return false;

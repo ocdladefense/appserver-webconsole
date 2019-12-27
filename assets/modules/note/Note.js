@@ -33,6 +33,8 @@ const Note = (function(){
 			var stageContent = document.getElementById("stage-content");
 			var elements = stageContent.querySelectorAll('p,blockquote');
 
+
+
 			var node = elements[this.nodeId];
 			this.location = $(node).position();
 

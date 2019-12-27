@@ -37,6 +37,8 @@ const App = (function(){
 			currentDocument: null, 
 			
 			loadDocument:  function(docId) {
+				var doc = new Doc(docId);
+				doc.showNotes();
 				this.currentDocument = docId;
 				// Perform a read op on our datastore
 				// Instantiate a Document object
@@ -45,6 +47,7 @@ const App = (function(){
 			},
 
 			save: function(objectStore, record) {
+				console.log("SAVE",record);
 				var registeredHandlers = { note: null };
 				var saveNote = (objectStore, record) => {
 					record.docId = this.currentDocument;
@@ -269,7 +272,7 @@ const App = (function(){
 			},
 			
 			init: function(settings){
-				this.loadDocument(1);
+				
 				this.addRoutes(settings["routes-enabled"]);
 				
 				if(settings.databases) {
@@ -277,7 +280,7 @@ const App = (function(){
 						this.defaultDatabase = this.databases[dbs[i].name] = Database.connect(dbs[i]);
 					}
 				}
-				
+				this.loadDocument(1);
 				document.addEventListener("ShortcutEvent", this);
 				document.addEventListener("click",this,true);
 				document.addEventListener("touchstart",new DomMobileContextMenuEvent(),true);

@@ -6,10 +6,17 @@ const DomContextMenuEvent = (function() {
 		events: {},
 		
 		handleEvent: function(e){
+			e.preventDefault();
 			var elem = e.target;
-			var x = e.clientX;
-			var y = e.clientY;
+			var x = e.pageX;
+			var y = e.clientY+window.pageYOffset;
 
+			var nodeId = this.getNodeId(y);
+
+			var note = new Note({title:"noteT",body:"noteB",docId:1,nodeId:nodeId});
+			note.show();
+
+			
 			console.log("x = "+x+" y = "+y);
 			
 
@@ -27,6 +34,29 @@ const DomContextMenuEvent = (function() {
 			else{
 				return false;
 			}
+		},
+
+		getNodeId:function(y){
+			var stageContent = document.getElementById("stage-content");
+			var elements = stageContent.querySelectorAll('p,blockquote');
+
+			for(var i = 0; i < elements.length; i++){
+				var element = elements[i];
+				var rect = element.getBoundingClientRect();
+				var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+				var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+				var location =  { top: rect.top + scrollTop, left: rect.left + scrollLeft };
+				//console.log(location.top, y);
+
+				if(y < location.top){
+					console.log(i-1);
+					console.log(location.top, y);
+					return i-1;
+				}
+
+			};
+
+
 		},
 
 		render: function(){
