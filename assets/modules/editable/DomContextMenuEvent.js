@@ -18,11 +18,7 @@ const DomContextMenuEvent = (function() {
 			request.then (id => {
 				note.show();
 			})
-
 			
-			console.log("x = "+x+" y = "+y);
-			
-
 			if(elem.classList.contains("has-context")){
 				e.preventDefault();
 				var containerElement = this.render();
@@ -49,11 +45,10 @@ const DomContextMenuEvent = (function() {
 				var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 				var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 				var location =  { top: rect.top + scrollTop, left: rect.left + scrollLeft };
-				//console.log(location.top, y);
 
 				if(y < location.top){
-					console.log(i-1);
-					console.log(location.top, y);
+					if(!i)
+						return 0;
 					return i-1;
 				}
 
@@ -63,10 +58,7 @@ const DomContextMenuEvent = (function() {
 		},
 
 		render: function(){
-			console.log("RENDER");
 			var container = vNode("div",{id:"context-menu-container"},[]);
-			//var contextMenu = vNode("div",{id:"context-menu"},[]);
-			//container.children.push(contextMenu);
 			return container;
 		}
 	};

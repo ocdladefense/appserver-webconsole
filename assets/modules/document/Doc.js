@@ -13,8 +13,6 @@ const Doc = (function(){
 			var db = app.getDefaultDatabase();
             var request = db.query({ index: "docId", value: this.id, store: "note" });
             request.then( (objs) => {
-                // var objs = [{id: 1, title:"First Note", body:"First Note Body"}, {id: 2, title:"Second Note", body:"Second Note Body"}];
-                console.log("All Objects:", objs);
                 var stageContent = document.getElementById("stage-content");
                 var elements = stageContent.querySelectorAll('p,blockquote');
                 

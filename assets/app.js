@@ -47,7 +47,6 @@ const App = (function(){
 			},
 
 			save: function(objectStore, record) {
-				console.log("SAVE",record);
 				var registeredHandlers = { note: null };
 				var saveNote = (objectStore, record) => {
 					record.docId = this.currentDocument;

@@ -1,23 +1,15 @@
 const DomEditableEvent = (function() {
 
-
-	
 	function isEditable(elem){
 		return Dom.getClass(elem).indexOf("editable") != -1;
-		// return (op1 ? 1 : 0) ^ (op2 ? 1 : 0);
-		// return (!op1 && op2);
 	}
 	
 	function isEditing(elem) {
 		return ["INPUT","TEXTAREA"].includes(elem.nodeName);
 	}
 	
-
-
-
 	function getEditNode(elem){
 		var type,text,value,props;
-
 
 		value = elem.firstChild.nodeValue;
 		props = Dom.getProps(elem);
@@ -34,16 +26,13 @@ const DomEditableEvent = (function() {
 		}
 		
 		var vnode = vNode(type,props,text);
-		console.log(vnode);
 		return vnode;
 	}
-
-
 
 	function getElementNode(inputOrTextArea,nodeName){
 		var text,props;
 
-		text = inputOrTextArea.value;//["TEXTAREA"].includes(inputOrTextArea.nodeName) ? inputOrTextArea.firstChild.nodeValue : inputOrTextArea.value;
+		text = inputOrTextArea.value;
 		props = Dom.getProps(inputOrTextArea);
 		nodeName = nodeName || props["data-node-name"];
 		
@@ -53,8 +42,6 @@ const DomEditableEvent = (function() {
 		return vNode(nodeName,props,text);
 	}
 	
-	
-
 	var editable = {
 		rootSelector: null,
 		
@@ -85,12 +72,8 @@ const DomEditableEvent = (function() {
 			
 
 			if(!isEditable(field)) return false;
-
-			// this.targetNodeName = field.nodeName;
-			// this.targetClassName = Dom.getClass(field);
 		
 			if(e.type == "click" && !isEditing(field)){
-				console.log("EDITABLE","BUT NOT EDITING");
 				if(initialClass.indexOf("active") == -1){
 					record.setAttribute("class","active "+initialClass);
 				}
@@ -104,8 +87,6 @@ const DomEditableEvent = (function() {
 			}
 
 			if(e.type == "keyup" && isEditing(field) && ["Enter","Tab"].includes(e.key)) {
-				console.log("EDITABLE","IS EDITING");
-				console.log(field.nodeName,"saved.");
 				if("TEXTAREA" == nodeName && !e.shiftKey) return false;
 				this.done(field,record,this.editingElement);
 			}
@@ -142,9 +123,6 @@ const DomEditableEvent = (function() {
 		}
 	};
 
-		
-
-	
 	function DomEditableEvent(init){
 		init = init || {};
 		this.rootSelector = init || document;

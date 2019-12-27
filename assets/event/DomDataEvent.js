@@ -50,10 +50,7 @@ const DomDataEvent = (function() {
 
 
 			if(e.type == "keyup" &&  ["Enter"].includes(e.key)) {
-				console.log("DATA");
 				domRecord = Dom.composedPath(field).find(this.rootSelector)[0];
-				console.log(domRecord);
-				console.log(field.nodeName,"saved.");
 				
 				if("TEXTAREA" == nodeName && !e.shiftKey) return false;
 				
@@ -72,8 +69,6 @@ const DomDataEvent = (function() {
 				record[fieldName] = field.value; 
 
 				app.save(store,record).then(function(result){
-					console.log("Record is: ",record);
-					console.log("IndexedDb Result is: ",result);
 					domRecord.setAttribute("data-record-id", result[0]);
 				});
 					
