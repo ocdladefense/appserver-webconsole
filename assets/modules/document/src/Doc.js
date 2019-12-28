@@ -13,13 +13,17 @@ const Doc = (function(){
 			var db = app.getDefaultDatabase();
             var request = db.query({ index: "docId", value: this.id, store: "note" });
             request.then( (objs) => {
-                // var objs = [{id: 1, title:"First Note", body:"First Note Body"}, {id: 2, title:"Second Note", body:"Second Note Body"}];
-                console.log("All Objects:", objs);
+                var stageContent = document.getElementById("stage-content");
+                var elements = stageContent.querySelectorAll('p,blockquote');
+                
+
                 objs.forEach( (obj) => {
-                    console.log("Single Object:", obj);
                     var note = new Note(obj);
-                    var vn = NoteComponent.one(note, (note.location && note.location.top) || 300);
-                    document.getElementById("stage").appendChild(createElement(vn));
+                    var node = elements[note.nodeId];
+                    note.location = $(node).position();
+                    note.show();
+                    // var vn = NoteComponent.one(note, (topLocation.top) || 300);
+                    // document.getElementById("stage").appendChild(createElement(vn));
                 });
            });
         },

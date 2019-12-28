@@ -6,13 +6,19 @@ const DomContextMenuEvent = (function() {
 		events: {},
 		
 		handleEvent: function(e){
+			e.preventDefault();
 			var elem = e.target;
-			var x = e.clientX;
-			var y = e.clientY;
+			var x = e.pageX;
+			var y = e.clientY+window.pageYOffset;
 
-			console.log("x = "+x+" y = "+y);
+			var nodeId = this.getNodeId(y);
+
+			var note = new Note({title:"noteT",body:"noteB",docId:1,nodeId:nodeId});
+			var request = note.save();
+			request.then (id => {
+				note.show();
+			})
 			
-
 			if(elem.classList.contains("has-context")){
 				e.preventDefault();
 				var containerElement = this.render();
@@ -29,11 +35,30 @@ const DomContextMenuEvent = (function() {
 			}
 		},
 
+		getNodeId:function(y){
+			var stageContent = document.getElementById("stage-content");
+			var elements = stageContent.querySelectorAll('p,blockquote');
+
+			for(var i = 0; i < elements.length; i++){
+				var element = elements[i];
+				var rect = element.getBoundingClientRect();
+				var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+				var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+				var location =  { top: rect.top + scrollTop, left: rect.left + scrollLeft };
+
+				if(y < location.top){
+					if(!i)
+						return 0;
+					return i-1;
+				}
+
+			};
+
+
+		},
+
 		render: function(){
-			console.log("RENDER");
 			var container = vNode("div",{id:"context-menu-container"},[]);
-			//var contextMenu = vNode("div",{id:"context-menu"},[]);
-			//container.children.push(contextMenu);
 			return container;
 		}
 	};

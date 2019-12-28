@@ -15,11 +15,7 @@ var NoteComponent = (function(){
 		
 		
 		var note = {
-			constructor: NoteComponent,
-			
-			toVnode: function(){
-				console.log("foobar");
-			}
+			constructor: NoteComponent
 		};
 
 		function one(note,topPosition) {

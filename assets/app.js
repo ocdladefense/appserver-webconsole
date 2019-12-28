@@ -37,6 +37,8 @@ const App = (function(){
 			currentDocument: null, 
 			
 			loadDocument:  function(docId) {
+				var doc = new Doc(docId);
+				doc.showNotes();
 				this.currentDocument = docId;
 				
 				var doc = new Doc(docId);
@@ -273,6 +275,7 @@ const App = (function(){
 			
 			init: function(settings){
 
+				
 				this.addRoutes(settings["routes-enabled"]);
 				
 				if(settings.databases) {
@@ -281,8 +284,9 @@ const App = (function(){
 					}
 				}
 				
-				this.loadDocument(1);
 				
+				this.loadDocument(1);
+
 				document.addEventListener("ShortcutEvent", this);
 				document.addEventListener("click",this,true);
 				document.addEventListener("touchstart",new DomMobileContextMenuEvent(),true);

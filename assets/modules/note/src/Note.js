@@ -6,13 +6,13 @@ const Note = (function(){
 		id: null,
 		
 		save: function(){
-		
 			var db = app.getDefaultDatabase();
 			var request = db.save("note",this); // *Might be able to use this?
-			request.then( (result) => {
+			return request.then( (result) => {
 				// do something with the IndexedDb id
-				this.id = result.id;
+				this.id = result[0];
 			});
+			
 		},
 	
 		load: function(){
