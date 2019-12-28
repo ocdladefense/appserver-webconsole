@@ -38,6 +38,9 @@ const App = (function(){
 			
 			loadDocument:  function(docId) {
 				this.currentDocument = docId;
+				
+				var doc = new Doc(docId);
+				doc.showNotes();
 				// Perform a read op on our datastore
 				// Instantiate a Document object
 				// Display the document in the workspace
@@ -269,7 +272,7 @@ const App = (function(){
 			},
 			
 			init: function(settings){
-				this.loadDocument(1);
+
 				this.addRoutes(settings["routes-enabled"]);
 				
 				if(settings.databases) {
@@ -277,6 +280,8 @@ const App = (function(){
 						this.defaultDatabase = this.databases[dbs[i].name] = Database.connect(dbs[i]);
 					}
 				}
+				
+				this.loadDocument(1);
 				
 				document.addEventListener("ShortcutEvent", this);
 				document.addEventListener("click",this,true);

@@ -30,7 +30,7 @@ function doAdminPage() {
 	//$template -> addScript("path to js file");
 		
 	$scripts = array_map(function($script){ return "<script type='text/javascript' src='/modules/webconsole/assets/{$script}'>\n</script>";},array(
-		"components/materials.js",
+		"modules/material/component.js",
 		"modules/audio/audio.js",
 		"lib/datetime.js",
 		"lib/modal.js",
@@ -45,8 +45,9 @@ function doAdminPage() {
 		"lib/database/Database.js",
 		"lib/database/DatabaseArray.js",
 		"lib/database/DatabaseIndexedDb.js",
-		"modules/document/TableOfContents.js",
-		"modules/document/Doc.js",
+		"modules/document/src/TableOfContents.js",
+		"modules/document/src/Doc.js",
+		"modules/document/route.js",
 		"modules/editable/DomEditableEvent.js",
 		"modules/editable/DomContextMenuEvent.js",
 		"event/DomDataEvent.js",
@@ -55,7 +56,7 @@ function doAdminPage() {
 		"event/DomMobileContextMenuEvent.js",
 		"modules/note/component.js",
 		"modules/note/route.js",
-		"modules/note/Note.js",
+		"modules/note/src/Note.js",
 		"routes.js",
 		"ui.js",
 		"settings.js",
