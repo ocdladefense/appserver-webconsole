@@ -16,6 +16,20 @@
 	z-index: 1;
 }
 
+
+/* Where to show notes? In the margin, initially. */
+.note-container {
+	position:absolute;
+	top: 0px;
+	right: 0px;
+	margin-right: -275px; /* Place notes in the right gutter. */
+}
+
+#stage-content p {
+	position:relative;
+}
+
+
 .note-container .active{
 	z-index: 2;
 }

@@ -1,4 +1,26 @@
+var pos;
+var posFn = function(e) {
+  pos = window.scrollY;
 
+	if(pos < 100) {
+		document.querySelector(".doc-title.active").setAttribute("style","display:none;");
+	} else {
+		document.querySelector(".doc-title.active").setAttribute("style","display:block;");	
+	}
+};
+// window.addEventListener("scroll", posFn);
+
+
+var collapse = function(e) {
+	var target = e.target;
+	
+	if(!target.dataset || !target.dataset.controllerFor) return false;
+	
+	var id = target.dataset.controllerFor;
+	
+	var elem = document.getElementById(id);
+	$(elem).toggleClass("choose");
+};
 
 
 const App = (function(){
@@ -40,9 +62,6 @@ const App = (function(){
 				var doc = new Doc(docId);
 				doc.showNotes();
 				this.currentDocument = docId;
-				
-				var doc = new Doc(docId);
-				doc.showNotes();
 				// Perform a read op on our datastore
 				// Instantiate a Document object
 				// Display the document in the workspace
@@ -234,8 +253,15 @@ const App = (function(){
 						return false;
 				}
 				
-				[theRoute, routeData] = this.processRoute(name);
-				this.executeRoute(theRoute, routeData);
+				try {
+					[theRoute, routeData] = this.processRoute(name);
+					this.executeRoute(theRoute, routeData);
+				} catch(err) {
+					e.preventDefault();
+					console.log(err);
+				}
+				
+				return false;
 			},
 
 
@@ -305,8 +331,11 @@ const App = (function(){
 				
 				document.addEventListener("keyup",new DomDataEvent(".record-container"),true);
 				document.addEventListener("contextmenu",new DomContextMenuEvent(".has-context"),true);
+				// document.addEventListener("click",new DomContextMenuEvent(".has-context"),true);
 
 				domReady(this.toolManager());
+				// domReady(posFn);
+				document.addEventListener("click",collapse,true);
 			},
 			
 			toolManager: function(){

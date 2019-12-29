@@ -11,6 +11,7 @@ const Note = (function(){
 			return request.then( (result) => {
 				// do something with the IndexedDb id
 				this.id = result[0];
+				return this.id;
 			});
 			
 		},
@@ -28,21 +29,11 @@ const Note = (function(){
 		setAttachedNode: function(nodeId) {
 			this.nodeId = nodeId;
 		},
-
-		show: function() {
-			var stageContent = document.getElementById("stage-content");
-			var elements = stageContent.querySelectorAll('p,blockquote');
-
-			var node = elements[this.nodeId];
-			this.location = $(node).position();
-
-			var vNode = noteRoute.render(this);
-			app.render(noteRoute, vNode);
-
-
-			// [theRoute, routeData] = app.processRoute("noteRoute");
-			// app.executeRoute(theRoute, this);
+		
+		vnode: function() {
+			return NoteComponent.one(this);
 		}
+		
 	};
 	
 	function Note(obj) {

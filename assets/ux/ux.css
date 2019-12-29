@@ -1,4 +1,5 @@
 body {
+	font-family:"Helvetica Neuve",Helvetica;
 	margin:0 !important;
 	background-color: #ECEFF2;
 	position:relative;
@@ -9,7 +10,112 @@ body {
 	height:60%;
 }
 
+#header, #doc-header {
+	padding-bottom:0px;
+	position:fixed;
+	border-bottom:1px solid #ccc;
+	overflow-y:visible;
+	top:0px;
+	z-index:10;
+	background-color:#232f3e;
+	width:100%;
+	height: 75px;
+}
+
+#doc-header {
+	background-color:rgba(255,255,255,1.0);
+	z-index:9;
+}
+
+.header-content {
+	padding-left:3%;
+	padding-right:3%;
+}
+
+.arrow-right {
+  width: 0; 
+  height: 0; 
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  display:inline-block;
+  border-left: 5px solid green;
+  vertical-align:middle;
+}
+
+.arrow-down {
+  width: 0; 
+  height: 0; 
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  
+  border-top: 5px solid #f00;
+}
+
+.doc-nav {
+	position: absolute;
+	bottom:-30px;
+	height: 2.0rem;
+	left:0px;
+	width: 100%;
+	max-width: 100%;
+	padding-left:21%;
+}
+
+#doc-nav-content {
+	width: 55%;	
+	padding-left:25px;
+	background-color: #fff;
+}
+
+#doc-nave-open {
+	cursor:pointer;
+}
+
+#doc-nav-content.choose .doc-title:not(.active) {
+	display:block;
+	overflow-y: hidden;
+}
+
+.doc-title {
+	height: 30px;
+	display: block;
+	font-weight: bold;
+	border-bottom: 1px solid #eee;
+	font-size: smaller;
+	color: rgba(0,0,0,0.6);
+	line-height:2.0rem;
+	display:none;
+}
+
+.doc-title a {
+	text-decoration: none;
+}
+
+.doc-title:not(.active) {
+	margin-left:18px;
+}
+
+.doc-title.active {
+	display: inline-block;
+}
+
+
+	
+#logo {
+	display:inline-block;
+	color: #fff;
+	font-weight:bold;
+	padding:12px;
+	padding-top:8px;
+	padding-bottom:8px;
+	border-radius:3px;
+	background-image: linear-gradient(180deg,#f67c1b 0,#e15500);
+	margin-bottom:13px;
+}		
+
+
 #container-left {
+	font-family:"Helvetica Neuve",Helvetica;
 	position:fixed;
 	top:100px;
 	width:20%;
@@ -27,7 +133,10 @@ body {
 }
 #container{
 	margin-top: 100px;
+	overflow-x: hidden;
 }
+
+
 
 #stage {
 	min-height: 100vh;
@@ -35,7 +144,6 @@ body {
 	vertical-align: top;
 	position: relative;
 	font-family: "Helvetica Neuve",Helvetica;
-	padding: 3%;
 	background-color: #fff;
 	max-width: 60%;
 	border: 2px solid rgba(0,0,0,0.1);
@@ -43,6 +151,10 @@ body {
 	line-height: 24px;
 	color: rgba(0,0,0,0.7);
 	left: 275px;
+}
+
+#stage-content {
+	padding: 6%;
 }
 
 #stage.home {
@@ -90,33 +202,6 @@ body {
 }
 
 
-#header {
-	font-family:"Helvetica Neuve",Helvetica;
-	padding-left:3%;
-	padding-right:3%;
-	padding-bottom:0px;
-	position:fixed;
-	border-bottom:1px solid #ccc;
-	overflow-y:visible;
-	top:0px;
-	z-index:10;
-	background-color:#232f3e;
-	width:100%;
-}
-
-
-	
-#logo {
-	display:inline-block;
-	color: #fff;
-	font-weight:bold;
-	padding:12px;
-	padding-top:8px;
-	padding-bottom:8px;
-	border-radius:3px;
-	background-image: linear-gradient(180deg,#f67c1b 0,#e15500);
-	margin-bottom:13px;
-}		
 
 
 li:hover .sub-menu {

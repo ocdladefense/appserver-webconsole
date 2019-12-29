@@ -1,13 +1,13 @@
-.h1{
+h1{
     display:inline;
 }
 
-.button{
+button{
     display:inline-block;
 }
 
 
-.select{
+select{
     border-radius:20px;
 }
 
@@ -19,7 +19,7 @@
     justify-content: start;
 }
 
-.hr{
+hr{
     height:20px;
 }
 
