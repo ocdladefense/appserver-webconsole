@@ -89,3 +89,13 @@ textarea.editable:hover {
 .note-container .form-item-created {
 	margin:0px;
 }
+
+.container-right {
+	background-color: blue;
+	color: white;
+	padding: 5px;
+    height: auto;
+    width: 287px;
+    display: none;
+    margin-left: 19%;
+}

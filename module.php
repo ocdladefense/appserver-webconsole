@@ -74,15 +74,24 @@ function loadDocument3($docId = 3) {
 		new MainContent("#annotations");
 		new MainContent("#related-statutes");
 */
-function loadExternalDocument($url = null) {
-	$url = "https://www.oregonlaws.org/ors/137.700";
+function loadExternalDocument($url, $statute = null) {
+	$fullUrl = "https://www.oregonlaws.org/ors/".$url;
 
-	$req = new HTTPRequest($url);
+	$statute = "";
+
+	$req = new HTTPRequest($fullUrl);
 	
 	$resp = $req->send();
 
-	
-	return $resp->getBody();
+	$domDoc = new DomDocument();
+	libxml_use_internal_errors(true);
+	$domDoc->loadHTML($resp->getBody());
+	libxml_clear_errors();
+	$text = $domDoc->getElementById("text");
+	print_r($text->textContent);
+
+	// This is a work around for header problems
+	exit;
 }
 
 
@@ -161,6 +170,8 @@ function doAdminPage() {
 		"assets/event/DomLayoutEvent.js",
 		"assets/event/DomHighlightEvent.js",
 		"assets/event/DomMobileContextMenuEvent.js",
+
+
 		
 		/*
 		"modules/document/src/TableOfContents.js",
@@ -170,6 +181,7 @@ function doAdminPage() {
 		
 		"modules/editable/DomEditableEvent.js",
 		"modules/editable/DomContextMenuEvent.js",
+		"modules/domDoc/DomDocEvent.js",
 
 		"modules/note/component.js",
 		"modules/note/route.js",

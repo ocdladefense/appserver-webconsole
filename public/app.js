@@ -87,6 +87,12 @@ function loadModule(name) {
 	});
 }
 
+function clearElement(element) {
+	let node = document.getElementById(element)
+	node.innerHTML = '';
+	node.setAttribute("style", "display: none");
+}
+
 
 const App = (function(){
 
@@ -418,6 +424,7 @@ const App = (function(){
 				
 				document.addEventListener("keyup",new DomDataEvent(".record-container"),true);
 				document.addEventListener("contextmenu",new DomContextMenuEvent(".has-context"),true);
+				document.addEventListener("click", new DomDocEvent(), true);
 
 				domReady(this.toolManager());
 				document.addEventListener("click",collapse,true);
