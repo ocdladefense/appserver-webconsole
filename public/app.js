@@ -395,6 +395,7 @@ const App = (function(){
 				
 				document.addEventListener("keyup",new DomDataEvent(".record-container"),true);
 				document.addEventListener("contextmenu",new DomContextMenuEvent(".has-context"),true);
+				document.addEventListener("click",new DomDocEvent("#stage-content"),true);
 
 				domReady(this.toolManager());
 				document.addEventListener("click",collapse,true);
