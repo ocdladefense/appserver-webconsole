@@ -29,7 +29,7 @@ function modWebconsoleRoutes() {
 
 
 
-function loadDocument($docId = null) {
+function loadDocument($docId = 1) {
 	if($docId == null) {
 		throw new Exception("Path expects a document id parameter.");
 	}
@@ -53,11 +53,14 @@ function loadDocument($docId = null) {
 		new MainContent("#related-statutes");
 */
 function loadExternalDocument($url = null) {
-	$req = new HTTPRequest("https://www.oregonlaws.org/ors/137.700");
+	$url = "https://www.oregonlaws.org/ors/137.700";
+
+	$req = new HTTPRequest($url);
 	
 	$resp = $req->send();
+
 	
-	return $resp;
+	return $resp->getBody();
 }
 
 
