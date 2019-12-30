@@ -374,3 +374,11 @@ li a {
 .toc-entry:hover {
 	text-decoration: underline;
 }
+
+#context-menu-container {
+	display: none;
+}
+
+#doc-top {
+	line-height: 1.3em;
+}

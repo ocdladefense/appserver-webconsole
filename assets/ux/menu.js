@@ -29,13 +29,21 @@ function subMenu(name,submenu){
 function createMenu() {
 
 	var children = [
-		subMenu("file",[{name:"save"},{name:"save-as"},{name:"export"}]),
-		menuItem("salesforce"),
-		menuItem("about","about"),
-		menuItem("materials", "materials"),
+		subMenu("file",[{name:"save"},{name:"save-as"},{name:"export"},{name:"add document"},{name:"add webpage"},{name:"logout"}]),
+		
+		// menuItem("salesforce"),
+
+		subMenu("materials", [{name:"show all",route:"database"},{name:"Registered events"}]),
+		subMenu("case reviews", [{name:"Recent"},{name:"2019 Case Reviews"},{name:"2018 Case Reviews"}]),
+		subMenu("Books Online",[{name:"Defending Sex Cases"}]),
 		subMenu("Notes",[{name:"show all",route:"database"},{name:"New..",route:"new-note"}]),
-		subMenu("SiteStatus",[{name:"show-all", route:"all-site-statuses"},{name:"checksite...",route:"site-status-check-site"},
-							{name:"Load Sites", route:"site-status-load-sites"}])
+		/*subMenu("SiteStatus",[
+			{name:"show-all", route:"all-site-statuses"},
+			{name:"checksite...",route:"site-status-check-site"},
+			{name:"Load Sites", route:"site-status-load-sites"}
+		]),
+		*/
+		menuItem("about","about")					
 	];
 	
 	return vnode("ul",{className:"main-menu"},children);
