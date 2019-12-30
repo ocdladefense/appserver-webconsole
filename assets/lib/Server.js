@@ -35,16 +35,21 @@ const Server = (function(){
             console.log(this.version);
         },
 
+				handleEvent: function(e) {
+					this.cache.handleEvent(e);
+				},
 
         getInstaller: function() {
             // Perform install steps
+            var fn = () => {
+            	console.log("Wait until event fired!");
+            	this.cache.init();
+            };
             return (function(event) {
-                /* event.waitUntil(
-									this.cache.init()
-                );
-                */
-                // Perform database init
-                var request = this.database.init();
+							event.waitUntil(fn());
+						
+							// Perform database init
+							var request = this.database.init();
             }).bind(this);
         },
 

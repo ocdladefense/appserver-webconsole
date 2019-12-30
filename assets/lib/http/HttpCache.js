@@ -1,25 +1,27 @@
 const HttpCache = (function(){
 
-    const SCRIPT_PATH = "modules/webconsole/assets";
+    const SCRIPT_PATH = "modules/webconsole";
 
     var urlsToCache = [
         '/webconsole',
-        SCRIPT_PATH+'/lib/view.js',
-        SCRIPT_PATH+'/lib/event.js',
-        SCRIPT_PATH+'/lib/Client.js',
-        SCRIPT_PATH+'/css/keyboardManager.css',
-        SCRIPT_PATH+'/css/materials.css',
-        SCRIPT_PATH+'/css/siteStatus.css',
-        SCRIPT_PATH+'/css/ux.css',
-        SCRIPT_PATH+'/app.js',
-        SCRIPT_PATH+'/menu.js',
-        SCRIPT_PATH+'/settings.js'
+        SCRIPT_PATH+'/assets/lib/view.js',
+        SCRIPT_PATH+'/assets/lib/event.js',
+        SCRIPT_PATH+'/assets/lib/Client.js',
+        // SCRIPT_PATH+'/css/keyboardManager.css',
+        // SCRIPT_PATH+'/css/materials.css',
+        SCRIPT_PATH+'/assets/css/siteStatus.css',
+        SCRIPT_PATH+'/public/app.js',
+        SCRIPT_PATH+'/assets/ux/menu.js',
+        SCRIPT_PATH+'/assets/ux/ux.css',
+        SCRIPT_PATH+'/settings.js',
+        SCRIPT_PATH+'/routes.js'
     ];
     
 
     function HttpCache(init) {
         this.name = typeof init === "string" ? init : init.name;
         this.urlsToCache = urlsToCache;
+        this.enabled = init.enabled;
         if(!this.name) {
             throw new Error("No name found.");
         }
@@ -36,15 +38,16 @@ const HttpCache = (function(){
 			},
        
       init: function(){
-				self["caches"].open(this.cache.name)
+				self["caches"].open(this.name)
 				.then((cache) => {
 						console.log('Opened cache');
-						return cache.addAll(this.cache.urlsToCache);
+						return cache.addAll(this.urlsToCache);
 				})
       }, 
        
 			handleEvent: function(event) {
-				return false;
+				if(!this.enabled) return false;
+				
 				event.respondWith(
 					caches.match(event.request)
 					.then(function(response) {
@@ -54,7 +57,7 @@ const HttpCache = (function(){
 						}
 
 						return fetch(event.request).then(
-							function(response) {
+							(response) => {
 								// Check if we received a valid response
 								if(!response || response.status !== 200 || response.type !== 'basic') {
 									return response;
@@ -66,7 +69,7 @@ const HttpCache = (function(){
 								// to clone it so we have two streams.
 								var responseToCache = response.clone();
 
-								caches.open(CACHE_NAME)
+								caches.open("mycache")
 									.then(function(cache) {
 										cache.put(event.request, responseToCache);
 									});

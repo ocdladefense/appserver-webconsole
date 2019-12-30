@@ -6,7 +6,7 @@ const Doc = (function(){
 		id: null,
 
 		load: function() {
-
+			return fetch("/doc/"+this.id).then( (resp) => { return resp.text(); });
 		},
 
 		showNotes: function() {
@@ -31,7 +31,7 @@ const Doc = (function(){
 	
 	function Doc(obj) {
 
-        if(typeof obj === "number") {
+        if(typeof obj === "number" || typeof obj === "string") {
             this.id = obj;
         } else if(typeof obj === "obj") {
             this.id = obj.id;

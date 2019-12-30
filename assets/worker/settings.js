@@ -3,7 +3,8 @@ const serverSettings = {
 };
 
 const cacheSettings = {
-	name: 'mycache'
+	name: 'mycache',
+	enabled: true
 };
 
 

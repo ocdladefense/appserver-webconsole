@@ -21,7 +21,7 @@ const TableOfContents = (function(){
 		});
 
 		var component = tocComponent(elems);
-		console.log(component);
+		menu.innerHTML = "";
 		menu.appendChild(createElement(component));
 	}
 
@@ -36,6 +36,10 @@ const TableOfContents = (function(){
 	function TableOfContents(){
 		toc();
 	}
+	
+	TableOfContents.top = function(){
+		gotoSection("doc-top");
+	};
 
 
 	TableOfContents.FromDomElements = function(nodeList){
