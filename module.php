@@ -17,8 +17,47 @@ function modWebconsoleRoutes() {
 	return array(
 		"webconsole" => array(
 			"callback" => "doAdminPage"
+		),
+		"doc" => array(
+			"callback" => "loadDocument"
+		),
+		"external" => array(
+			"callback" => "loadExternalDocument"
 		)
 	);
+}
+
+
+
+function loadDocument($docId = null) {
+	if($docId == null) {
+		throw new Exception("Path expects a document id parameter.");
+	}
+	$path = BASE_PATH . "/content/static/bon/sex-cases/chapter-".$docId.".html";
+	return file_get_contents($path);
+}
+
+
+/**
+ * $req = new HttpRequest("https://www.oregonlaws.org/ors/137.700");
+
+		$req->xml();
+
+
+		new ClassFinder("nav nav-tabs hidden-print");
+
+		$title = new Label(".section_title"); // Get the section title label for display in the sidebar
+
+		new MainContent("#text");
+		new MainContent("#annotations");
+		new MainContent("#related-statutes");
+*/
+function loadExternalDocument($url = null) {
+	$req = new HTTPRequest("https://www.oregonlaws.org/ors/137.700");
+	
+	$resp = $req->send();
+	
+	return $resp;
 }
 
 

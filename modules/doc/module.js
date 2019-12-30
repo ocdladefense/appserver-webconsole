@@ -2,12 +2,17 @@ define("doc", function() {
 	
 	return {
 		routes: ["route.js"],
-		files: ["src/Doc.js","src/TableOfContents.js"],
+		files: ["src/Doc.js","src/TableOfContents.js","src/ChapterPicker.js"],
 		tools: [
 			{
 				name: "toc",
-				active: false,
+				active: true,
 				init: function(app){ return new TableOfContents(); }
+			},
+			{
+				name: "chapterPicker",
+				active: true,
+				init: function(app){ return new ChapterPicker(books[0].chapters); }
 			}
 		],
 		data: [

@@ -1,8 +1,12 @@
-const books = [
+var books = [
 	{
 		id: 1,
 		title: "Defending Sex Cases",
 		chapters: [
+		
+			"Defending_Sex_Cases/Chapter_1",
+			"Chapter 1 - Precharge Representation",
+			
 			"Defending_Sex_Cases/Chapter_2",
 			"Chapter 2 – Getting Your Client Out: Bail and Release",
 

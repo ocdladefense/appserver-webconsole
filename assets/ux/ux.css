@@ -58,6 +58,7 @@ body {
 	left:0px;
 	width: 100%;
 	max-width: 100%;
+	overflow-y:hidden;
 }
 
 .doc-nav {
@@ -65,8 +66,8 @@ body {
 }
 
 #doc-nav.choose {
-	height: 200px;
-	background-color: #fff;
+	height: auto;
+	background-color: #232f3e;
 }
 
 #doc-nav-left {
@@ -79,6 +80,10 @@ body {
 	background-color: #fff;
 }
 
+.choose #doc-nav-content {
+	background-color: #232f3e;
+}
+
 #doc-nav-open {
 	cursor:pointer;
 }
@@ -89,18 +94,21 @@ body {
 }
 
 .doc-title {
-	height: 30px;
+	height: 2.23rem;
 	display: block;
 	font-weight: bold;
-	border-bottom: 1px solid #eee;
 	font-size: smaller;
 	color: rgba(0,0,0,0.6);
-	line-height:2.0rem;
+	line-height:3.0rem;
 	display:none;
 }
 
 .doc-title a {
 	text-decoration: none;
+}
+
+.choose .doc-title a {
+	color:	rgba(255,255,255,0.7);
 }
 
 .doc-title:not(.active) {
