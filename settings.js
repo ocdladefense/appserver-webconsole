@@ -61,7 +61,7 @@ const mydb = {
 
 
 const clientSettings = {
-	"routes-enabled": [search,materials,noteRoute,docRoute,testHtml,bon],
+	"routes-enabled": [search,materials,noteRoute,testHtml,bon],
 	databases: [mydb]
 };
 // Uncomment if you want find enabled, too.

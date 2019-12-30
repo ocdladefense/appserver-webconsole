@@ -1,3 +1,11 @@
+const BASE_PATH = "/modules/webconsole";
+
+const DATA_PATH = BASE_PATH + "/content/modules";
+
+const MODULE_PATH = BASE_PATH + "/modules";
+
+const DEFAULT_DOC_ID = 1;
+
 var pos;
 var posFn = function(e) {
   pos = window.scrollY;
@@ -21,6 +29,63 @@ var collapse = function(e) {
 	var elem = document.getElementById(id);
 	$(elem).toggleClass("choose");
 };
+
+
+
+function getModulePath(name) {
+	return MODULE_PATH + "/" + name.toLowerCase();
+}
+
+function getModuleDataPath(name) {
+	return DATA_PATH + "/" + name.toLowerCase();
+}
+
+function loadScript(src) {
+	return (function(resolve,reject) {
+		const script = document.createElement("script");
+		document.body.appendChild(script);
+		script.onload = resolve;
+		script.onerror = reject;
+		script.async = true;
+		script.src = src;
+	});
+}
+
+function loadModule(name) {
+	var path = getModulePath(name);
+	var dataPath = getModuleDataPath("bon");
+	var scriptPromise = new Promise(loadScript(path+"/module.js"));
+	var tools = [];
+	
+	return scriptPromise.then( ()=> {
+	
+		var mod = getModule(name);
+		var loading = [];
+		mod.routes.forEach( (file) => {
+			loading.push(path+"/"+file);
+		});
+		mod.files.forEach( (file) => {
+			loading.push(path+"/"+file);
+		});
+		mod.data.forEach( (file) => {
+			loading.push(dataPath+"/"+file);
+		});
+		tools = mod.tools;
+		return loading;
+	})
+	.then( (paths) => {
+		
+		return Promise.all(paths.map( (path) => {
+			return new Promise(loadScript(path));
+		}));
+	})
+	.then( (resp) => {
+	
+		tools.forEach( (tool) => {
+			tool.init(this);
+		});
+	});
+}
 
 
 const App = (function(){
@@ -57,6 +122,8 @@ const App = (function(){
 			defaultDatabase: null,
 			
 			currentDocument: null, 
+			
+			loadModule: loadModule,
 			
 			loadDocument:  function(docId) {
 				var doc = new Doc(docId);
@@ -311,30 +378,25 @@ const App = (function(){
 				}
 				
 				
-				this.loadDocument(1);
+				loadModule("doc").then(this.loadDocument.bind(this,DEFAULT_DOC_ID));
 
 				document.addEventListener("ShortcutEvent", this);
 				document.addEventListener("click",this,true);
 				document.addEventListener("touchstart",new DomMobileContextMenuEvent(),true);
 				// document.addEventListener("click",doubletap,true);
+				
 				this.tools.push({
 					name: "highlight",
 					active: true,
 					init: function(app){ return new DomHighlightEvent("#stage-content"); }
 				});
 				
-				this.tools.push({
-					name: "toc",
-					active: true,
-					init: function(app){ return new TableOfContents(); }
-				});
+
 				
 				document.addEventListener("keyup",new DomDataEvent(".record-container"),true);
 				document.addEventListener("contextmenu",new DomContextMenuEvent(".has-context"),true);
-				// document.addEventListener("click",new DomContextMenuEvent(".has-context"),true);
 
 				domReady(this.toolManager());
-				// domReady(posFn);
 				document.addEventListener("click",collapse,true);
 			},
 			

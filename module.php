@@ -37,7 +37,7 @@ function pageStyles($styles = array() ) {
 
 function pageScripts($scripts = array() ) {
 	return array_map(function($script){
-		return "<script type='text/javascript' src='/modules/webconsole/assets/{$script}'>\n</script>";
+		return "<script type='text/javascript' src='/modules/webconsole/{$script}'>\n</script>";
 	},$scripts);
 }
 
@@ -63,7 +63,7 @@ function doAdminPage() {
 		),
 		array(
 			"active" => true,
-			"href=" => "/modules/webconsole/assets/modules/material/style.css"
+			"href=" => "/modules/webconsole/modules/material/style.css"
 		),
 		array(
 			"active" => true,
@@ -71,7 +71,7 @@ function doAdminPage() {
 		),
 		array(
 			"active" => true,
-			"href" => "/modules/webconsole/assets/modules/note/style.css"
+			"href" => "/modules/webconsole/modules/note/style.css"
 		),
 		array(
 			"active" => true,
@@ -80,27 +80,29 @@ function doAdminPage() {
 	);
 		
 	$scripts = array(
-		"lib/event.js",
-		"lib/datetime.js",
-		"lib/modal.js",
-		"lib/view.js",
-		"lib/Dom.js",
-		"lib/http/http.js",
-		"lib/http/HttpCache.js",
-		"lib/KeyboardManager.js",
-		"lib/database/Database.js",
-		"lib/database/DatabaseArray.js",
-		"lib/database/DatabaseIndexedDb.js",
-		"lib/Client.js",
+		"assets/lib/event.js",
+		"assets/lib/datetime.js",
+		"assets/lib/modal.js",
+		"assets/lib/view.js",
+		"assets/lib/Dom.js",
+		"assets/lib/http/http.js",
+		"assets/lib/http/HttpCache.js",
+		"assets/lib/KeyboardManager.js",
+		"assets/lib/database/Database.js",
+		"assets/lib/database/DatabaseArray.js",
+		"assets/lib/database/DatabaseIndexedDb.js",
+		"assets/lib/Client.js",
 
-		"event/DomDataEvent.js",
-		"event/DomLayoutEvent.js",
-		"event/DomHighlightEvent.js",
-		"event/DomMobileContextMenuEvent.js",
+		"assets/event/DomDataEvent.js",
+		"assets/event/DomLayoutEvent.js",
+		"assets/event/DomHighlightEvent.js",
+		"assets/event/DomMobileContextMenuEvent.js",
 		
+		/*
 		"modules/document/src/TableOfContents.js",
 		"modules/document/src/Doc.js",
 		"modules/document/route.js",
+		*/
 		
 		"modules/editable/DomEditableEvent.js",
 		"modules/editable/DomContextMenuEvent.js",
@@ -114,11 +116,11 @@ function doAdminPage() {
 		"modules/audio/src/DomAudio.js",
 
 		"routes.js",
-		"ux/ui.js",
-		"ux/menu.js",
+		"assets/ux/ui.js",
+		"assets/ux/menu.js",
 		
 		"settings.js",
-		"../public/app.js"
+		"public/app.js"
 	);
 	
 	$content = file_get_contents(BASE_PATH ."/content/static/sample.html");

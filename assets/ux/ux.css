@@ -51,14 +51,26 @@ body {
   border-top: 5px solid #f00;
 }
 
-.doc-nav {
+#doc-nav {
 	position: absolute;
-	bottom:-30px;
+	top:75px;
 	height: 2.0rem;
 	left:0px;
 	width: 100%;
 	max-width: 100%;
-	padding-left:21%;
+}
+
+.doc-nav {
+	display:inline-block;
+}
+
+#doc-nav.choose {
+	height: 200px;
+	background-color: #fff;
+}
+
+#doc-nav-left {
+	width: 21%;
 }
 
 #doc-nav-content {
@@ -67,11 +79,11 @@ body {
 	background-color: #fff;
 }
 
-#doc-nave-open {
+#doc-nav-open {
 	cursor:pointer;
 }
 
-#doc-nav-content.choose .doc-title:not(.active) {
+#doc-nav.choose .doc-title:not(.active) {
 	display:block;
 	overflow-y: hidden;
 }
@@ -92,7 +104,7 @@ body {
 }
 
 .doc-title:not(.active) {
-	margin-left:18px;
+	margin-left:10px;
 }
 
 .doc-title.active {

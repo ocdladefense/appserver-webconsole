@@ -1,8 +1,5 @@
 const noteRoute = (function(){
 	
-	var Note = getModule("note");
-	
-	
 	return {
 		name: "new-note",
 	
