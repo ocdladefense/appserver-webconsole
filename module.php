@@ -74,12 +74,12 @@ function loadDocument3($docId = 3) {
 		new MainContent("#annotations");
 		new MainContent("#related-statutes");
 */
-function loadExternalDocument($url = null, $statute = null) {
-	$url = "https://www.oregonlaws.org/ors/40.235";
+function loadExternalDocument($url, $statute = null) {
+	$fullUrl = "https://www.oregonlaws.org/ors/".$url;
 
 	$statute = "";
 
-	$req = new HTTPRequest($url);
+	$req = new HTTPRequest($fullUrl);
 	
 	$resp = $req->send();
 
@@ -88,12 +88,10 @@ function loadExternalDocument($url = null, $statute = null) {
 	$domDoc->loadHTML($resp->getBody());
 	libxml_clear_errors();
 	$text = $domDoc->getElementById("text");
-	print_r ($text->textContent);
+	print_r($text->textContent);
 
+	// This is a work around for header problems
 	exit;
-
-	
-	return $resp->getBody();
 }
 
 
