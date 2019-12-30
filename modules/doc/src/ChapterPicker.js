@@ -24,7 +24,6 @@ const ChapterPicker = (function(){
 
 
 	function ChapterPicker(chapts){
-		console.log(chapts);
 		chapters(chapts);
 	}
 

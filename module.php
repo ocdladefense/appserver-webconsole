@@ -18,8 +18,14 @@ function modWebconsoleRoutes() {
 		"webconsole" => array(
 			"callback" => "doAdminPage"
 		),
-		"doc" => array(
-			"callback" => "loadDocument"
+		"doc/1" => array(
+			"callback" => "loadDocument1"
+		),
+		"doc/2" => array(
+			"callback" => "loadDocument2"
+		),
+		"doc/3" => array(
+			"callback" => "loadDocument3"
 		),
 		"external" => array(
 			"callback" => "loadExternalDocument"
@@ -29,7 +35,23 @@ function modWebconsoleRoutes() {
 
 
 
-function loadDocument($docId = 1) {
+function loadDocument1($docId = 1) {
+	if($docId == null) {
+		throw new Exception("Path expects a document id parameter.");
+	}
+	$path = BASE_PATH . "/content/static/bon/sex-cases/chapter-".$docId.".html";
+	return file_get_contents($path);
+}
+
+function loadDocument2($docId = 2) {
+	if($docId == null) {
+		throw new Exception("Path expects a document id parameter.");
+	}
+	$path = BASE_PATH . "/content/static/bon/sex-cases/chapter-".$docId.".html";
+	return file_get_contents($path);
+}
+
+function loadDocument3($docId = 3) {
 	if($docId == null) {
 		throw new Exception("Path expects a document id parameter.");
 	}

@@ -127,8 +127,20 @@ const App = (function(){
 			
 			loadDocument:  function(docId) {
 				var doc = new Doc(docId);
-				doc.showNotes();
 				this.currentDocument = docId;
+				
+				var loading = doc.load(docId);
+			
+				return loading.then( (html) => {
+					var stageContent = document.getElementById("stage-content");
+					stageContent.innerHTML = html;
+				})
+				.then( () => {
+					doc.showNotes();
+				})
+				.then( () => {
+					new TableOfContents();
+				});
 				// Perform a read op on our datastore
 				// Instantiate a Document object
 				// Display the document in the workspace
@@ -251,6 +263,7 @@ const App = (function(){
 							req.setMethod("POST");
 					}
 				} else {
+					console.log("for synthetic request, data is: ",data);
 					req = new HttpRequest("internal://",route.headers,data);
 					req.synthetic(true);
 				}
@@ -287,6 +300,7 @@ const App = (function(){
 
 
 			render: function(route, obj){
+				if( null == obj ) return;
 				var renderMode = route.renderMode || "append";
 				var targetElement = route.elementLocation || "stage";
 				var stage = document.getElementById("stage");
@@ -320,8 +334,13 @@ const App = (function(){
 						return false;
 				}
 				
+				e.preventDefault();
+				
 				try {
 					[theRoute, routeData] = this.processRoute(name);
+					if(null == routeData && target.dataset) {
+						routeData = JSON.stringify(target.dataset);
+					}
 					this.executeRoute(theRoute, routeData);
 				} catch(err) {
 					e.preventDefault();
@@ -378,7 +397,11 @@ const App = (function(){
 				}
 				
 				
-				loadModule("doc").then(this.loadDocument.bind(this,DEFAULT_DOC_ID));
+				loadModule("doc")
+				.then( () => {
+					this.addRoute(docRoute); // docRoute is now in global space.
+				})
+				.then(this.loadDocument.bind(this,DEFAULT_DOC_ID));
 
 				document.addEventListener("ShortcutEvent", this);
 				document.addEventListener("click",this,true);

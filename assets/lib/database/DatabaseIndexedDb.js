@@ -198,7 +198,7 @@ var DatabaseIndexedDb = (function(){
 			};
 
 			request.onsuccess = function(event) {
-				console.log(request.onsuccess);
+				// console.log(request.onsuccess);
 			};
 
 			request.onupgradeneeded = (event) => {
