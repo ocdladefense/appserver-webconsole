@@ -182,6 +182,7 @@ function doAdminPage() {
 		"modules/editable/DomEditableEvent.js",
 		"modules/editable/DomContextMenuEvent.js",
 		"modules/domDoc/DomDocEvent.js",
+		"modules/domDoc/statuteComponent.js",
 
 		"modules/note/component.js",
 		"modules/note/route.js",
@@ -197,6 +198,7 @@ function doAdminPage() {
 		
 		"settings.js",
 		"public/app.js"
+		
 	);
 	
 	$content = file_get_contents(BASE_PATH ."/content/static/sample.html");
