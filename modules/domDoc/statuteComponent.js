@@ -1,15 +1,51 @@
-let node = vNode("div",{},text);
-let button = vNode("button", { "onclick":"clearElement('container-right')" }, []);
-let elem = createElement(node);
-let buttonElem = createElement(button);
-let container = document.getElementById("container-right");
-container.setAttribute("style", "display: inline-block");
-container.appendChild(elem);
-container.appendChild(buttonElem);
 
-function statute(props){
-    return (
-        <div id= "statute" >{props.text}</div>
-        <button onclick= "clearElement()" ></button>
-    )
+'use strict';
+const e = React.createElement;
+
+
+class StatuteComponent extends React.Component {
+  constructor(reactProps) {
+    super(reactProps);
+
+    this.state = { text: reactProps.text}
+  }
+
+  unMount() {
+      console.log(this.state);
+    //   this.state.text = "";
+      const domContainer = document.querySelector('#container-right');
+    //   ReactDOM.render(
+    //     e(this.render),
+    //     domContainer
+    //   );
+
+
+    //   ReactDOM.render(
+    //     React.createElement(StatuteComponent, { text: ""}),
+    //     domContainer
+    //   );
+    // let container = ReactDOM.findDOMNode(this);
+    ReactDOM.unmountComponentAtNode(domContainer);
+  }
+
+
+  render() {
+    var theText = this.state.text;
+    return React.createElement(
+        "div", 
+        { id: "statuteContainer"}, 
+        React.createElement("div", null, theText),
+        React.createElement("button", { onClick: () => { this.unMount() } }, 
+        " Close ")
+    );
+
+    // return React.createElement(
+    //     "div", 
+    //     { id: "statuteContainer"}, 
+    //     React.createElement("div", null, theText),
+    //     React.createElement("button", { onClick: () => { this.setState( { text: "" }) } }, 
+    //     " Close ")
+    // );
+  }
 }
+

@@ -2,12 +2,16 @@ const DomDocEvent = (function() {
 const EXTERNAL_CONTENT_URL = "../external?";
 const HANDLE_URLS = ["oregonlaws.org/ors"];
 
+
+
 function isNodeType(e){
 	if(e.target.nodeName == "A")
 		return true;
 	return false;
 }
 function isNodeLink(e){
+	if( !e.target.href )
+		return false;
 	var givenUrl = e.target.href;
 
 	HANDLE_URLS.forEach(url => {
@@ -34,14 +38,20 @@ function isNodeLink(e){
 			fetch(EXTERNAL_CONTENT_URL + statute).then( (response) => {
 				return response.text();
 			}).then( (text) => {
-				let node = vNode("div",{},text);
-				let button = vNode("button", { "onclick":"clearElement('container-right')" }, []);
-				let elem = createElement(node);
-				let buttonElem = createElement(button);
+				
+				const domContainer = document.querySelector('#container-right');
+				ReactDOM.render(
+					React.createElement(StatuteComponent, { text: text}),
+					domContainer
+				  );
+				// let node = vNode("div",{},text);
+				// let button = vNode("button", { "onclick":"clearElement('container-right')" }, []);
+				// let elem = createElement(node);
+				// let buttonElem = createElement(button);
 				let container = document.getElementById("container-right");
 				container.setAttribute("style", "display: inline-block");
-				container.appendChild(elem);
-				container.appendChild(buttonElem);
+				// container.appendChild(elem);
+				// container.appendChild(buttonElem);
 			});
 		},
 		
