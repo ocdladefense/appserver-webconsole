@@ -1,5 +1,5 @@
 const DomDocEvent = (function() {
-const EXTERNAL_CONTENT_URL = "../external?";
+const EXTERNAL_CONTENT_URL = "../external/";
 const HANDLE_URLS = ["oregonlaws.org/ors"];
 
 
