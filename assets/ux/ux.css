@@ -382,3 +382,13 @@ li a {
 #doc-top {
 	line-height: 1.3em;
 }
+
+.container-right.show{
+
+display: inline-block;
+}
+
+.container-right{
+display: hidden;
+
+}

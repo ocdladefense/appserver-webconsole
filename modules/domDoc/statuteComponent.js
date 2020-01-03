@@ -14,6 +14,7 @@ class StatuteComponent extends React.Component {
       console.log(this.state);
     //   this.state.text = "";
       const domContainer = document.querySelector('#container-right');
+      domContainer.classList.remove("show");
     //   ReactDOM.render(
     //     e(this.render),
     //     domContainer

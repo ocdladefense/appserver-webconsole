@@ -40,6 +40,7 @@ function isNodeLink(e){
 			}).then( (text) => {
 				
 				const domContainer = document.querySelector('#container-right');
+				domContainer.classList.add("show");
 				ReactDOM.render(
 					React.createElement(StatuteComponent, { text: text}),
 					domContainer
@@ -48,8 +49,7 @@ function isNodeLink(e){
 				// let button = vNode("button", { "onclick":"clearElement('container-right')" }, []);
 				// let elem = createElement(node);
 				// let buttonElem = createElement(button);
-				let container = document.getElementById("container-right");
-				container.setAttribute("style", "display: inline-block");
+				
 				// container.appendChild(elem);
 				// container.appendChild(buttonElem);
 			});
