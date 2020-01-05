@@ -1,5 +1,7 @@
 <?php
 
+use \Html\HtmlLink;
+
 
 class WebConsoleModule extends Module {
 
@@ -74,33 +76,53 @@ function loadExternalDocument($url, $statute = null) {
 }
 
 
-function pageStyles($styles = array() ) {
-
-	return array_map(function($style) {
-		if(!$style["active"]) return "";
-		$elem = "<link rel='stylesheet' type='text/css'";
-		foreach($style as $prop => $val) {
-			$elem .= ($prop."='{$val}'");
-		}
-		return $elem .= " />";
-	},$styles);
-}
-
-
-function pageScripts($scripts = array() ) {
-	return array_map(function($script){
-		return "<script type='text/javascript' src='/modules/webconsole/{$script}'>\n</script>";
-	},$scripts);
-}
-
 function doAdminPage() {
-	//array("style");
-	//array("scripts");
 	$template = new Template("webconsole");
-	//$template -> addStyles();
-	//$template -> addScript("path to js file");
-		
 
+	$jquery = array(
+		array(
+			"src" => "//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"
+		)
+	);
+
+	$react = array(
+		array(
+			"src" => "https://unpkg.com/react@16/umd/react.development.js",
+			"crossorigin" => null
+		),
+		array(
+			"src" => "https://unpkg.com/react-dom@16/umd/react-dom.development.js",
+			"crossorigin" => null
+		),
+		array(
+			"src" => "https://unpkg.com/babel-standalone@6/babel.min.js"
+		)
+	);
+	
+
+	
+	$template->addScripts($react);
+	$template->addScripts(moduleGetScripts());
+	$template->addStyles(moduleGetStyles());
+
+	
+	$content = file_get_contents(BASE_PATH ."/content/static/sample.html");
+	return $template->render(array(
+		"defaultStageClass" 	=> "not-home", //home
+		"content" 						=> $content
+	));
+
+}
+
+
+
+
+
+
+
+
+
+function moduleGetStyles() {
 	$styles = array(
 		array(
 			"active" => false,
@@ -114,11 +136,11 @@ function doAdminPage() {
 			"href" => "/modules/webconsole/assets/ux/ux.css"
 		),
 		array(
-			"active" => true,
+			"active" => false,
 			"href=" => "/modules/webconsole/modules/material/style.css"
 		),
 		array(
-			"active" => true,
+			"active" => false,
 			"href" => "/modules/webconsole/assets/css/KeyboardManager.css"
 		),
 		array(
@@ -130,25 +152,32 @@ function doAdminPage() {
 			"href" => "/modules/webconsole/assets/css/siteStatus.css"
 		)
 	);
-		
-	$scripts = array(
-		"assets/lib/event.js",
-		"assets/lib/datetime.js",
-		"assets/lib/modal.js",
-		"assets/lib/view.js",
-		"assets/lib/Dom.js",
-		"assets/lib/http/http.js",
-		"assets/lib/http/HttpCache.js",
-		"assets/lib/KeyboardManager.js",
-		"assets/lib/database/Database.js",
-		"assets/lib/database/DatabaseArray.js",
-		"assets/lib/database/DatabaseIndexedDb.js",
-		"assets/lib/Client.js",
+	
+	return $styles;
+}
 
-		"assets/event/DomDataEvent.js",
-		"assets/event/DomLayoutEvent.js",
-		"assets/event/DomHighlightEvent.js",
-		"assets/event/DomMobileContextMenuEvent.js",
+
+function moduleGetScripts() {
+	$module_path = "/modules/webconsole";
+
+	$scripts = array(
+		"$module_path/assets/lib/event.js",
+		"$module_path/assets/lib/datetime.js",
+		"$module_path/assets/lib/modal.js",
+		"$module_path/assets/lib/view.js",
+		"$module_path/assets/lib/Dom.js",
+		"$module_path/assets/lib/http/http.js",
+		"$module_path/assets/lib/http/HttpCache.js",
+		"$module_path/assets/lib/KeyboardManager.js",
+		"$module_path/assets/lib/database/Database.js",
+		"$module_path/assets/lib/database/DatabaseArray.js",
+		"$module_path/assets/lib/database/DatabaseIndexedDb.js",
+		"$module_path/assets/lib/Client.js",
+
+		"$module_path/assets/event/DomDataEvent.js",
+		"$module_path/assets/event/DomLayoutEvent.js",
+		"$module_path/assets/event/DomHighlightEvent.js",
+		"$module_path/assets/event/DomMobileContextMenuEvent.js",
 
 
 		
@@ -158,34 +187,27 @@ function doAdminPage() {
 		"modules/document/route.js",
 		*/
 		
-		"modules/editable/DomEditableEvent.js",
-		"modules/editable/DomContextMenuEvent.js",
-		"modules/domDoc/DomDocEvent.js",
-		"modules/domDoc/statuteComponent.js",
+		"$module_path/modules/editable/DomEditableEvent.js",
+		"$module_path/modules/editable/DomContextMenuEvent.js",
+		
+		"$module_path/modules/domDoc/src/DomDocEvent.js",
+		"$module_path/modules/domDoc/component.js",
 
-		"modules/note/component.js",
-		"modules/note/route.js",
-		"modules/note/src/Note.js",
+		"$module_path/modules/note/component.js",
+		"$module_path/modules/note/route.js",
+		"$module_path/modules/note/src/Note.js",
 		
-		"modules/material/component.js",
-		// "modules/material/style.css",
-		"modules/audio/src/DomAudio.js",
+		"$module_path/modules/material/component.js",
 
-		"routes.js",
-		"assets/ux/ui.js",
-		"assets/ux/menu.js",
+		"$module_path/modules/audio/src/DomAudio.js",
+
+		"$module_path/routes.js",
+		"$module_path/assets/ux/ui.js",
+		"$module_path/assets/ux/menu.js",
 		
-		"settings.js",
-		"public/app.js"
-		
+		"$module_path/settings.js",
+		"$module_path/public/app.js"
 	);
 	
-	$content = file_get_contents(BASE_PATH ."/content/static/sample.html");
-	return $template->render(array(
-		"defaultStageClass" 	=> "not-home", //home
-		"content" 						=> $content,
-		"styles" 							=> implode(pageStyles($styles),"\n"),
-		"scripts"							=> implode(pageScripts($scripts),"\n")
-	));
-
+	return $scripts;
 }

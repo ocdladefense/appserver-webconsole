@@ -1,25 +1,30 @@
 const DomDocEvent = (function() {
-const EXTERNAL_CONTENT_URL = "../external/";
-const HANDLE_URLS = ["oregonlaws.org/ors"];
+
+
+	const EXTERNAL_CONTENT_URL = "../external/";
+	
+	const HANDLE_URLS = ["oregonlaws.org/ors"];
 
 
 
-function isNodeType(e){
-	if(e.target.nodeName == "A")
-		return true;
-	return false;
-}
-function isNodeLink(e){
-	if( !e.target.href )
-		return false;
-	var givenUrl = e.target.href;
-
-	HANDLE_URLS.forEach(url => {
-		if(givenUrl.includes(url))
+	function isNodeType(e){
+		if(e.target.nodeName == "A")
 			return true;
-	});
-	return false;
-}
+		return false;
+	}
+	
+	function isNodeLink(e){
+		if( !e.target.href )
+			return false;
+		var givenUrl = e.target.href;
+
+		HANDLE_URLS.forEach(url => {
+			if(givenUrl.includes(url))
+				return true;
+		});
+		return false;
+	}
+
 
 	var domDoc = {
 		
@@ -55,13 +60,12 @@ function isNodeLink(e){
 			});
 		},
 		
-		render: function(){
-		}
+		render: function(){ }
 	};
 
-	function DomDocEvent() {
-
-	}
+	function DomDocEvent() {}
+	
+	
 	function UrlParser(url){
 		let parts = url.split("://");
 
@@ -72,9 +76,9 @@ function isNodeLink(e){
 		this.domain = otherParts.splice(0,1);
 
 		this.path = otherParts;
-		
-
 	}
+	
+	
 	var proto = {
 		protocol: "http",
 		domain: null,
@@ -84,14 +88,12 @@ function isNodeLink(e){
 		getLastPathPart: function(){
 			return this.path[this.path.length-1];
 		}
+	};
 
-
-	}
 
 	DomDocEvent.prototype = domDoc;
 	UrlParser.prototype = proto;
 
+
 	return DomDocEvent;
-
 })();
-
