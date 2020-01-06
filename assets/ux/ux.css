@@ -383,10 +383,20 @@ li a {
 	line-height: 1.3em;
 }
 
-.container-right.show {
-	display: inline-block;
-}
+
 
 .container-right {
+	background-color: blue;
+	color: white;
+	padding: 5px;
+	height: auto;
+	width: 287px;
+	max-width: 18%;
+	margin-left: 19%;
+	display:inline-block;
+}
+
+
+.container-right.hidden {
 	display: none;
 }

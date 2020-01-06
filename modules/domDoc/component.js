@@ -1,8 +1,18 @@
 'use strict';
 
 // const e = React.createElement;
+// const ModalComponent extends React.Component
+// ModalComponent.content(result of some fetch call here)
+// ModalComponent.setParent(someNode);
+
+   // const PositionedModal extends ModalComponent  
+	// PositionedModal.Location
+	// PositionedModal.x
+	// PositionedModal.y
+// PositionedModal extends Modal
 
 
+// PositionedModal --> this is a modal 
 class StatuteComponent extends React.Component {
   constructor(reactProps) {
     super(reactProps);
@@ -14,7 +24,7 @@ class StatuteComponent extends React.Component {
       console.log(this.state);
     //   this.state.text = "";
       const domContainer = document.querySelector('#container-right');
-      domContainer.classList.remove("show");
+      domContainer.classList.add("hidden");
     //   ReactDOM.render(
     //     e(this.render),
     //     domContainer
@@ -31,6 +41,10 @@ class StatuteComponent extends React.Component {
 
 
   render() {
+		const domContainer = document.querySelector('#container-right');
+		domContainer.classList.remove("hidden");
+  
+  
     var theText = this.state.text;
     
     // There's a way to make this work now, even though we're using the "standalone" babel.
@@ -55,3 +69,8 @@ class StatuteComponent extends React.Component {
   }
 }
 
+
+
+class PositionedModal extends StatuteComponent {
+
+}

@@ -31,7 +31,14 @@ const DomDocEvent = (function() {
 		events: {},
 		
 		handleEvent: function(e) {
-
+			var target = e.target;
+			// Be careful! May need to take into account any fixed-height elements to properly calculate location.
+			var x = target.screenX;
+			var y = target.screenY;
+			// Calculate offsets, when necessary
+			// offset y by 50% of the container height;
+			// offset x by 100% of the container width;
+			
 			if(!isNodeLink(e) && !isNodeType(e))
 				return false;
 			e.preventDefault();
@@ -44,12 +51,17 @@ const DomDocEvent = (function() {
 				return response.text();
 			}).then( (text) => {
 				
+				// const domContainer = document.body;
+				// 
 				const domContainer = document.querySelector('#container-right');
-				domContainer.classList.add("show");
+				domContainer.classList.remove("hidden");
+				
+				// ReactDOM.render(React.createElement(PositionModal, {text:text}),domContainer);
+				
 				ReactDOM.render(
 					React.createElement(StatuteComponent, { text: text}),
 					domContainer
-				  );
+				);
 				// let node = vNode("div",{},text);
 				// let button = vNode("button", { "onclick":"clearElement('container-right')" }, []);
 				// let elem = createElement(node);

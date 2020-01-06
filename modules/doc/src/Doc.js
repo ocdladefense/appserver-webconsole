@@ -20,7 +20,7 @@ const Doc = (function(){
 				objs.forEach( (obj) => {
 					var note = new Note(obj);
 					var index = note.nodeId;
-					elements[index].appendChild(createElement(NoteComponent.one(note)));
+					// elements[index].appendChild(createElement(NoteComponent.one(note)));
 				});
 		 });
 		 
