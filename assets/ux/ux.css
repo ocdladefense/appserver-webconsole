@@ -383,12 +383,10 @@ li a {
 	line-height: 1.3em;
 }
 
-.container-right.show{
-
-display: inline-block;
+.container-right.show {
+	display: inline-block;
 }
 
-.container-right{
-display: hidden;
-
+.container-right {
+	display: none;
 }
