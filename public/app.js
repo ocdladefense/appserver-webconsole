@@ -51,6 +51,48 @@ function loadScript(src) {
 	});
 }
 
+
+function jsxTemplate(text) {
+	return (function(resolve,reject) {
+		const script = document.createElement("script");
+		script.setAttribute("type","text/babel");
+		if(text) script.textContent = text;
+		document.body.appendChild(script);
+		/*if(src) {
+			script.onload = resolve;
+			script.onerror = reject;
+			// script.async = true;
+			script.src = src;
+			resolve();
+		} else {*/
+			resolve();
+		
+	});
+}
+
+function loadJsx(src) {
+	// var getScript = fetch("https://trust.ocdla.org/modules/webconsole/modules/domDoc/component.js");
+	var getScript = fetch(src);
+	
+	getScript.then( (resp) => {
+		return resp.text();
+	});
+	
+	
+	getScript.then( (text) => {
+		var scriptPromise = new Promise(jsxTemplate(text));
+		scriptPromise.then(()=>Babel.transformScriptTags);
+	});
+}
+
+// trigger DOMContentLoaded
+// https://ghinda.net/article/script-tags/
+function scriptsDone() {
+  var DOMContentLoadedEvent = document.createEvent('Event')
+  DOMContentLoadedEvent.initEvent('DOMContentLoaded', true, true)
+  document.dispatchEvent(DOMContentLoadedEvent)
+}
+
 function loadModule(name) {
 	var path = getModulePath(name);
 	var dataPath = getModuleDataPath("bon");
@@ -408,6 +450,11 @@ const App = (function(){
 					this.addRoute(docRoute); // docRoute is now in global space.
 				})
 				.then(this.loadDocument.bind(this,DEFAULT_DOC_ID));
+				
+				// Make this part of the loadModule routine so
+				// that react components, especially those written in JSX are
+				//  loaded too.
+				// loadJsx("/modules/webconsole/modules/domDoc/component.js");
 
 				document.addEventListener("ShortcutEvent", this);
 				document.addEventListener("click",this,true);
