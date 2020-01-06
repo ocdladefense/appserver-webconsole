@@ -53,22 +53,19 @@ const DomDocEvent = (function() {
 				
 				// const domContainer = document.body;
 				// 
-				const domContainer = document.querySelector('#container-right');
+				const domContainer = document.querySelector('body');
 				domContainer.classList.remove("hidden");
+				const pModalContainer = createElement(vNode("div", {id:"pModalContainer"}, null));
+				domContainer.appendChild(pModalContainer);
+
+				pModalContainer.style.top = 200+"px";
+				pModalContainer.style.left = 100+"px";
+
 				
-				// ReactDOM.render(React.createElement(PositionModal, {text:text}),domContainer);
 				
-				ReactDOM.render(
-					React.createElement(StatuteComponent, { text: text}),
-					domContainer
-				);
-				// let node = vNode("div",{},text);
-				// let button = vNode("button", { "onclick":"clearElement('container-right')" }, []);
-				// let elem = createElement(node);
-				// let buttonElem = createElement(button);
+				ReactDOM.render(React.createElement(PositionedModal, {text:text,}),pModalContainer);
 				
-				// container.appendChild(elem);
-				// container.appendChild(buttonElem);
+				//ReactDOM.render(React.createElement(StatuteContainer, { text: text, x:x,y:y}),domContainer);
 			});
 		},
 		

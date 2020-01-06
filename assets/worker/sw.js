@@ -1,6 +1,6 @@
-/*
-Service worker
- */ 
+// /*
+// Service worker
+//  */ 
 
 const SCRIPT_PATH = "modules/webconsole/assets";
 var networkStatus = true;
