@@ -4,67 +4,42 @@
 
 
 
-class StatuteComponent extends React.Component {
+class Modal extends React.Component{
   constructor(reactProps) {
     super(reactProps);
-
-    this.state = { text: reactProps.text, x: reactProps.x, y:reactProps.y}
   }
-
-  unMount() {
-      console.log(this.state);
-    //   this.state.text = "";
-      const domContainer = document.querySelector('#stage');
-      // domContainer.classList.add("hidden");
-
-
-    //   ReactDOM.render(
-    //     e(this.render),
-    //     domContainer
-    //   );
-
-
-    //   ReactDOM.render(
-    //     React.createElement(StatuteComponent, { text: ""}),
-    //     domContainer
-    //   );
-    // let container = ReactDOM.findDOMNode(this);
-    ReactDOM.unmountComponentAtNode(domContainer);
-  }
-
-
   render() {
-		// const domContainer = document.querySelector('#stage');
-		// domContainer.classList.remove("hidden");
-  
-  
-    var theText = this.state.text;
-
-    
-    // There's a way to make this work now, even though we're using the "standalone" babel.
-    // We'll move to webpack, etc. on Thursday.
-		// return <h1>Hello, world!</h1>;
-
-    return React.createElement(
-        "div", 
-        { id: "statuteContainer"}, 
-        React.createElement("div", null, theText),
-        React.createElement("button", { onClick: () => { this.unMount() } }, 
-        " Close ")
-    );
+    return React.createElement("div",{id:"pModalContainer"});
   }
 }
 
 
 // PositionedModal --> this is a modal 
-class PositionedModal extends React.Component {
+class PositionedModal extends React.Component{
   constructor(reactProps) {
     super(reactProps);
-    this.state = { text: reactProps.text, x: reactProps.x, y:reactProps.y}
+    this.state = {content: reactProps.content,y:reactProps.y}
+  }
+
+  unMount() {
+    const domContainer = document.querySelector('#pModalContainer');
+    domContainer.classList.add("hidden");
+    ReactDOM.unmountComponentAtNode(domContainer);
   }
 
   render(){
-    return React.createElement("div",{id:"positionedModal"},"hello modal");
+    console.log("STATE Y = ",this.state.y);
+    //console.log("THE CONTENT "+this.state.content);
+    return React.createElement(
+      "div",
+      {id:"positionedModal"},
+      this.state.content,
+      React.createElement("button", {id:"close-button", onClick: () => { this.unMount() } }, " Close "));
+  }
+
+  componentDidMount(){
+    const domContainer = document.querySelector('#pModalContainer');
+    domContainer.classList.remove("hidden");
   }
   // const e = React.createElement;
 // const ModalComponent extends React.Component
@@ -72,9 +47,6 @@ class PositionedModal extends React.Component {
 // ModalComponent.setParent(someNode);
 
    // const PositionedModal extends ModalComponent  
-	// PositionedModal.Location
-	// PositionedModal.x
-	// PositionedModal.y
 // PositionedModal extends Modal
 
 }

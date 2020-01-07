@@ -31,10 +31,11 @@ const DomDocEvent = (function() {
 		events: {},
 		
 		handleEvent: function(e) {
-			var target = e.target;
 			// Be careful! May need to take into account any fixed-height elements to properly calculate location.
-			var x = target.screenX;
-			var y = target.screenY;
+			var x = e.pageX;
+			var y = e.clientY;
+			console.log("EVENT Y ",y);
+
 			// Calculate offsets, when necessary
 			// offset y by 50% of the container height;
 			// offset x by 100% of the container width;
@@ -49,23 +50,16 @@ const DomDocEvent = (function() {
 
 			fetch(EXTERNAL_CONTENT_URL + statute).then( (response) => {
 				return response.text();
-			}).then( (text) => {
-				
-				// const domContainer = document.body;
-				// 
+			}).then( (content) => {
 				const domContainer = document.querySelector('body');
 				domContainer.classList.remove("hidden");
-				const pModalContainer = createElement(vNode("div", {id:"pModalContainer"}, null));
-				domContainer.appendChild(pModalContainer);
 
-				pModalContainer.style.top = 200+"px";
-				pModalContainer.style.left = 100+"px";
-
+				if(document.querySelectorAll("#pModalContainer").length == 0){
+					const pModalContainer = createElement(vNode("div", {id:"pModalContainer"}, null));
+					domContainer.appendChild(pModalContainer);
+				}
 				
-				
-				ReactDOM.render(React.createElement(PositionedModal, {text:text,}),pModalContainer);
-				
-				//ReactDOM.render(React.createElement(StatuteContainer, { text: text, x:x,y:y}),domContainer);
+				ReactDOM.render(React.createElement(PositionedModal, {content:content,y:y}),pModalContainer);
 			});
 		},
 		
