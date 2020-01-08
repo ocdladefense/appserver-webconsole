@@ -445,5 +445,8 @@ li a {
 	background: #232f3e;
 }
 #close-button{
-	border-radius: 25px;
+	border-radius: 50px;
+    display: block;
+    margin: auto;
+    margin-top: 10px;
 }

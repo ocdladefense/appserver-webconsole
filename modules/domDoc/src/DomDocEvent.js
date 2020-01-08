@@ -31,10 +31,14 @@ const DomDocEvent = (function() {
 		events: {},
 		
 		handleEvent: function(e) {
+
+			if(!e.target.classList.contains("isModal")){
+				console.log("not ISMODAL");
+			}
+
 			// Be careful! May need to take into account any fixed-height elements to properly calculate location.
 			var x = e.pageX;
 			var y = e.clientY;
-			console.log("EVENT Y ",y);
 
 			// Calculate offsets, when necessary
 			// offset y by 50% of the container height;
@@ -60,7 +64,7 @@ const DomDocEvent = (function() {
 					domContainer.appendChild(pModalContainer);
 				}
 				
-				ReactDOM.render(React.createElement(PositionedModal, {content:content,y:y}),pModalContainer);
+				var modal = ReactDOM.render(React.createElement(PositionedModal, {content:content,y:y}),pModalContainer);
 			});
 		},
 		

@@ -1,9 +1,5 @@
 'use strict';
 
-
-
-
-
 class Modal extends React.Component{
   constructor(reactProps) {
     super(reactProps);
@@ -21,37 +17,31 @@ class PositionedModal extends React.Component{
     this.state = {content: reactProps.content,y:reactProps.y}
   }
 
-  unMount() {
-    const domContainer = document.querySelector('#pModalContainer');
-    domContainer.classList.add("hidden");
-    ReactDOM.unmountComponentAtNode(domContainer);
-  }
-
   render(){
-    console.log("STATE Y = ",this.state.y);
-    //console.log("THE CONTENT "+this.state.content);
+
     return React.createElement(
       "div",
-      {id:"positionedModal"},
+      {id:"positionedModal",className:"isModal"},
       this.state.content,
+
       React.createElement("button", {id:"close-button", onClick: () => { this.unMount() } }, " Close "));
 
     // USE ONLY WITH NEW HTML CONTENT METHOD IN MODULE.PHP  
     // return React.createElement(
     //   "div",
     //   {id:"positionedModal", dangerouslySetInnerHTML: {__html: this.state.content} });
+
+  }
+
+  unMount() {
+    const domContainer = document.querySelector('#pModalContainer');
+    domContainer.classList.add("hidden");
+    ReactDOM.unmountComponentAtNode(domContainer);
+
   }
 
   componentDidMount(){
     const domContainer = document.querySelector('#pModalContainer');
     domContainer.classList.remove("hidden");
   }
-  // const e = React.createElement;
-// const ModalComponent extends React.Component
-// ModalComponent.content(result of some fetch call here)
-// ModalComponent.setParent(someNode);
-
-   // const PositionedModal extends ModalComponent  
-// PositionedModal extends Modal
-
 }
