@@ -56,6 +56,7 @@ const DomDocEvent = (function() {
 
 				if(document.querySelectorAll("#pModalContainer").length == 0){
 					const pModalContainer = createElement(vNode("div", {id:"pModalContainer"}, null));
+					pModalContainer.addEventListener("click", () => { this.unMount() });
 					domContainer.appendChild(pModalContainer);
 				}
 				
@@ -63,7 +64,13 @@ const DomDocEvent = (function() {
 			});
 		},
 		
-		render: function(){ }
+		render: function(){ },
+
+		unMount: function() {
+			const domContainer = document.querySelector('#pModalContainer');
+			domContainer.classList.add("hidden");
+			ReactDOM.unmountComponentAtNode(domContainer);
+		}
 	};
 
 	function DomDocEvent() {}
