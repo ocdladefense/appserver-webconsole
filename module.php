@@ -155,6 +155,10 @@ function moduleGetStyles() {
 		array(
 			"active" => true,
 			"href" => "/modules/webconsole/assets/css/siteStatus.css"
+		),
+		array(
+			"active" => true,
+			"href" => "/modules/webconsole/modules/ors/ors.css"
 		)
 	);
 	
@@ -195,8 +199,8 @@ function moduleGetScripts() {
 		"$module_path/modules/editable/DomEditableEvent.js",
 		"$module_path/modules/editable/DomContextMenuEvent.js",
 		
-		"$module_path/modules/domDoc/src/DomDocEvent.js",
-		"$module_path/modules/domDoc/component.js",
+		"$module_path/modules/modal/src/DomDocEvent.js",
+		"$module_path/modules/modal/component.js",
 
 		"$module_path/modules/note/component.js",
 		"$module_path/modules/note/route.js",

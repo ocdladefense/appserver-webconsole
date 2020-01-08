@@ -17,7 +17,7 @@ class PositionedModal extends React.Component{
 
   render(){
 
-    React.createElement("button", {id:"close-button", onClick: () => { this.unMount() } }, " Close ");
+    // React.createElement("button", {id:"close-button", onClick: () => { this.unMount() } }, " Close ");
 
     return React.createElement(
       "div",
