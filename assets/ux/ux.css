@@ -437,5 +437,8 @@ li a {
 	border: 1px solid black;
 }
 #close-button{
-	border-radius: 25px;
+	border-radius: 50px;
+    display: block;
+    margin: auto;
+    margin-top: 10px;
 }
