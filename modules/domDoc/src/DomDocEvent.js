@@ -68,9 +68,9 @@ const DomDocEvent = (function() {
 			});
 		},
 		
-		render: function(){},
+		render: function(){ },
 
-		unMount: function(){
+		unMount: function() {
 			const domContainer = document.querySelector('#pModalContainer');
 			domContainer.classList.add("hidden");
 			ReactDOM.unmountComponentAtNode(domContainer);
