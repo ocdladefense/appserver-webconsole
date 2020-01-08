@@ -9,8 +9,6 @@ class Modal extends React.Component{
   }
 }
 
-
-// PositionedModal --> this is a modal 
 class PositionedModal extends React.Component{
   constructor(reactProps) {
     super(reactProps);
@@ -19,17 +17,11 @@ class PositionedModal extends React.Component{
 
   render(){
 
+    React.createElement("button", {id:"close-button", onClick: () => { this.unMount() } }, " Close ");
+
     return React.createElement(
       "div",
-      {id:"positionedModal",className:"isModal"},
-      this.state.content,
-
-      React.createElement("button", {id:"close-button", onClick: () => { this.unMount() } }, " Close "));
-
-    // USE ONLY WITH NEW HTML CONTENT METHOD IN MODULE.PHP  
-    // return React.createElement(
-    //   "div",
-    //   {id:"positionedModal", dangerouslySetInnerHTML: {__html: this.state.content} });
+      {id:"positionedModal", dangerouslySetInnerHTML: {__html: this.state.content} });
 
   }
 
