@@ -71,7 +71,7 @@ function jsxTemplate(text) {
 }
 
 function loadJsx(src) {
-	// var getScript = fetch("https://trust.ocdla.org/modules/webconsole/modules/domDoc/component.js");
+	// var getScript = fetch("https://trust.ocdla.org/modules/webconsole/modules/modal/component.js");
 	var getScript = fetch(src);
 	
 	getScript.then( (resp) => {
@@ -172,6 +172,8 @@ const App = (function(){
 			currentDocument: null, 
 			
 			loadModule: loadModule,
+
+			linkManager:null,
 			
 			loadDocument:  function(docId) {
 				var doc = new Doc(docId);
@@ -432,7 +434,8 @@ const App = (function(){
 				}
 				this.bg.postMessage(message);
 			},
-			
+			loadModule:loadModule,
+
 			init: function(settings){
 
 				
@@ -444,17 +447,21 @@ const App = (function(){
 					}
 				}
 				
-				
+				this.linkManager = new LinkHandler();
 				loadModule("doc")
 				.then( () => {
 					this.addRoute(docRoute); // docRoute is now in global space.
 				})
-				.then(this.loadDocument.bind(this,DEFAULT_DOC_ID));
+				.then(this.loadDocument.bind(this,DEFAULT_DOC_ID))
+				.then(loadModule.bind(this,"ors"));
+				//The above is equal to this.loadModule("ors")
+
+
 				
 				// Make this part of the loadModule routine so
 				// that react components, especially those written in JSX are
 				//  loaded too.
-				// loadJsx("/modules/webconsole/modules/domDoc/component.js");
+				// loadJsx("/modules/webconsole/modules/modal/component.js");
 
 				document.addEventListener("ShortcutEvent", this);
 				document.addEventListener("click",this,true);
@@ -471,7 +478,7 @@ const App = (function(){
 				
 				document.addEventListener("keyup",new DomDataEvent(".record-container"),true);
 				document.addEventListener("contextmenu",new DomContextMenuEvent(".has-context"),true);
-				document.addEventListener("click", new DomDocEvent(), true);
+				document.addEventListener("click", this.linkManager, true);
 
 				domReady(this.toolManager());
 				document.addEventListener("click",collapse,true);

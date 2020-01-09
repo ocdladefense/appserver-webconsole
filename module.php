@@ -64,11 +64,11 @@ function loadExternalDocument($url, $statute = null) {
 	
 	$resp = $req->send();
 
-	$domDoc = new DomDocument();
+	$linkHandler = new LinkHandler();
 	libxml_use_internal_errors(true);
-	$domDoc->loadHTML($resp->getBody());
+	$linkHandler->loadHTML($resp->getBody());
 	libxml_clear_errors();
-	$text = $domDoc->getElementById("text");
+	$text = $linkHandler->getElementById("text");
 	
 	$innerHTML = "";
 	$children = $text->childNodes;
@@ -182,6 +182,7 @@ function moduleGetScripts() {
 		"$module_path/assets/lib/database/DatabaseArray.js",
 		"$module_path/assets/lib/database/DatabaseIndexedDb.js",
 		"$module_path/assets/lib/Client.js",
+		"$module_path/assets/lib/UrlParser.js",
 
 		"$module_path/assets/event/DomDataEvent.js",
 		"$module_path/assets/event/DomLayoutEvent.js",
@@ -198,8 +199,10 @@ function moduleGetScripts() {
 		
 		"$module_path/modules/editable/DomEditableEvent.js",
 		"$module_path/modules/editable/DomContextMenuEvent.js",
+
 		
-		"$module_path/modules/modal/src/DomDocEvent.js",
+		"$module_path/modules/linkHandler/src/LinkHandler.js",
+
 		"$module_path/modules/modal/component.js",
 
 		"$module_path/modules/note/component.js",
