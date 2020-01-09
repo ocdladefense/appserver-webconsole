@@ -69,10 +69,15 @@ function loadExternalDocument($url, $statute = null) {
 	$domDoc->loadHTML($resp->getBody());
 	libxml_clear_errors();
 	$text = $domDoc->getElementById("text");
-	print_r($text->textContent);
+	
+	$innerHTML = "";
+	$children = $text->childNodes;
 
-	// This is a work around for header problems
-	exit;
+	foreach($children as $child) {
+		$innerHTML .= $text->ownerDocument->saveHTML($child);
+	}
+
+	return $innerHTML;
 }
 
 
