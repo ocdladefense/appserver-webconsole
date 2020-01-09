@@ -38,6 +38,7 @@ const HttpCache = (function(){
 			},
        
       init: function(){
+      	if(!this.enabled) return;
 				self["caches"].open(this.name)
 				.then((cache) => {
 						console.log('Opened cache');
