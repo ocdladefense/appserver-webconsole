@@ -1,0 +1,26 @@
+.ors_text p.outline_level_1 {
+    text-indent: 0;
+    margin: 15px 0 0 2em;
+}
+
+.ors_text p.outline_level_2 {
+    text-indent: 0em;
+    margin: 0.8em 0 0 4em;
+}
+
+.ors_text p {
+    text-indent: 0;
+    line-height: 1.8em;
+    margin-bottom: 15px;
+    padding: 0;
+}
+
+.ors_text p.outline_level_3 {
+    text-indent: 0;
+    margin: 0.8em 0 0 6em;
+}
+
+.ors_annotation {
+    padding: .5em 0;
+    margin: 0;
+}

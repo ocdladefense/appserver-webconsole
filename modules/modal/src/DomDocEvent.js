@@ -50,9 +50,9 @@ const DomDocEvent = (function() {
 
 			
 			var url = new UrlParser(e.target.href);
-			var statute = url.getLastPathPart();
+			var content = url.getLastPathPart();
 
-			fetch(EXTERNAL_CONTENT_URL + statute).then( (response) => {
+			fetch(EXTERNAL_CONTENT_URL + content).then( (response) => {
 				return response.text();
 			}).then( (content) => {
 				const domContainer = document.querySelector('body');
