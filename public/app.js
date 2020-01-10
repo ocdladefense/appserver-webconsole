@@ -482,6 +482,7 @@ const App = (function(){
 				
 				document.addEventListener("keyup",new DomDataEvent(".record-container"),true);
 				document.addEventListener("contextmenu",new DomContextMenuEvent(".has-context"),true);
+				document.addEventListener("mouseover", this.linkManager, true);
 				document.addEventListener("click", this.linkManager, true);
 
 				domReady(this.toolManager());

@@ -10,6 +10,17 @@ const LinkHandler = (function() {
 		return node.nodeName == nodeName;
 	}
 
+	function isStageElement(target){
+		let elem = target;
+		while(elem.parentNode && elem.parentNode.nodeName.toLowerCase() != 'body') {
+			if(elem.parentNode.id.toLowerCase() === 'stage') {
+				return true;
+			}
+			elem = elem.parentNode;
+		}
+		return false;
+	}
+
 	var linkHandler = {
 		handlers: {},
 
@@ -20,7 +31,7 @@ const LinkHandler = (function() {
 		
 		
 
-			if(!isNodeType(e.target,HTML_A_TAG) || !hasHref(e.target)) {
+			if(!isNodeType(e.target,HTML_A_TAG) || !hasHref(e.target) || !isStageElement(e.target)) {
 				return false;
 			}
 			
@@ -30,14 +41,14 @@ const LinkHandler = (function() {
 				e.stopPropagation();
 				
 				
-				// Where the user clicked.  Should be relative to the screen.
+				// Where the user hovered or clicked.  Should be relative to the screen.
 				point = {x: e.pageX, y: e.clientY};
 
 				url = new UrlParser(e.target.href);
 		
 				for(var name in this.handlers){
 					if(this.handlers[name].shouldIHandle(url)){
-						this.handlers[name].handleUrl(url,point);
+						this.handlers[name].handleUrl(url,point,e);
 						return false;
 					}
 				}
