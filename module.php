@@ -23,8 +23,11 @@ function modWebconsoleRoutes() {
 		"doc" => array(
 			"callback" => "loadDocument"
 		),
-		"external" => array(
-			"callback" => "loadExternalDocument"
+		"html-content" => array(
+			"callback" => "loadExternalDocumentHTML"
+		),
+		"text-content" => array(
+			"callback" => "loadExternalDocumentText"
 		)
 	);
 }
@@ -55,7 +58,7 @@ function loadDocument($docId) {
 		new MainContent("#annotations");
 		new MainContent("#related-statutes");
 */
-function loadExternalDocument($url, $statute = null) {
+function loadExternalDocumentHTML($url, $statute = null) {
 	$fullUrl = "https://www.oregonlaws.org/ors/".$url;
 
 	$statute = "";
@@ -91,6 +94,24 @@ function loadExternalDocument($url, $statute = null) {
 	return $filtered->saveHTML();
 }
 
+function loadExternalDocumentText($url){
+	$fullUrl = "https://www.oregonlaws.org/ors/".$url;
+
+	$statute = "";
+
+	$req = new HttpRequest($fullUrl);
+	
+	$resp = $req->send();
+
+	$domDoc = new DomDocument();
+	libxml_use_internal_errors(true);
+	$domDoc->loadHTML($resp->getBody());
+	libxml_clear_errors();
+	$text = $domDoc->getElementById("text");
+
+	print_r($text->textContent);
+	exit;
+}
 
 function doAdminPage() {
 	$template = new Template("webconsole");
@@ -187,6 +208,10 @@ function moduleGetStyles() {
 		array(
 			"active" => true,
 			"href" => "/modules/webconsole/modules/ors/style.css"
+		),
+		array(
+			"active" => true,
+			"href" => "/modules/webconsole/modules/inlineModal/style.css"
 		)
 	);
 	
@@ -234,6 +259,10 @@ function moduleGetScripts() {
 		"$module_path/modules/modal/component/ModalComponent.js",
 		"$module_path/modules/modal/src/Modal.js",
 		"$module_path/modules/modal/src/PositionedModal.js",
+
+		"$module_path/modules/inlineModal/src/InlineModal.js",
+		"$module_path/modules/inlineModal/src/IModal.js",
+		"$module_path/modules/inlineModal/component/InlineModalComponent.js",
 
 		"$module_path/modules/note/component.js",
 		"$module_path/modules/note/route.js",

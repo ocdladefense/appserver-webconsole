@@ -10,7 +10,11 @@ const LinkHandler = (function() {
 		return node.nodeName == nodeName;
 	}
 
+<<<<<<< HEAD
 	function isStageContent(target) {
+=======
+	function isStageElement(target){
+>>>>>>> c41ea27853f35c88bcf6e03dc13ce4c2e43b1a8d
 		let elem = target;
 		while(elem.parentNode && elem.parentNode.nodeName.toLowerCase() != 'body') {
 			if(elem.parentNode.id.toLowerCase() === 'stage') {
@@ -31,7 +35,11 @@ const LinkHandler = (function() {
 		
 		
 
+<<<<<<< HEAD
 			if(!isNodeType(e.target,HTML_A_TAG) || !hasHref(e.target) || !isStageContent(e.target)) {
+=======
+			if(!isNodeType(e.target,HTML_A_TAG) || !hasHref(e.target) || !isStageElement(e.target)) {
+>>>>>>> c41ea27853f35c88bcf6e03dc13ce4c2e43b1a8d
 				return false;
 			}
 			
@@ -41,14 +49,14 @@ const LinkHandler = (function() {
 				e.stopPropagation();
 				
 				
-				// Where the user clicked.  Should be relative to the screen.
+				// Where the user hovered or clicked.  Should be relative to the screen.
 				point = {x: e.pageX, y: e.clientY};
 
 				url = new UrlParser(e.target.href);
 		
 				for(var name in this.handlers){
 					if(this.handlers[name].shouldIHandle(url)){
-						this.handlers[name].handleUrl(url,point);
+						this.handlers[name].handleUrl(url,point,e);
 						return false;
 					}
 				}

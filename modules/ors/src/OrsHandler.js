@@ -1,6 +1,8 @@
 const OrsHandler = (function(){
 
-		const CONTENT_URL = "/external";
+		const HTML_CONTENT = "/html-content";
+
+		const TEXT_CONTENT = "/text-content";
 		
 		const DOM_RENDER = false;
 		
@@ -16,12 +18,36 @@ const OrsHandler = (function(){
 		
     var ors = {
     
-			handleUrl:function(url,point){
+			handleUrl:function(url,point,e){
 				var statute, modal, fetchPromise;
 				
 				statute = url.getLastPathPart();
+
+				console.log("TYPE", e.type);
 				
-				fetchPromise = fetch(CONTENT_URL + "/"+statute)
+				if(e.type == "click"){
+					this.renderPositionedModal(point,statute);
+				}
+				else if(e.type == "mouseover"){
+					setTimeout(this.renderInlineModal(point,e,statute), 1500);
+				}
+			},
+
+			renderInlineModal:function(point,e,statute){
+				console.log("MOUSEOVER");
+				fetchPromise = fetch(TEXT_CONTENT + "/"+statute)
+				.then( (response) => {
+						return response.text();
+				})
+				.then( (content) => {
+						modal = new InlineModal(content,point,REACT_RENDER); // or REACT_RENDER
+						modal.render();
+				});
+			},
+
+			renderPositionedModal:function(point,statute){
+				console.log("CLICK");
+				fetchPromise = fetch(HTML_CONTENT + "/"+statute)
 				.then( (response) => {
 						return response.text();
 				})
@@ -29,7 +55,6 @@ const OrsHandler = (function(){
 						modal = new PositionedModal(content,point,REACT_RENDER); // or REACT_RENDER
 						modal.render();
 				});
-
 			},
 
 			shouldIHandle:function(url){
