@@ -79,6 +79,7 @@ const DomHighlightEvent = (function() {
 		
 		handleEvent: function(e) {
 			var target = e.target;
+			
 
 			if(!Dom.composedPath(target).includes(this.rootSelector)) return false;
 			

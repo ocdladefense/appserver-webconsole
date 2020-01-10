@@ -2,9 +2,33 @@ const serverSettings = {
 
 };
 
+/*
+    var urlsToCache = [
+        '/webconsole',
+        SCRIPT_PATH+'/assets/lib/view.js',
+        SCRIPT_PATH+'/assets/lib/event.js',
+        SCRIPT_PATH+'/assets/lib/Client.js',
+        // SCRIPT_PATH+'/css/keyboardManager.css',
+        // SCRIPT_PATH+'/css/materials.css',
+        SCRIPT_PATH+'/assets/css/siteStatus.css',
+        SCRIPT_PATH+'/public/app.js',
+        SCRIPT_PATH+'/assets/ux/menu.js',
+        SCRIPT_PATH+'/assets/ux/ux.css',
+        SCRIPT_PATH+'/settings.js',
+        SCRIPT_PATH+'/routes.js'
+    ];
+*/
+
+const SCRIPT_PATH = "modules/webconsole";
+
 const cacheSettings = {
 	name: 'mycache',
-	enabled: false
+	enabled: false,
+	startUrls: [
+		SCRIPT_PATH+"/assets/react/babel-6.26.0-standalone.js",
+		SCRIPT_PATH+"/assets/react/react-16.12.0-development.js",
+		SCRIPT_PATH+"/assets/react/react-16.12.0-dom-development.js"
+	]
 };
 
 

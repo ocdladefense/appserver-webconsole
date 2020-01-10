@@ -1,5 +1,7 @@
 const OrsHandler = (function(){
 
+		const CONTENT_URL = "/external";
+		
     var ors = {
         getExternalContentUrl:function(){
             return "../external/";
@@ -9,19 +11,20 @@ const OrsHandler = (function(){
             return ["oregonlaws.org/ors"];
         },
 
-        handleUrl:function(url){
-            try{
-                var statute = url.getLastPathPart();
-                var result = fetch(this.getExternalContentUrl() + statute).then( (response) => {
-                    return response.text();
-                }).then( (content) => {
-                    var modal = new PositionedModal(content);
-                    
-                });
-            }
-            catch(e){
-                
-            }
+        handleUrl:function(url,point){
+					var statute, modal, fetchPromise;
+					
+					statute = url.getLastPathPart();
+					
+					fetchPromise = fetch(CONTENT_URL + "/"+statute)
+					.then( (response) => {
+							return response.text();
+					})
+					.then( (content) => {
+							modal = new PositionedModal(content,point);
+							modal.render();
+					});
+
         },
 
         shouldIHandle:function(url){

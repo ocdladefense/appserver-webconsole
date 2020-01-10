@@ -1,44 +1,57 @@
 const LinkHandler = (function() {
 
-	function isNodeLink(e){
-		return !e.target.href;
+	const HTML_A_TAG = "A";
+
+	function hasHref(node){
+		return !!node.getAttribute("href");
 	}
 
 	function isNodeType(node,nodeName){
-		if(node == nodeName)
-			return true;
-		return false;
+		return node.nodeName == nodeName;
 	}
 
 	var linkHandler = {
-		events: {},
+		handlers: {},
 
 		
 		handleEvent: function(e) {
 
-			var x = e.pageX;
-			var y = e.clientY;
-			
-			if(!isNodeLink(e) && !isNodeType(e.target,"A"))
-				return false;
-			e.preventDefault();
-
-			var url = new UrlParser(e.target.href);
+			var url, point;
 		
-			for(var name in this.handlers){
-				if(this.handlers[name].shouldIHandle(url)){
-					this.handlers[name].handleUrl(url);
-					return false;
+		
+
+			if(!isNodeType(e.target,HTML_A_TAG) || !hasHref(e.target)) {
+				return false;
+			}
+			
+			try {
+
+				e.preventDefault();
+				e.stopPropagation();
+				
+				
+				// Where the user clicked.  Should be relative to the screen.
+				point = {x: e.pageX, y: e.clientY};
+
+				url = new UrlParser(e.target.href);
+		
+				for(var name in this.handlers){
+					if(this.handlers[name].shouldIHandle(url)){
+						this.handlers[name].handleUrl(url,point);
+						return false;
+					}
 				}
+			
+			} catch(e) {
+				console.log(e);
+				return false;
 			}
 		},
 
 		registerHandler:function(name, handler){
 			//call to register the orsHandler if the link has the pattern use the registered handler
 			this.handlers[name] = handler;
-		},
-		
-		render: function(){}
+		}
 	};
 
 	function LinkHandler(){

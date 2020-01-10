@@ -81,23 +81,3 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
-
-
-
-
-
-/*
-
-<ul>
-<li class="toclevel-1 tocsection-1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext"><b>Introduction</b></span></a></li>
-<li class="toclevel-1 tocsection-7"><a href="#Alone_With_the_Client"><span class="tocnumber">2</span> <span class="toctext"><b>Alone With the Client</b></span></a></li>
-<li class="toclevel-1 tocsection-15"><a href="#Involving_Others"><span class="tocnumber">3</span> <span class="toctext"><b>Involving Others</b></span></a></li>
-<li class="toclevel-1 tocsection-18"><a href="#Next_Steps"><span class="tocnumber">4</span> <span class="toctext"><b>Next Steps</b></span></a></li>
-</ul>
-*/
-
-
-
-
-
-

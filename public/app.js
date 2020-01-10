@@ -434,6 +434,10 @@ const App = (function(){
 				}
 				this.bg.postMessage(message);
 			},
+			
+			// Simply by re-assigning how `loadModule` will be executed,
+			// we can directly affect the execution context; and thus the value of "this" in the
+			// original loadModule function.
 			loadModule:loadModule,
 
 			init: function(settings){

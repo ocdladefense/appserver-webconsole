@@ -90,6 +90,7 @@ function doAdminPage() {
 		)
 	);
 
+	/*
 	$react = array(
 		array(
 			"src" => "https://unpkg.com/react@16/umd/react.development.js",
@@ -103,7 +104,19 @@ function doAdminPage() {
 			"src" => "https://unpkg.com/babel-standalone@6/babel.min.js"
 		)
 	);
+	*/
 	
+	$react = array(
+		array(
+			"src" => "/modules/webconsole/assets/react/react-16.12.0-development.js"
+		),
+		array(
+			"src" => "/modules/webconsole/assets/react/react-16.12.0-dom-development.js"
+		),
+		array(
+			"src" => "/modules/webconsole/assets/react/babel-6.26.0-standalone.js"
+		)
+	);
 
 	
 	$template->addScripts($react);
@@ -203,7 +216,9 @@ function moduleGetScripts() {
 		
 		"$module_path/modules/linkHandler/src/LinkHandler.js",
 
-		"$module_path/modules/modal/component.js",
+		"$module_path/modules/modal/component/ModalComponent.js",
+		"$module_path/modules/modal/src/Modal.js",
+		"$module_path/modules/modal/src/PositionedModal.js",
 
 		"$module_path/modules/note/component.js",
 		"$module_path/modules/note/route.js",

@@ -2,7 +2,7 @@
 // Service worker
 //  */ 
 
-const SCRIPT_PATH = "modules/webconsole/assets";
+var SUPPLEMENT_PATH = "modules/webconsole/assets";
 var networkStatus = true;
 
 self.onmessage = function(e){
@@ -14,10 +14,10 @@ self.onmessage = function(e){
 	}
 };
 
-self.importScripts(SCRIPT_PATH + "/worker/settings.js");
-self.importScripts(SCRIPT_PATH + "/lib/Server.js");
-self.importScripts(SCRIPT_PATH + "/lib/http/HttpCache.js");
-self.importScripts(SCRIPT_PATH + "/lib/database/DatabaseIndexedDb.js");
+self.importScripts(SUPPLEMENT_PATH + "/worker/settings.js");
+self.importScripts(SUPPLEMENT_PATH + "/lib/Server.js");
+self.importScripts(SUPPLEMENT_PATH + "/lib/http/HttpCache.js");
+self.importScripts(SUPPLEMENT_PATH + "/lib/database/DatabaseIndexedDb.js");
 
 
 const myServer = new Server(config.server);
