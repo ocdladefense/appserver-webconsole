@@ -140,8 +140,8 @@ vnode = vNode;
 	 *
 	 * @see-also https://stackoverflow.com/questions/14340894/create-xml-in-javascript/34047092
 	 */
-	function parseComponent(tplc) {
-		var container = "<html><head></head><body>"+tplc+"</body></html>";
+	function parseComponent(tpl) {
+		var container = "<html><head></head><body><div>"+tpl+"</div></body></html>";
 		var parser = new DOMParser();
 		var doc = parser.parseFromString(container,"text/html");
 		// body.innerHTML = container;

@@ -1,53 +1,46 @@
 'use strict';
 
 class ModalComponent extends React.Component {
+
   constructor(reactProps) {
     super(reactProps);
     this.state = {
     	content: 	reactProps.content,
-    	x:				reactProps.x,
-    	y:				reactProps.y
+    	x:				reactProps.pos.x,
+    	y:				reactProps.pos.y
     };
+    
+
   }
 
 
 
   render() {
-    const domContainer = document.querySelector('body');
-    domContainer.classList.remove("hidden");
-
-		var modal = ReactDOM.render(React.createElement(PositionedModal, {content:content,y:y}),pModalContainer);
+    // this.htmlRoot.classList.remove("hidden");
 		
-    if(!document.querySelector("#pModalContainer")) {
-      const pModalContainer = createElement(vNode("div", {id:"pModalContainer"}, null));
-      pModalContainer.addEventListener("click", () => { this.unMount() });
-      domContainer.appendChild(pModalContainer);
-    }
+		return React.createElement(
+			"div",
+			{id: "positionedModal",className:"modal"},
+			/* {id:"positionedModal", dangerouslySetInnerHTML: {__html: this.state.content} } */
+			this.state.content,
+			React.createElement(
+				"button",
+				{id:"close-button", onClick: () => { this.unMount() } },
+				"Close"
+			)
+		);
   }
 
 
-
   unMount() {
-    const domContainer = document.querySelector('#pModalContainer');
-    domContainer.classList.add("hidden");
-    ReactDOM.unmountComponentAtNode(domContainer);
+    // this.htmlRoot.classList.add("hidden");
+    // ReactDOM.unmountComponentAtNode(this.root);
   }
   
   
   
   componentDidMount(){
-    const domContainer = document.querySelector('#pModalContainer');
-    domContainer.classList.remove("hidden");
+    // this.htmlRoot.classList.remove("hidden");
   }
   
 }
-
-/*
-  render(){
-
-    // React.createElement("button", {id:"close-button", onClick: () => { this.unMount() } }, " Close ");
-    return React.createElement(
-      "div",
-      {id:"positionedModal", dangerouslySetInnerHTML: {__html: this.state.content} });
-  }
-  */

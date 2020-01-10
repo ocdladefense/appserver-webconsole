@@ -60,7 +60,7 @@ function loadExternalDocument($url, $statute = null) {
 
 	$statute = "";
 
-	$req = new HTTPRequest($fullUrl);
+	$req = new HttpRequest($fullUrl);
 	
 	$resp = $req->send();
 
@@ -86,7 +86,7 @@ function doAdminPage() {
 
 	$jquery = array(
 		array(
-			"src" => "//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"
+			"src" => "/modules/webconsole/assets/jquery/jquery-1.11.0-min.js"
 		)
 	);
 
@@ -171,7 +171,11 @@ function moduleGetStyles() {
 		),
 		array(
 			"active" => true,
-			"href" => "/modules/webconsole/modules/ors/ors.css"
+			"href" => "/modules/webconsole/modules/modal/style.css"
+		),
+		array(
+			"active" => true,
+			"href" => "/modules/webconsole/modules/ors/style.css"
 		)
 	);
 	

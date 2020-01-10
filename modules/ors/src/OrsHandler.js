@@ -2,34 +2,39 @@ const OrsHandler = (function(){
 
 		const CONTENT_URL = "/external";
 		
+		const DOM_RENDER = false;
+		
+		const REACT_RENDER = true;
+		
+		
+		
+    function getHandleUrls(){
+			return ["oregonlaws.org/ors"];
+		}
+		
+		
+		
     var ors = {
-        getExternalContentUrl:function(){
-            return "../external/";
-        },
+    
+			handleUrl:function(url,point){
+				var statute, modal, fetchPromise;
+				
+				statute = url.getLastPathPart();
+				
+				fetchPromise = fetch(CONTENT_URL + "/"+statute)
+				.then( (response) => {
+						return response.text();
+				})
+				.then( (content) => {
+						modal = new PositionedModal(content,point,DOM_RENDER); // or REACT_RENDER
+						modal.render();
+				});
 
-        getHandleUrls:function(){
-            return ["oregonlaws.org/ors"];
-        },
+			},
 
-        handleUrl:function(url,point){
-					var statute, modal, fetchPromise;
-					
-					statute = url.getLastPathPart();
-					
-					fetchPromise = fetch(CONTENT_URL + "/"+statute)
-					.then( (response) => {
-							return response.text();
-					})
-					.then( (content) => {
-							modal = new PositionedModal(content,point);
-							modal.render();
-					});
-
-        },
-
-        shouldIHandle:function(url){
-            return true;
-        }
+			shouldIHandle:function(url){
+					return true;
+			}
         
     };
 

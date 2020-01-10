@@ -3,12 +3,18 @@
 
 
 class PositionedModal extends Modal{
-  constructor(content,position) {
-    super(props);
+  constructor(content,position,renderOption) {
+  	var renderOption = renderOption === false ? false : true;
+    super(
+    	{
+    		content: content,
+    		position: position,
+    	},
+    	renderOption
+    );
+    
     this.pos = position;
   }
 
-	render() {
-		// invoke the ModalComponent with content, x and y;
-	}
+
 }
