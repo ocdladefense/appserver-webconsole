@@ -260,10 +260,6 @@ function moduleGetScripts() {
 		"$module_path/modules/modal/src/Modal.js",
 		"$module_path/modules/modal/src/PositionedModal.js",
 
-		"$module_path/modules/inlineModal/src/InlineModal.js",
-		"$module_path/modules/inlineModal/src/IModal.js",
-		"$module_path/modules/inlineModal/component/InlineModalComponent.js",
-
 		"$module_path/modules/note/component.js",
 		"$module_path/modules/note/route.js",
 		"$module_path/modules/note/src/Note.js",
