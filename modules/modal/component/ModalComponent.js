@@ -9,8 +9,6 @@ class ModalComponent extends React.Component {
     	// x:				reactProps.pos.x,
     	// y:				reactProps.pos.y
     };
-    
-
   }
 
 
@@ -49,7 +47,7 @@ class ModalComponent extends React.Component {
 			liveDangerously,
 			React.createElement(
 				"button",
-				{id:"close-button", onClick: () => { this.unMount() } },
+				{id:"close-button", onClick: () => { Modal.unMount() } },
 				"Close"
 			)
 		);
@@ -57,8 +55,8 @@ class ModalComponent extends React.Component {
 
 
   unMount() {
-    // this.htmlRoot.classList.add("hidden");
-    // ReactDOM.unmountComponentAtNode(this.root);
+    //this.htmlRoot.classList.add("hidden");
+    //ReactDOM.unmountComponentAtNode(this.root);
   }
   
   

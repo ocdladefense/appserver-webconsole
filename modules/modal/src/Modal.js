@@ -22,7 +22,7 @@ const Modal = (function() {
 		
 			this.htmlRoot = document.querySelector('body');
 			this.root = createElement(vNode("div", {id:"pModalContainer"}, null));
-			// this.root.addEventListener("click", () => { this.unMount() });
+			this.root.addEventListener("click", () => { Modal.unMount() });
 			this.htmlRoot.appendChild(this.root);
 		}
 

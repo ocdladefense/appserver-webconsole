@@ -86,7 +86,7 @@ function loadExternalDocument($url, $statute = null) {
 		$filtered->removeChild($images->item($i));
 	}
 
-	return $innerHTML;
+	// return $innerHTML;
 
 	return $filtered->saveHTML();
 }

@@ -10,6 +10,17 @@ const LinkHandler = (function() {
 		return node.nodeName == nodeName;
 	}
 
+	function isStageContent(target) {
+		let elem = target;
+		while(elem.parentNode && elem.parentNode.nodeName.toLowerCase() != 'body') {
+			if(elem.parentNode.id.toLowerCase() === 'stage') {
+				return true;
+			}
+			elem = elem.parentNode;
+		}
+		return false;
+	}
+
 	var linkHandler = {
 		handlers: {},
 
@@ -20,7 +31,7 @@ const LinkHandler = (function() {
 		
 		
 
-			if(!isNodeType(e.target,HTML_A_TAG) || !hasHref(e.target)) {
+			if(!isNodeType(e.target,HTML_A_TAG) || !hasHref(e.target) || !isStageContent(e.target)) {
 				return false;
 			}
 			
