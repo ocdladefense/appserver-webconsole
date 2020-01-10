@@ -5,9 +5,9 @@ class ModalComponent extends React.Component {
   constructor(reactProps) {
     super(reactProps);
     this.state = {
-    	content: 	reactProps.content,
-    	x:				reactProps.pos.x,
-    	y:				reactProps.pos.y
+    	content: 	reactProps.content
+    	// x:				reactProps.pos.x,
+    	// y:				reactProps.pos.y
     };
     
 

@@ -64,7 +64,7 @@ function loadExternalDocument($url, $statute = null) {
 	
 	$resp = $req->send();
 
-	$linkHandler = new LinkHandler();
+	$linkHandler = new DomDocument();
 	libxml_use_internal_errors(true);
 	$linkHandler->loadHTML($resp->getBody());
 	libxml_clear_errors();
@@ -77,7 +77,18 @@ function loadExternalDocument($url, $statute = null) {
 		$innerHTML .= $text->ownerDocument->saveHTML($child);
 	}
 
+	$filtered = new DomDocument();
+	$filtered->loadHTML($innerHTML);
+	//assume that all images are going to be bad.
+	$images = $filtered->getElementsByTagName("img");
+
+	for($i = 0; $i < count($images); $i++){
+		$filtered->removeChild($images->item($i));
+	}
+
 	return $innerHTML;
+
+	return $filtered->saveHTML();
 }
 
 
