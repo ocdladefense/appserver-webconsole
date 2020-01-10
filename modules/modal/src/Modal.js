@@ -1,70 +1,96 @@
 'use strict';
 
-class Modal {
+const Modal = (function() {
 
-  constructor(props,useReact) {
-		this.props = props || {};
-    this.useReact = useReact;
-    
-    this.htmlRoot = document.querySelector('body');
-    this.root = createElement(vNode("div", {id:"pModalContainer"}, null));
-		// this.root.addEventListener("click", () => { this.unMount() });
-		this.htmlRoot.appendChild(this.root);
-  }
+	// Keep the React name just because.
+	function mount(){
+    document.body.classList.add("has-modal");	
+	}
+	
+	
+	function unMount(){
+    document.body.classList.remove("has-modal");
+	}
+	
 
 
-	/**
-	 * Use React or optionally use standard DOM
-	 * methods to render the Modal.
-	 * When using React we can reference component/ModalComponent
-	 */
-	render(content) {
-		content = content || this.props.content;
+	class Modal {
+
+		constructor(props,useReact) {
+			this.props = props || {};
+			this.useReact = useReact;
 		
-		if(!this.useReact) {
-			this.domRender(content);
-		} else {
-			this.reactRender();
+			this.htmlRoot = document.querySelector('body');
+			this.root = createElement(vNode("div", {id:"pModalContainer"}, null));
+			// this.root.addEventListener("click", () => { this.unMount() });
+			this.htmlRoot.appendChild(this.root);
+		}
+
+
+		/**
+		 * Use React or optionally use standard DOM
+		 * methods to render the Modal.
+		 * When using React we can reference component/ModalComponent
+		 */
+		render(content) {
+			content = content || this.props.content;
+		
+			if(!this.useReact) {
+				this.domRender(content);
+			} else {
+				this.reactRender();
+			}
+		}
+
+	
+		/**
+		 * Option to render this PositionedModal 
+		 *  using React component.
+		 */
+		reactRender() {
+			// Invoke the ModalComponent with only content.
+		
+			var state = {
+				content: this.content,
+				pos: this.pos
+			};
+		
+			var component = React.createElement(
+				ModalComponent,
+				state
+			);
+		
+			ReactDOM.render(
+				component,
+				this.root
+			);
+		}
+	
+	
+		/**
+		 * Option to render this PositionedModal 
+		 * using standard DOM methods.
+		 *  See assets/lib/view.js
+		 */
+		domRender(html) {
+			// JavaScript provides a lot of good functionality to parse/include
+			// arbitrary HTML.  We don't need to try so hard!
+			var content = parseComponent(html);
+			console.log(content); // Take a look at the parsed node in the console!
+
+			var close = vNode("button", {id:"close-button", onClick: "Modal.unMount();"}, "Close");
+			var node = vNode("div", {id: "positionedModal",className:"modal"}, [close]);
+				
+			// Do the DOM things.
+			var container = createElement(node);
+			container.appendChild(content);
+			this.root.appendChild(container);
+			mount();
 		}
 	}
 
+	Modal.unMount = unMount;
+	Modal.mount = mount;
 	
-	/**
-	 * Option to render this PositionedModal 
-	 *  using React component.
-	 */
-	reactRender() {
-		// Invoke the ModalComponent with only content.
-    
-    var state = {
-    	content: this.content,
-    	pos: this.pos
-    };
-    
-		var component = React.createElement(
-			ModalComponent,
-			state
-		);
-		
-		ReactDOM.render(
-			component,
-			this.root
-		);
-	}
-	
-	
-	/**
-	 * Option to render this PositionedModal 
-	 * using standard DOM methods.
-	 *  See assets/lib/view.js
-	 */
-	domRender(content) {
-		// Invoke the ModalComponent with only content.
-    var content = parseComponent(content);
-    console.log(content); // Take a look at the node in the console!
-		var container = createElement(vNode("div",{id: "positionedModal",className:"modal"}));
-		container.appendChild(content);
-		
-    this.root.appendChild(container);
-	}
-}
+	return Modal;
+})();

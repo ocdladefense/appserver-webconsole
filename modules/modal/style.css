@@ -1,3 +1,14 @@
+
+/** by default hide the modal */
+#pModalContainer {
+	display: none;
+}
+
+/* then show it */
+body.has-modal #pModalContainer {
+	display:block;
+}
+
 #pModalContainer {
 	position: fixed;
 	padding: 10px 10px 10px 10px;
@@ -8,11 +19,7 @@
 	background-color: rgba(35,47,62,0.7);
 }
 
-#pModalContainer.hidden{
-	display: none;
-	position:unset;
-}
-#positionedModal{
+#positionedModal {
 	height: auto;
 	max-height: 60%;
 	width: auto;
