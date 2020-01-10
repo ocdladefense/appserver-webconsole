@@ -26,7 +26,7 @@ const OrsHandler = (function(){
 						return response.text();
 				})
 				.then( (content) => {
-						modal = new PositionedModal(content,point,DOM_RENDER); // or REACT_RENDER
+						modal = new PositionedModal(content,point,REACT_RENDER); // or REACT_RENDER
 						modal.render();
 				});
 

@@ -51,8 +51,8 @@ const Modal = (function() {
 			// Invoke the ModalComponent with only content.
 		
 			var state = {
-				content: this.content,
-				pos: this.pos
+				content: this.props.content,
+				pos: this.props.pos
 			};
 		
 			var component = React.createElement(
