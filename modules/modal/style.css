@@ -19,7 +19,11 @@ body.has-modal #pModalContainer {
 	background-color: rgba(35,47,62,0.7);
 }
 
-#positionedModal {
+.inline #pModalContainer {
+	background-color: transparent;
+}
+
+.modal {
 	height: auto;
 	max-height: 60%;
 	width: auto;
@@ -36,22 +40,25 @@ body.has-modal #pModalContainer {
 	border-radius: 3px;
 }
 
-.modal {
-	min-width:200px;
-	min-height:200px;
+.inline .modal {
+	max-width: 200px;
+    max-height: 200px;
+    overflow: hidden;
+    left: 800px;
+    position: absolute;
 }
-#positionedModal::-webkit-scrollbar {
+#my-modal::-webkit-scrollbar {
 	width: 20px;
 }
-#positionedModal::-webkit-scrollbar-track {
+#my-modal::-webkit-scrollbar-track {
 	box-shadow: inset 0 0 3px grey;
 	border-radius: 3px;
 }
-#positionedModal::-webkit-scrollbar-thumb {
+#my-modal::-webkit-scrollbar-thumb {
 	border-radius: 2px;
 	background: #232f3e;
 }
-#positionedModal::-webkit-scrollbar-thumb:hover {
+#my-modal::-webkit-scrollbar-thumb:hover {
 	background: #232f3e;
 }
 #close-button{

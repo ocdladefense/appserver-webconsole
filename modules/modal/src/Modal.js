@@ -19,7 +19,9 @@ const Modal = (function() {
 		constructor(props,useReact) {
 			this.props = props || {};
 			this.useReact = useReact;
-		
+			let className = this.props.className ? "has-modal" : "has-modal " + this.props.className;
+			document.body.classList.add("has-modal");
+			document.body.classList.add("inline");
 			this.htmlRoot = document.querySelector('body');
 			this.root = createElement(vNode("div", {id:"pModalContainer"}, null));
 			this.root.addEventListener("click", () => { Modal.unMount() });
@@ -52,7 +54,8 @@ const Modal = (function() {
 		
 			var state = {
 				content: this.props.content,
-				pos: this.props.pos
+				pos: this.props.pos,
+				className: this.props.className
 			};
 		
 			var component = React.createElement(

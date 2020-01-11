@@ -5,7 +5,7 @@ class ModalComponent extends React.Component {
   constructor(reactProps) {
     super(reactProps);
     this.state = {
-    	content: 	reactProps.content
+		content: 	reactProps.content
     	// x:				reactProps.pos.x,
     	// y:				reactProps.pos.y
     };
@@ -14,7 +14,7 @@ class ModalComponent extends React.Component {
 
 
   render() {
-    document.body.classList.add("has-modal");
+    // document.body.classList.add("has-modal");
     
 		var liveDangerously, dangerousHtml;
 		
@@ -43,7 +43,7 @@ class ModalComponent extends React.Component {
 		*/
 		return React.createElement(
 			"div",
-			{id: "positionedModal",className:"modal"},
+			{id: "my-modal",className: "modal"},
 			liveDangerously,
 			React.createElement(
 				"button",

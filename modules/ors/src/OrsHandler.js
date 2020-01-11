@@ -28,21 +28,21 @@ const OrsHandler = (function(){
 				if(e.type == "click"){
 					this.renderPositionedModal(point,statute);
 				}
-				else if(e.type == "mouseover"){
-					setTimeout(this.renderInlineModal(point,e,statute), 1500);
-				}
+				// else if(e.type == "mouseover"){
+				// 	setTimeout(this.renderInlineModal(point,e,statute), 1500);
+				// }
 			},
 
 			renderInlineModal:function(point,e,statute){
 				console.log("MOUSEOVER");
-				fetchPromise = fetch(TEXT_CONTENT + "/"+statute)
-				.then( (response) => {
-						return response.text();
-				})
-				.then( (content) => {
-						modal = new InlineModal(content,point,REACT_RENDER); // or REACT_RENDER
-						modal.render();
-				});
+				// fetchPromise = fetch(TEXT_CONTENT + "/"+statute)
+				// .then( (response) => {
+				// 		return response.text();
+				// })
+				// .then( (content) => {
+				// 		modal = new InlineModal(content,point,REACT_RENDER); // or REACT_RENDER
+				// 		modal.render();
+				// });
 			},
 
 			renderPositionedModal:function(point,statute){
@@ -52,7 +52,7 @@ const OrsHandler = (function(){
 						return response.text();
 				})
 				.then( (content) => {
-						modal = new PositionedModal(content,point,REACT_RENDER); // or REACT_RENDER
+						modal = new PositionedModal(content,point,REACT_RENDER,"inline"); // or REACT_RENDER
 						modal.render();
 				});
 			},
