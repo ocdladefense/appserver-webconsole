@@ -45,13 +45,19 @@ const OrsHandler = (function(){
 				// });
 			},
 
+
+
+
 			renderPositionedModal:function(point,statute){
 				console.log("CLICK");
 				fetchPromise = fetch(HTML_CONTENT + "/"+statute)
-				.then( (response) => {
-						return response.text();
+				.then( (resp) => {
+						return resp.text();
 				})
-				.then( (content) => {
+				.then( (respBody) => {
+						var content;
+						// content += "2017 ORS / Vol. 4 / Chapter 137 / Section 137.700";
+						content = "<div class='inline-fade'>&nbsp;</div><span class='focus-text'>ORS 137.700</span>" + respBody;
 						modal = new PositionedModal(content,point,REACT_RENDER,"inline"); // or REACT_RENDER
 						modal.render();
 				});

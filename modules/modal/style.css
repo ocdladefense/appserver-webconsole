@@ -35,18 +35,56 @@ body.has-modal #pModalContainer {
 	overflow-x: hidden;
 	position: absolute !important;
 	background-color: white;
-	border: 1px solid black;
+	/* border: 1px solid #eee; */
 	/*white-space: pre;*/
 	border-radius: 3px;
 }
 
 .inline .modal {
-	max-width: 200px;
-    max-height: 200px;
+		max-width: 250px;
+    max-height: 300px;
     overflow: hidden;
     left: 800px;
     position: absolute;
+    font-size: 13.5px;
+    line-height: 19px;
+    color: #323232;
+		box-shadow: -5px -5px 150px -36px rgba(0,0,0,0.1);
+		box-sizing: border-box;
 }
+
+.inline-fade {
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	width:100%;
+	height:20px;
+	background-color:rgba(255,255,255,0.8);
+}
+
+.inline-fade:after {
+	content: "",
+	height:10px;
+	position:absolute;
+	bottom:0px;
+	left:0px;
+}
+
+.inline .modal .focus-text {
+	font-weight: bold;
+}
+
+.modal-content {
+	max-height: 100%;
+	max-width: 100%;
+	overflow: hidden;
+}
+
+.inline .modal p {
+	padding: 0px;
+	margin: 0px;
+}
+
 #my-modal::-webkit-scrollbar {
 	width: 20px;
 }

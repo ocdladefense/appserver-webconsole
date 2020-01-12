@@ -208,10 +208,6 @@ function moduleGetStyles() {
 		array(
 			"active" => true,
 			"href" => "/modules/webconsole/modules/ors/style.css"
-		),
-		array(
-			"active" => true,
-			"href" => "/modules/webconsole/modules/inlineModal/style.css"
 		)
 	);
 	

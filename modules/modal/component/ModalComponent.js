@@ -25,6 +25,7 @@ class ModalComponent extends React.Component {
 		liveDangerously = React.createElement(
 			"div", {
 				id: "Ima-separate-container-for-dangerous-content",
+				className: "modal-content",
 				dangerouslySetInnerHTML: dangerousHtml
 			}
 		);
