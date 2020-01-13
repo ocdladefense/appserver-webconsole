@@ -26,38 +26,41 @@ const OrsHandler = (function(){
 				console.log("TYPE", e.type);
 				
 				if(e.type == "click"){
-					this.renderPositionedModal(point,statute);
+					//this.renderPositionedModal(point,statute);
+					this.renderObrusiveModal(point,e,statute);
 				}
 				// else if(e.type == "mouseover"){
 				// 	setTimeout(this.renderInlineModal(point,e,statute), 1500);
 				// }
 			},
 
-			renderInlineModal:function(point,e,statute){
+
+
+			renderObrusiveModal:function(point,e,statute){
 				console.log("MOUSEOVER");
-				// fetchPromise = fetch(TEXT_CONTENT + "/"+statute)
-				// .then( (response) => {
-				// 		return response.text();
-				// })
-				// .then( (content) => {
-				// 		modal = new InlineModal(content,point,REACT_RENDER); // or REACT_RENDER
-				// 		modal.render();
-				// });
+				fetchPromise = fetch(HTML_CONTENT + "/"+statute)
+				.then( (response) => {
+						return response.text();
+				})
+				.then( (content) => {
+						modal = new PositionedModal(content,point,REACT_RENDER); // or REACT_RENDER
+						modal.render();
+				});
 			},
 
 
 
 
 			renderPositionedModal:function(point,statute){
-				console.log("CLICK");
-				fetchPromise = fetch(HTML_CONTENT + "/"+statute)
+				console.log(statute);
+				fetchPromise = fetch(TEXT_CONTENT + "/"+statute)
 				.then( (resp) => {
 						return resp.text();
 				})
 				.then( (respBody) => {
 						var content;
 						// content += "2017 ORS / Vol. 4 / Chapter 137 / Section 137.700";
-						content = "<div class='inline-fade'>&nbsp;</div><span class='focus-text'>ORS 137.700</span>" + respBody;
+						content = "<div class='inline-fade'>&nbsp;</div><span class='focus-text'>"+statute+"</span>" + respBody;
 						modal = new PositionedModal(content,point,REACT_RENDER,"inline"); // or REACT_RENDER
 						modal.render();
 				});

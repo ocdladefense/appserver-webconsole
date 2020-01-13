@@ -11,8 +11,6 @@ class ModalComponent extends React.Component {
     };
   }
 
-
-
   render() {
     // document.body.classList.add("has-modal");
     
@@ -28,8 +26,7 @@ class ModalComponent extends React.Component {
 				className: "modal-content",
 				dangerouslySetInnerHTML: dangerousHtml
 			}
-		);
-		
+		);		
 		
 		/*return React.createElement(
 			"div",
@@ -53,17 +50,4 @@ class ModalComponent extends React.Component {
 			)
 		);
   }
-
-
-  unMount() {
-    //this.htmlRoot.classList.add("hidden");
-    //ReactDOM.unmountComponentAtNode(this.root);
-  }
-  
-  
-  
-  componentDidMount(){
-    // this.htmlRoot.classList.remove("hidden");
-  }
-  
 }

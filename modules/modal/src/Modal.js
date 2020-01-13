@@ -4,12 +4,14 @@ const Modal = (function() {
 
 	// Keep the React name just because.
 	function mount(){
-    document.body.classList.add("has-modal");	
+    	document.body.classList.add("has-modal");	
 	}
 	
 	
 	function unMount(){
-    document.body.classList.remove("has-modal");
+		document.body.classList.remove("has-modal");
+		let root = document.querySelector("#pModalContainer");
+		ReactDOM.unmountComponentAtNode(root);
 	}
 	
 
@@ -23,9 +25,16 @@ const Modal = (function() {
 			document.body.classList.add("has-modal");
 			document.body.classList.add("inline");
 			this.htmlRoot = document.querySelector('body');
-			this.root = createElement(vNode("div", {id:"pModalContainer"}, null));
-			this.root.addEventListener("click", () => { Modal.unMount() });
-			this.htmlRoot.appendChild(this.root);
+
+			//if statement here: is the modal container already in the documents
+			if(document.querySelector('#pModalContainer') == null){
+				this.root = createElement(vNode("div", {id:"pModalContainer"}, null));
+				this.root.addEventListener("click", () => { Modal.unMount() });
+				this.htmlRoot.appendChild(this.root);
+			}
+			else{
+				this.root = document.querySelector('#pModalContainer');
+			}
 		}
 
 
@@ -91,6 +100,7 @@ const Modal = (function() {
 			mount();
 		}
 	}
+	
 
 	Modal.unMount = unMount;
 	Modal.mount = mount;

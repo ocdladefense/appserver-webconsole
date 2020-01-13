@@ -67,31 +67,10 @@ function loadExternalDocumentHTML($url, $statute = null) {
 	
 	$resp = $req->send();
 
-	$linkHandler = new DomDocument();
-	libxml_use_internal_errors(true);
-	$linkHandler->loadHTML($resp->getBody());
-	libxml_clear_errors();
-	$text = $linkHandler->getElementById("text");
-	
-	$innerHTML = "";
-	$children = $text->childNodes;
-
-	foreach($children as $child) {
-		$innerHTML .= $text->ownerDocument->saveHTML($child);
-	}
-
-	$filtered = new DomDocument();
-	$filtered->loadHTML($innerHTML);
-	//assume that all images are going to be bad.
-	$images = $filtered->getElementsByTagName("img");
-
-	for($i = 0; $i < count($images); $i++){
-		$filtered->removeChild($images->item($i));
-	}
-
-	// return $innerHTML;
-
-	return $filtered->saveHTML();
+	$doc = new ExternalHTMLDocument($resp->getBody());
+	$doc->setTargetElementId("text");
+	$doc->setTagsToFilter(array("img"));
+	return $doc->extract();
 }
 
 function loadExternalDocumentText($url){
@@ -103,14 +82,9 @@ function loadExternalDocumentText($url){
 	
 	$resp = $req->send();
 
-	$domDoc = new DomDocument();
-	libxml_use_internal_errors(true);
-	$domDoc->loadHTML($resp->getBody());
-	libxml_clear_errors();
-	$text = $domDoc->getElementById("text");
-
-	print_r($text->textContent);
-	exit;
+	$doc = new ExternalHTMLDocument($resp->getBody());
+	$doc->setTargetElementId("text");
+	return $doc->extractText();
 }
 
 function doAdminPage() {
