@@ -7,14 +7,7 @@ const OrsHandler = (function(){
 		const DOM_RENDER = false;
 		
 		const REACT_RENDER = true;
-		
-		
-		
-    function getHandleUrls(){
-			return ["oregonlaws.org/ors"];
-		}
-		
-		
+			
 		
     var ors = {
     
@@ -22,22 +15,17 @@ const OrsHandler = (function(){
 				var statute, modal, fetchPromise;
 				
 				statute = url.getLastPathPart();
-
-				console.log("TYPE", e.type);
 				
 				if(e.type == "click"){
-					//this.renderPositionedModal(point,statute);
-					this.renderObrusiveModal(point,e,statute);
+					this.renderPositionedModal(point,statute);
+					//this.renderObrusiveModal(point,e,statute);
 				}
 				// else if(e.type == "mouseover"){
 				// 	setTimeout(this.renderInlineModal(point,e,statute), 1500);
 				// }
 			},
 
-
-
 			renderObrusiveModal:function(point,e,statute){
-				console.log("MOUSEOVER");
 				fetchPromise = fetch(HTML_CONTENT + "/"+statute)
 				.then( (response) => {
 						return response.text();
@@ -48,11 +36,7 @@ const OrsHandler = (function(){
 				});
 			},
 
-
-
-
 			renderPositionedModal:function(point,statute){
-				console.log(statute);
 				fetchPromise = fetch(TEXT_CONTENT + "/"+statute)
 				.then( (resp) => {
 						return resp.text();
@@ -60,7 +44,7 @@ const OrsHandler = (function(){
 				.then( (respBody) => {
 						var content;
 						// content += "2017 ORS / Vol. 4 / Chapter 137 / Section 137.700";
-						content = "<div class='inline-fade'>&nbsp;</div><span class='focus-text'>"+statute+"</span>" + respBody;
+						content = "<div class='inline-fade'>&nbsp;</div><div class='focus-text'>"+"ORS "+statute+"</div>" + respBody;
 						modal = new PositionedModal(content,point,REACT_RENDER,"inline"); // or REACT_RENDER
 						modal.render();
 				});

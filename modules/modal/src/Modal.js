@@ -64,7 +64,7 @@ const Modal = (function() {
 		
 			var state = {
 				content: this.props.content,
-				pos: this.props.pos,
+				position: this.props.position,
 				className: this.props.className
 			};
 		

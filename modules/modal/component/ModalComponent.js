@@ -5,15 +5,15 @@ class ModalComponent extends React.Component {
   constructor(reactProps) {
     super(reactProps);
     this.state = {
-		content: 	reactProps.content,
-		className: "modal"
-    	// x:				reactProps.pos.x,
-    	// y:				reactProps.pos.y
-    };
+		content: reactProps.content,
+		className: "modal",
+    	x: reactProps.position.x,
+		y: reactProps.position.y
+		
+	};
   }
 
   render() {
-    // document.body.classList.add("has-modal");
     
 		var liveDangerously, dangerousHtml;
 		
@@ -27,22 +27,18 @@ class ModalComponent extends React.Component {
 				className: "modal-content",
 				dangerouslySetInnerHTML: dangerousHtml
 			}
-		);		
-		
-		/*return React.createElement(
-			"div",
-			{id: "positionedModal",className:"modal"},
-			this.state.content,
-			React.createElement(
-				"button",
-				{id:"close-button", onClick: () => { this.unMount() } },
-				"Close"
-			)
 		);
-		*/
+		var offsetY = 0;
+		
+		offsetY = this.getOffsetY(this.state.y,screen.height);
+
+		var styles = {
+			top:this.state.y - offsetY,
+			left:this.state.x
+			};
 		return React.createElement(
 			"div",
-			{id: "my-modal",className: this.state.className},
+			{id: "my-modal",className: this.state.className,style:styles},
 			liveDangerously,
 			React.createElement(
 				"button",
@@ -51,6 +47,29 @@ class ModalComponent extends React.Component {
 			)
 		);
   }
+  getOffsetY(clientY,screenHeight){
+		var topEdgeProximity;
+		var bottomEdgeProximity;
+		var threshold = 150;
+		var yOffset = 0;
+		var fixedHeaderHeights = 113;
+		var fixedFooterHeights = 25;
+		var availableHeight = screenHeight - (fixedHeaderHeights+fixedFooterHeights);
+
+		var cushion = 15;
+		
+		//bottom
+		bottomEdgeProximity = availableHeight - clientY;
+		topEdgeProximity = clientY - fixedHeaderHeights;
+		if(bottomEdgeProximity < threshold){
+			yOffset = threshold - bottomEdgeProximity + cushion;
+		}
+		else if(topEdgeProximity < threshold){
+			yOffset = -(threshold + topEdgeProximity);
+		}
+		return yOffset;
+  }
+
   componentDidMount(){
 	  setTimeout(() => this.setState({className:"modal slide-in"}),30);
   }

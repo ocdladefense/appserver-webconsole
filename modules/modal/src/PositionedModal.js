@@ -3,7 +3,7 @@
 
 
 class PositionedModal extends Modal {
-  constructor(content,position,renderOption, className) {
+  constructor(content,position,renderOption,className) {
   	var renderOption = renderOption === false ? false : true;
     super(
     	{
@@ -14,8 +14,6 @@ class PositionedModal extends Modal {
     	renderOption
     );
     
-    this.pos = position;
+	this.pos = position;
   }
-
-
 }

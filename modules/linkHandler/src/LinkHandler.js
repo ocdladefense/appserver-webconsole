@@ -42,7 +42,7 @@ const LinkHandler = (function() {
 				
 				
 				// Where the user hovered or clicked.  Should be relative to the screen.
-				point = {x: e.pageX, y: e.clientY};
+				point = {x: e.clientX, y: e.clientY};
 
 				url = new UrlParser(e.target.href);
 		
@@ -54,7 +54,6 @@ const LinkHandler = (function() {
 				}
 			
 			} catch(e) {
-				console.log(e);
 				return false;
 			}
 		},
