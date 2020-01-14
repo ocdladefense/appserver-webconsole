@@ -5,7 +5,8 @@ class ModalComponent extends React.Component {
   constructor(reactProps) {
     super(reactProps);
     this.state = {
-		content: 	reactProps.content
+		content: 	reactProps.content,
+		className: "modal"
     	// x:				reactProps.pos.x,
     	// y:				reactProps.pos.y
     };
@@ -41,7 +42,7 @@ class ModalComponent extends React.Component {
 		*/
 		return React.createElement(
 			"div",
-			{id: "my-modal",className: "modal"},
+			{id: "my-modal",className: this.state.className},
 			liveDangerously,
 			React.createElement(
 				"button",
@@ -49,5 +50,8 @@ class ModalComponent extends React.Component {
 				"Close"
 			)
 		);
+  }
+  componentDidMount(){
+	  setTimeout(() => this.setState({className:"modal slide-in"}),30);
   }
 }

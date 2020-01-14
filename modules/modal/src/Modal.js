@@ -24,6 +24,7 @@ const Modal = (function() {
 			let className = this.props.className ? "has-modal" : "has-modal " + this.props.className;
 			document.body.classList.add("has-modal");
 			document.body.classList.add("inline");
+			
 			this.htmlRoot = document.querySelector('body');
 
 			//if statement here: is the modal container already in the documents

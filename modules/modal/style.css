@@ -41,16 +41,20 @@ body.has-modal #pModalContainer {
 }
 
 .inline .modal {
-		max-width: 250px;
-    max-height: 300px;
+	opacity: 0.0;
+	transition: top 0.3s, opacity 0.5s ease-out;
+	top:100px;
+	max-width: 250px;
+	max-height: 300px;
+	min-width:200px;
     overflow: hidden;
     left: 800px;
     position: absolute;
     font-size: 13.5px;
     line-height: 19px;
     color: #323232;
-		box-shadow: -5px -5px 150px -36px rgba(0,0,0,0.1);
-		box-sizing: border-box;
+	box-shadow: -5px -5px 150px -36px rgba(0,0,0,0.1);
+	box-sizing: border-box;
 }
 
 .inline-fade {
@@ -106,4 +110,13 @@ body.has-modal #pModalContainer {
 	margin-top: 10px;
 	position: absolute;
 	bottom:0;
+}
+.inline .slide-in{
+	top:175px;
+	opacity:1.0;
+
+}
+.inline .fade-in{
+	transition: opacity 1s;
+
 }
