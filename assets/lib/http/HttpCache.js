@@ -17,7 +17,7 @@ const HttpCache = (function(){
         	init: initGroup
         };
         
-        this.enabled = init.enabled;
+        // this.enabled = init.enabled;
         
         if(!this.name) {
             throw new Error("No name found.");
@@ -71,11 +71,13 @@ const HttpCache = (function(){
        */
       cacheable: function(path){
 				for(var group in this.groups){
+					// console.log(this.group);
 					if(this.groups[group].urls.includes(path)
-						&& !!this.groups[group].urls.enabled) {
+						&& !!this.groups[group].enabled) {
 						return true;
 					}
 				}
+			
 				
 				return false;
       },
@@ -94,6 +96,7 @@ const HttpCache = (function(){
 				var url, scriptPath;
 				
 				url = new UrlParser(event.request.url);
+
 
 				if(!this.cacheable(url.path)) return false;
 
