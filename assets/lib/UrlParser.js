@@ -9,21 +9,29 @@ const UrlParser = (function() {
     
         this.domain = otherParts.splice(0,1);
     
-        this.path = otherParts;
+        this.pathParts = otherParts;
+        
+        this.path = otherParts.join("/");
     }
     
     
     var proto = {
         protocol: "http",
+        
         domain: null,
+        
         path: null,
+        
         queryString: null,
     
         getLastPathPart: function(){
-            return this.path[this.path.length-1];
+            return this.pathParts[this.pathParts.length-1];
         }
     };
     
+    
     UrlParser.prototype = proto;
+    
+    
     return UrlParser;
 })();

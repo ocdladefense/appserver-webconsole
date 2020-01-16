@@ -16,6 +16,7 @@ self.onmessage = function(e){
 
 self.importScripts(SUPPLEMENT_PATH + "/worker/settings.js");
 self.importScripts(SUPPLEMENT_PATH + "/lib/Server.js");
+self.importScripts(SUPPLEMENT_PATH + "/lib/UrlParser.js");
 self.importScripts(SUPPLEMENT_PATH + "/lib/http/HttpCache.js");
 self.importScripts(SUPPLEMENT_PATH + "/lib/database/DatabaseIndexedDb.js");
 
