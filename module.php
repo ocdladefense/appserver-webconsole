@@ -28,6 +28,9 @@ function modWebconsoleRoutes() {
 		),
 		"text-content" => array(
 			"callback" => "loadExternalDocumentText"
+		),
+		"cache-ors" => array(
+			"callback" => "megaOrsCache"
 		)
 	);
 }
@@ -74,7 +77,8 @@ function loadExternalDocumentHTML($url, $statute = null) {
 }
 
 function loadExternalDocumentText($url){
-	$fullUrl = "https://www.oregonlaws.org/ors/".$url;
+	//$fullUrl = "https://www.oregonlaws.org/ors/".$url;
+	$fullUrl = $url;
 
 	$statute = "";
 
@@ -86,6 +90,47 @@ function loadExternalDocumentText($url){
 	$doc->setTargetElementId("text");
 	return $doc->extractText();
 }
+
+function megaOrsCache(){
+	$chapter = 1;
+	$section = 1; //Will be 838.075;
+	$statuteNumber;
+	$orsUrl = "https://www.oregonlaws.org/ors/";
+	$completeUrl;
+	$fileName;
+
+	for($chapter = 1; $chapter <= 1; $chapter++){	//838 chapters
+		for($section = 1; $section <= 1; $section++){
+			if($section < 10 ){
+				$completeUrl = $orsUrl.$chapter."."."00".$section;
+			}
+			if($section > 10 && $section < 100){
+				$completeUrl = $orsUrl.$chapter."."."0".$section;
+			}
+			else if($section >= 100){
+				$completeUrl = $orsUrl.$chapter.".".$section;
+			}
+			$req = new HttpRequest($completeUrl);
+	
+			$resp = $req->send();
+
+			if($resp->getStatusCode() != 200){
+				continue;
+			}
+		
+			$doc = new ExternalHTMLDocument($resp->getBody());
+			$doc->setTargetElementId("text");
+			$doc->setTagsToFilter(array("img"));
+			$docHtml= $doc->extract();
+			$docText = $doc->extractText();
+			
+			$fileName = getPathToContent()."/orsStatutes/{$chapter}/{$section}.xml";
+			
+			file_put_contents($fileName,$docHtml.$docText);
+		}
+	}
+}
+
 
 function doAdminPage() {
 	$template = new Template("webconsole");

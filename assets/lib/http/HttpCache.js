@@ -108,6 +108,8 @@ const HttpCache = (function(){
 					})
 				);
 			},
+
+
 			
 			
 			
@@ -141,10 +143,7 @@ const HttpCache = (function(){
 					}
 				);
 			},
-			
-			
-			
-			
+
 			add: function(url) {
 				var req;
 				
@@ -176,6 +175,7 @@ const HttpCache = (function(){
 				);
 			}
 		};
+
 
 
     HttpCache.prototype = httpCache;
