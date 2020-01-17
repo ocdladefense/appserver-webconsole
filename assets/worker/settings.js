@@ -23,7 +23,6 @@ const SCRIPT_PATH = "modules/webconsole";
 
 const cacheSettings = {
 	name: 'mycache',
-	enabled: false,
 	startUrls: [
 		SCRIPT_PATH+"/assets/jquery/jquery-1.11.0-min.js",
 		SCRIPT_PATH+"/assets/react/babel-6.26.0-standalone.js",
