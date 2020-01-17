@@ -248,6 +248,10 @@ li:hover .sub-menu {
 	display:inline-block;
 }
 
+#mobile-icon {
+	display: none;
+}
+
 ul.main-menu {
 	margin-top:0px;
 	margin-bottom:0px;
@@ -400,3 +404,124 @@ li a {
 .container-right.hidden {
 	display: none;
 }
+
+/************ RESPONSIVE STYLES *************/
+
+/* Targeting Phones */
+@media (max-width: 450px) { 
+
+	/*** HEADERS ***/
+
+	#header {
+		height: 9vh;
+		border: 0px;
+	}
+
+	.header-content {
+		margin-top: 1vh;
+	}
+
+	#logo {
+		margin-top: 2%;
+	}
+
+	#doc-header {
+		display: none;
+	}
+
+	/*** RESPONSIVE MENU ***/
+
+	.main-menu {
+		display: none;
+		overflow: hidden;
+	}
+
+	#mobile-icon {
+		font-size: 8vw;
+		text-decoration: none;
+		color: white;
+		float: right;
+		display: block;
+	}
+
+	.mobile-menu {
+		background-color: #232F3E;
+		padding: 2vh;
+		display: block;
+	}
+
+	.mobile-menu-element{
+		color: black;
+		display: block !important;
+		border: 0px !important;
+	}
+
+	.main-menu.responsive {
+		position: relative;
+	}
+
+	.main-menu.responsive .icon {
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+
+	.main-menu.responsive a {
+		float: none;
+		display: block;
+		text-align: left;
+	}
+
+	.main-menu.responsive .dropdown {
+		float: none;
+	}
+
+	.main-menu.responsive .dropdown-content {
+		position: relative;
+	}
+	
+	/*** CONTAINER and STAGE ***/
+
+	#container {
+		margin-top: 10vh;
+	}
+
+	#container-left {
+		display: none;
+	}
+
+	#container-right {
+		display: none;
+	}
+
+	#stage {
+		left: 2%;
+		right: 2%;
+		max-width: 96%;
+		border: 0px;
+	}
+}
+/* End Targeting Phones */
+
+/* Targeting Tablets */
+@media (min-width: 450px) and (max-width: 800px) {
+	#doc-header {
+		display: none;
+	}
+
+	#container-left {
+		display: none;
+	}
+
+	#container-right {
+		display: none;
+	}
+
+	#stage {
+		left: 5%;
+		right: 5%;
+		max-width: 90%;
+		border: 0px;
+	}
+}
+/* End Targeting Tablets */ 
