@@ -22,15 +22,6 @@ function modWebconsoleRoutes() {
 		),
 		"doc" => array(
 			"callback" => "loadDocument"
-		),
-		"html-content" => array(
-			"callback" => "loadExternalDocumentHTML"
-		),
-		"text-content" => array(
-			"callback" => "loadExternalDocumentText"
-		),
-		"cache-ors" => array(
-			"callback" => "megaOrsCache"
 		)
 	);
 }
@@ -47,89 +38,9 @@ function loadDocument($docId) {
 
 
 
-/**
- * $req = new HttpRequest("https://www.oregonlaws.org/ors/137.700");
-
-		$req->xml();
 
 
-		new ClassFinder("nav nav-tabs hidden-print");
 
-		$title = new Label(".section_title"); // Get the section title label for display in the sidebar
-
-		new MainContent("#text");
-		new MainContent("#annotations");
-		new MainContent("#related-statutes");
-*/
-function loadExternalDocumentHTML($url, $statute = null) {
-	$fullUrl = "https://www.oregonlaws.org/ors/".$url;
-
-	$statute = "";
-
-	$req = new HttpRequest($fullUrl);
-	
-	$resp = $req->send();
-
-	$doc = new ExternalHTMLDocument($resp->getBody());
-	$doc->setTargetElementId("text");
-	$doc->setTagsToFilter(array("img"));
-	return $doc->extract();
-}
-
-function loadExternalDocumentText($url){
-	//$fullUrl = "https://www.oregonlaws.org/ors/".$url;
-	$fullUrl = $url;
-
-	$statute = "";
-
-	$req = new HttpRequest($fullUrl);
-	
-	$resp = $req->send();
-
-	$doc = new ExternalHTMLDocument($resp->getBody());
-	$doc->setTargetElementId("text");
-	return $doc->extractText();
-}
-
-function megaOrsCache(){
-	$chapter = 1;
-	$section = 1; //Will be 838.075;
-	$statuteNumber;
-	$orsUrl = "https://www.oregonlaws.org/ors/";
-	$completeUrl;
-	$fileName;
-
-	for($chapter = 1; $chapter <= 1; $chapter++){	//838 chapters
-		for($section = 1; $section <= 1; $section++){
-			if($section < 10 ){
-				$completeUrl = $orsUrl.$chapter."."."00".$section;
-			}
-			if($section > 10 && $section < 100){
-				$completeUrl = $orsUrl.$chapter."."."0".$section;
-			}
-			else if($section >= 100){
-				$completeUrl = $orsUrl.$chapter.".".$section;
-			}
-			$req = new HttpRequest($completeUrl);
-	
-			$resp = $req->send();
-
-			if($resp->getStatusCode() != 200){
-				continue;
-			}
-		
-			$doc = new ExternalHTMLDocument($resp->getBody());
-			$doc->setTargetElementId("text");
-			$doc->setTagsToFilter(array("img"));
-			$docHtml= $doc->extract();
-			$docText = $doc->extractText();
-			
-			$fileName = getPathToContent()."/orsStatutes/{$chapter}/{$section}.xml";
-			
-			file_put_contents($fileName,$docHtml.$docText);
-		}
-	}
-}
 
 
 function doAdminPage() {
@@ -141,21 +52,6 @@ function doAdminPage() {
 		)
 	);
 
-	/*
-	$react = array(
-		array(
-			"src" => "https://unpkg.com/react@16/umd/react.development.js",
-			"crossorigin" => null
-		),
-		array(
-			"src" => "https://unpkg.com/react-dom@16/umd/react-dom.development.js",
-			"crossorigin" => null
-		),
-		array(
-			"src" => "https://unpkg.com/babel-standalone@6/babel.min.js"
-		)
-	);
-	*/
 	
 	$react = array(
 		array(
