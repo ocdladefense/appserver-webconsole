@@ -41,10 +41,16 @@ const DomMobileContextMenuEvent = (function() {
 			} else if(element.nodeName !== "A") { // if the element clicked is not an A tag, close the dropdown menu
 				let menus = document.getElementsByClassName("main-menu");
 				let mainMenu = menus[0];
-				window.setTimeout(() => { mainMenu.classList.remove("mobile-menu-slide-in")}, 100);
 
 				let slideTime = 20;
 				let timeOutTime = 200;
+
+				if(mainMenu.classList.contains("mobile-menu-slide-in")) {
+					window.setTimeout(() => { mainMenu.classList.add("mobile-menu-slide-out")}, slideTime);
+				}
+
+				window.setTimeout(() => { mainMenu.classList.remove("mobile-menu-slide-in")}, timeOutTime);
+				window.setTimeout(() => { mainMenu.classList.remove("mobile-menu-slide-out")}, timeOutTime);
 
 				mainMenu.childNodes.forEach((menuItem) => {
 					window.setTimeout(() => { menuItem.classList.remove("mobile-menu-item-slide-in") }, slideTime);
