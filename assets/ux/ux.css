@@ -458,7 +458,6 @@ li a {
 		margin-left: 0px !important;
 	}
 
-
 	#mobile-icon {
 		font-size: 8vw;
 		text-decoration: none;
@@ -497,36 +496,6 @@ li a {
 		border-bottom: none !important;
 	}
 
-
-
-
-
-
-
-	.main-menu.responsive {
-		position: relative;
-	}
-
-	.main-menu.responsive .icon {
-		position: absolute;
-		right: 0;
-		top: 0;
-	}
-
-	.main-menu.responsive a {
-		float: none;
-		display: block;
-		text-align: left;
-	}
-
-	.main-menu.responsive .dropdown {
-		float: none;
-	}
-
-	.main-menu.responsive .dropdown-content {
-		position: relative;
-	}
-	
 	/*** CONTAINER and STAGE ***/
 
 	#container {
