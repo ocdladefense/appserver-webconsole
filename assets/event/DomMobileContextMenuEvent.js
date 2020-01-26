@@ -38,7 +38,8 @@ const DomMobileContextMenuEvent = (function() {
 				});
 
 				return false;
-			} else if(element.nodeName !== "A") { // if the element clicked is not an A tag, close the dropdown menu
+			}
+			else if(element.nodeName !== "A") { // if the element clicked is not an A tag, close the dropdown menu
 				let menus = document.getElementsByClassName("main-menu");
 				let mainMenu = menus[0];
 
@@ -79,6 +80,8 @@ const DomMobileContextMenuEvent = (function() {
 
 			}
 
+
+			/*
 			touchmenu = document.getElementById("touchmenu");
 
 	
@@ -103,6 +106,7 @@ const DomMobileContextMenuEvent = (function() {
 			}
 
 			ltap = new Date().getTime();
+			*/
 			return false;
 		}
 	};

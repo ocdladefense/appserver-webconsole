@@ -186,10 +186,13 @@ const App = (function(){
 					stageContent.innerHTML = html;
 				})
 				.then( () => {
-					doc.showNotes();
+					// doc.showNotes();
 				})
 				.then( () => {
 					new TableOfContents();
+				})
+				.catch( (reason) => {
+					console.log(reason);
 				});
 				// Perform a read op on our datastore
 				// Instantiate a Document object
@@ -457,7 +460,10 @@ const App = (function(){
 					this.addRoute(docRoute); // docRoute is now in global space.
 				})
 				.then(this.loadDocument.bind(this,DEFAULT_DOC_ID))
-				.then(loadModule.bind(this,"ors"));
+				.then(loadModule.bind(this,"ors"))
+				.catch( (reason) => {
+					console.log(reason);
+				});
 				//The above is equal to this.loadModule("ors")
 
 

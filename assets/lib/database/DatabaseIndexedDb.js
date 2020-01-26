@@ -158,17 +158,25 @@ var DatabaseIndexedDb = (function(){
 		},
 		
 		query: function(obj){
+			console.log("Object is, ",obj);
 			var store = obj.store;
 			var index = obj.index;
 			var value = obj.value;
 
 			return this.open().then( (db) => {
-				var tx = db.transaction([store],"readonly");
-				var objectStore = tx.objectStore(store);
+				var tx, objectStore, theIndex, singleKeyRange;
+				
+				try {
+					tx = db.transaction([store],"readonly");
 
-				var theIndex = objectStore.index(index);
-				//request = theIndex.get(key);
-				var singleKeyRange = IDBKeyRange.only(value);
+					objectStore = tx.objectStore(store);
+
+					theIndex = objectStore.index(index);
+						//request = theIndex.get(key);
+					singleKeyRange = IDBKeyRange.only(value);
+				} catch(e) {
+					return Promise.reject(e.message);
+				}
 			
 				return new Promise( (resolve,reject) => {
 					var data = [];
@@ -183,7 +191,6 @@ var DatabaseIndexedDb = (function(){
 						}
 					};
 				});
-
 
 			});	
 		},

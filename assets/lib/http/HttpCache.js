@@ -72,7 +72,9 @@ const HttpCache = (function(){
       cacheable: function(path){
 				for(var group in this.groups){
 					// console.log(this.group);
-					if(this.groups[group].urls.includes(path)
+					var urls = this.groups[group].urls;
+					// console.log("Checking ",urls," for urls.");
+					if(urls.includes(path)
 						&& !!this.groups[group].enabled) {
 						return true;
 					}
@@ -97,8 +99,11 @@ const HttpCache = (function(){
 				
 				url = new UrlParser(event.request.url);
 
-
-				if(!this.cacheable(url.path)) return false;
+				// console.log("Checking ",url.path," in cache.");
+				if(!this.cacheable(url.path)) {
+					// console.log("Could not find ",url.path, " in cache.");
+					return false;
+				}
 
 				console.log("Url ",url.path," was set to be cached: ",url);
 				
@@ -115,6 +120,13 @@ const HttpCache = (function(){
 
 			
 			
+			
+			exists: function(event) {
+				caches.open(this.name)
+				.then(function(cache) {
+					cache.put(event.request, responseToCache);
+				});
+			},
 			
 			
 			/**
@@ -138,9 +150,9 @@ const HttpCache = (function(){
 						var responseToCache = response.clone();
 
 						caches.open(this.name)
-							.then(function(cache) {
-								cache.put(event.request, responseToCache);
-							});
+						.then(function(cache) {
+							cache.put(event.request, responseToCache);
+						});
 
 						return response;
 					}

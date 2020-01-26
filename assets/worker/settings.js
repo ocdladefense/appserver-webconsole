@@ -27,7 +27,8 @@ const cacheSettings = {
 		SCRIPT_PATH+"/assets/jquery/jquery-1.11.0-min.js",
 		SCRIPT_PATH+"/assets/react/babel-6.26.0-standalone.js",
 		SCRIPT_PATH+"/assets/react/react-16.12.0-development.js",
-		SCRIPT_PATH+"/assets/react/react-16.12.0-dom-development.js"
+		SCRIPT_PATH+"/assets/react/react-16.12.0-dom-development.js",
+		"webconsole"
 	]
 };
 

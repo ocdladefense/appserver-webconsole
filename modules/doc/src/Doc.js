@@ -11,19 +11,27 @@ const Doc = (function(){
 
 		showNotes: function() {
 			var db = app.getDefaultDatabase();
+			
+
 			var request = db.query({ index: "docId", value: this.id, store: "note" });
 			
 			request.then( (objs) => {
 				var mw = document.getElementById("mw-content-text");
 				var elements = mw.querySelectorAll('p,blockquote');
-		
+	
+
 				objs.forEach( (obj) => {
 					var note = new Note(obj);
 					var index = note.nodeId;
 					// elements[index].appendChild(createElement(NoteComponent.one(note)));
 				});
-		 });
-		 
+
+			});
+	 
+			request.catch( (e) => {
+				console.log(e);
+			});
+
 		}
 
     
