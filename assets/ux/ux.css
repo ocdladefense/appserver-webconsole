@@ -5,6 +5,10 @@ body {
 	position:relative;
 }
 
+#page {
+	background-color: #fff;
+}
+
 #banner {
 	display:none;
 	height:60%;
@@ -164,7 +168,7 @@ body {
 	font-size:0.8rem;
 }
 #container{
-	margin-top: 100px;
+	margin-top: 75px;
 	/* overflow-x: hidden; */
 }
 
