@@ -3,6 +3,7 @@ body {
 	margin:0 !important;
 	background-color: #ECEFF2;
 	position:relative;
+	line-height:normal;
 }
 
 #page {
